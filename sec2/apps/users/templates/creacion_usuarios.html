@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/home.css' %}" rel="stylesheet" />
+  {% comment %} <link href="{% static 'Libs/css/nav_top.css' %}" rel="stylesheet" /> {% endcomment %}
+  <link href="{% static 'css/alta.css' %}" rel="stylesheet" />
+
+{% endblock %}
+
+{% block container %}
+<div id="wrapper">
+  <div id="sidebar">
+    {% include 'nav_gestion_usuarios.html' %}
+    <div id="messages-container">
+      {% include 'message.html' %}
+    </div>
+  </div>
+  
+  <div id="content">
+    {% include 'nav_top.html'  %}
+    <div class="container">
+      <h3 class="titulo" >{{titulo}}</h3>
+      <form method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label align="center" for="name">Nombre de usuario: </label>
+              {{form.username}}
+              {% include "error_campo.html" with field=form.username %}
+            </div>
+          </div>
+          
+          <div class="col">
+            <div class="form-group">
+              <label align="center" for="email">Correo electrónico:</label>
+              {{form.email}}
+              {% include "error_campo.html" with field=form.username %}
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label align="center" for="password1">Contraseña:</label>
+              <input type="password" 
+              name="{{ form.password1.name }}" 
+              {% if form.password1.value %}value="{{ form.password1.value }}"{% endif %}
+              class="form-control text-center password-input" required>
+            </div>
+          </div>
+          
+          <div class="col">
+            <div class="form-group">
+              <label align="center" for="password1">Confirmar contraseña:</label>
+              <input type="password" 
+              name="{{ form.password2.name }}" 
+              {% if form.password2.value %}value="{{ form.password2.value }}"{% endif %}
+              class="form-control text-center password-input" required>
+            </div>
+          </div>
+          {% include "error_campo.html" with field=form.password2 %}
+          {% include "error_campo.html" with field=form.password1 %}
+        </div>
+     
+     
+        <h6>Seleccione los gestiones que podra administrar el usuario:</h6>
+        <div class="row">
+          <div class="col">
+            {{form.permiso_gestion_afiliados}}
+            {{form.permiso_gestion_afiliados.label}}
+          </div>
+
+          <div class="col">
+            {{form.permiso_gestion_cursos}}
+            {{form.permiso_gestion_cursos.label}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            {{form.permiso_gestion_salon}}
+            {{form.permiso_gestion_salon.label}}
+          </div>
+
+          <div class="col">
+            {{form.permiso_gestion_usuarios}}
+            {{form.permiso_gestion_usuarios.label}}
+          </div>
+        </div>
+        <br>
+        <div class="row text-center">
+          <div class="col">
+            <button type="submit" class="btn btn-success">Crear usuario</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="{% static 'Libs/js/nav_principal.js' %}"></script>
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}

@@ -1,0 +1,81 @@
+{% comment %} DNI - CUIT - NACIONALIDAD {% endcomment %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.dni.id_for_label }}">Dni</label>
+      {{ form.dni }}
+      {% include "error_campo.html" with field=form.dni %}
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.cuil.id_for_label }}">Cuil</label>
+      {{ form.cuil }}
+      {% include "error_campo.html" with field=form.cuil %}
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.nacionalidad.id_for_label }}">Nacionalidad</label>
+      {{ form.nacionalidad }}
+    </div>
+  </div>
+</div>
+
+{% comment %} NOMBRE - APELLIDO - ESTADO CIVIL  {% endcomment %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.nombre.id_for_label }}">Nombre</label>
+      {{ form.nombre }}
+      {% include "error_campo.html" with field=form.nombre %}
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.apellido.id_for_label }}">Apellido</label>
+      {{ form.apellido }}
+      {% include "error_campo.html" with field=form.apellido %}
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.estado_civil.id_for_label }}">Estado Civil</label>
+      {{ form.estado_civil }}
+    </div>
+  </div>
+</div>
+
+{% comment %} FECHA DE NACIMIENTO - CELULAR - DIRECCION  {% endcomment %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.fecha_nacimiento.id_for_label }}">Fecha de Nacimiento</label><br />
+      {{ form.fecha_nacimiento }}
+      {% include "error_campo.html" with field=form.fecha_nacimiento %}
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.celular.id_for_label }}">Celular</label>
+      {{ form.celular }}
+      {% include "error_campo.html" with field=form.celular %}
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label for="{{ form.direccion.id_for_label }}">Dirección</label>
+      {{ form.direccion }}
+      {% include "error_campo.html" with field=form.direccion %}
+    </div>
+  </div>
+</div>
+
+{% comment %} CORREO {% endcomment %}
+<div class="row">
+  <div class="form-group">
+    <label for="{{ form.mail.id_for_label }}">Correo Electrónico:</label>
+    {{ form.mail }}
+    {% include "error_campo.html" with field=form.mail %}
+  </div>
+</div>

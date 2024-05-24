@@ -1,0 +1,17 @@
+.cabecera {
+    background-color: #074081;
+    color: #000000;
+    /* Arriba | Derecha | Abajo | Izquierda */
+}
+
+.navbar {
+    padding-bottom: 0 !important;
+}
+
+nav {
+    padding: 0px;
+}
+
+img {
+    width: 100px;
+}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'css/dictado_list.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+
+{% endblock %}
+
+{% block container %}
+  <br />
+  <h2 class="titulo">{{ titulo }}</h2>
+  <br />
+  <div class="container-sm">
+    <div class="table-responsive">
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th scope="col">N° Clases</th>
+            <th scope="col">Profesor/a</th>
+            <th scope="col">Cupo</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% comment %} {% for dictado in object_list %}
+            <tr class="bg-transition fila-personalizada">
+              <td style="border-left-width: 0px; padding-left: 20px;">{{ dictado.cantidad_clase }}</td>
+              <td>{{ dictado.titular }}</td>
+              <td>
+                <a href="{% url 'cursos:dictado' dictado.pk %}" class="btn btn-info btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+              </td>
+            </tr>
+          {% endfor %} {% endcomment %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <a id="boton-nuevo" href="{% url 'cursos:dictado_crear' curso %}" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i> Nuevo</a>
+  {% comment %} {% block nav_lateral_filtro %}
+    {% include 'nav_filtro.html' %}
+  {% endblock %} {% endcomment %}
+{% endblock %}

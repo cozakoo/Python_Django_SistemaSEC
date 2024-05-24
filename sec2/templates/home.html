@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/home.css' %}" rel="stylesheet" />
+  <link href="{% static 'Libs/css/nav_top.css' %}" rel="stylesheet" />
+  {% endblock %}
+
+{% block container %}
+  <div id="wrapper">
+    <div id="sidebar">
+      {% block nav_lateral %}
+        {% include 'nav_principal.html' %}
+      {% endblock %}
+      
+      <!-- Este div se mostrará al final del #sidebar -->
+      <div id="messages-container">
+        {% include 'message.html' %}
+      </div>
+    </div>
+
+
+    <div id="content">
+      {% block nav_top %}
+        {% include 'nav_top.html' %}
+      {% endblock %}
+
+      {% block dinamica %}
+      {% include 'footer.html' %}
+        {% include 'index.html' %}
+      {% endblock %}
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block extrajs %}
+<script src="{% static 'Libs/js/nav_principal.js' %}"></script>
+{% endblock %}

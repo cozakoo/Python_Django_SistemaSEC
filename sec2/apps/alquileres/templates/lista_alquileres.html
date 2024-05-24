@@ -1,0 +1,28 @@
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Salon</th>
+            <th>fecha_alquiler</th>
+            <th>turno</th>
+            <th>Afiliado</th>
+            <th colspan="2">Precio</th>
+          </tr>
+        </thead>
+    
+        <tbody>
+          {% for alquiler in alquileres %}
+            <tr class="bg-transition fila-personalizada">
+              <td class="negrita">{{ forloop.counter }}</td>
+              <td>{{ alquiler.salon.nombre }}</td>
+              <td>{{ alquiler.fecha_alquiler|date:"d F Y" }}</td>
+              <td>{{ alquiler.turno }}</td>
+              <td>{{ alquiler.afiliado.persona.dni }}</td>
+              <td>${{ alquiler.salon.precio }}</td>
+              <td class="text-end">
+                <a href="{% url 'alquiler:alquiler_detalle' alquiler.pk %}" class="btn btn-sm btn-info btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>

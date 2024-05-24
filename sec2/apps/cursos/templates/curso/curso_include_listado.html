@@ -1,0 +1,42 @@
+<table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Área</th>
+        <th>Act</th>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Modulos</th>
+        <th class="text-center">Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for curso in cursos %}
+        <tr class="bg-transition fila-personalizada">
+          <td class="negrita"> {{ page_obj.start_index|add:forloop.counter0 }}</td>
+          <td>{{ curso.get_area_display }}</td>
+          <td>{{ curso.actividad }}</td>
+          <td>{{ curso.nombre }}</td>
+          <td>
+            {% if curso.es_convenio %}
+              Convenio
+            {% else %}
+              SEC
+            {% endif %}
+          </td>
+          <td>{{ curso.modulos_totales }} horas</td>
+
+          <td class="text-center">
+            {% if curso.fechaBaja %}<i class="fa-regular fa-circle-xmark" style="color: #850000;"></i>
+            {% else %}<i class="fa-regular fa-circle-check" style="color: #0f8000;"></i>
+            {% endif %}
+          </td>
+          <td class="text-end">
+            <a href="{% url 'cursos:curso_detalle' curso.pk %}" class="btn btn-info btn-detalle btn-sm"><i class="fa-regular fa-eye"></i> Detalle</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>

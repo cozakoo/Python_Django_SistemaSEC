@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/home.css' %}" rel="stylesheet" />
+  {% comment %} <link href="{% static 'Libs/css/nav_top.css' %}" rel="stylesheet" /> {% endcomment %}
+  <link href="{% static 'css/alta.css' %}" rel="stylesheet" />
+
+{% endblock %}
+
+{% block container %}
+<div id="wrapper">
+  <div id="sidebar">
+    {% include 'nav_gestion_usuarios.html' %}
+    <div id="messages-container">
+      {% include 'message.html' %}
+    </div>
+  </div>
+  
+  <div id="content">
+    {% include 'nav_top.html'  %}
+    <div class="container">
+      <h3 class="titulo" >{{titulo}}</h3>
+        <table class="table table-lg  table-striped table-hover ">
+      <thead>
+        <tr>
+          <th >#</th>
+          <th>Username</th>
+          <th>Ultima conexion</th>
+          <th class="text-center">Estado</th>
+          <th colspan="2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in object_list %}
+        <tr>
+            <td class="negrita">{{ forloop.counter }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.date_joined }}</td>
+            
+            <td class="text-center">
+              {% if user.is_active %} 
+                <i class="fa-solid fa-circle-check" style="color: #306b00;"></i> 
+              {% else %}
+                <i class="fa-solid fa-circle-xmark" style="color: #7a0000;"></i> 
+              {% endif %}
+              </td>
+      
+            <td>
+                <a class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalpass_{{user.pk}}">
+                     <i class="fa-solid fa-sitemap"></i>
+                    Cambiar Permisos
+                  </a>
+            </td>
+            
+            <td> 
+                 {% comment %} {% if not user.is_active %}  
+                 <a class="btn btn-sm " data-bs-toggle="modal" data-bs-target="#cambiarEstado_{{user.pk}}">
+                      <i class="fa-regular fa-circle-up" style="color: #1dc93f;"></i>
+                    Dar de Alta
+                  </a>
+                  {% else %}
+                  <a class="btn btn-sm " data-bs-toggle="modal" data-bs-target="#cambiarEstado_{{user.pk}}">
+                      <i class="fa-regular fa-circle-down" style="color: #ea1a1a;"></i>
+                    Dar de Baja
+                  </a>
+                {% endif %} {% endcomment %}
+            </td>
+
+
+
+
+        </tr>
+        {% include "modal_cambiar_permisos.html" %}
+       {% comment %}  {% include "modal_cambiar_estado_user.html" %} {% endcomment %}
+        {% endfor %} 
+        
+
+      </tbody>
+    </table>
+    {% include "pagination.html" %}
+    </div>
+  </div>
+</div>
+<script src="{% static 'Libs/js/nav_principal.js' %}"></script>
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}

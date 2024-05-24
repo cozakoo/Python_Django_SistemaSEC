@@ -1,0 +1,75 @@
+{% for pago in page_obj %}
+<div class="modal fade" id="modalPagoAlumno{{ pago.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Detalle de pago</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: left;"> <!-- Apply left alignment -->
+
+              <div class="row">
+                <div class="col">
+                  <p><strong>Alumno:</strong> {{ pago.rol.persona }}</p>
+                </div>
+                <div class="col">
+                  <p><strong>Fecha:</strong> {{ pago.fecha }}</p>
+                </div>
+              </div>
+
+              <div class="row text-center">
+                <div class="col">
+                  <a href="{% url 'cursos:pago_alumno_detalle' pago.pk %}?pdf=true" class="btn btn-light btn-sm btn-detalle">
+                    <i class="fa-solid fa-file-pdf"></i> PFD
+                  </a>
+                </div>
+              </div>
+
+              <br>
+              <table class="table table-sm table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th >Curso</th>
+                    <th colspan="2">Dictado</th>
+
+                    <th class="text-end">Precio</th>
+                    <th class="text-end">Desc</th>
+                    <th class="text-end">Precio (Desc)</th>
+                    <th class="text-center" >Periodo</th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-end">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for detalle in pago.detalles_pago_alumno.all %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ detalle.dictado.curso.nombre }}</td>
+                    <td>{{ detalle.dictado.legajo }}</td>
+                    <td class="text-end">
+                      <a href="{% url 'cursos:dictado_detalle' curso_pk=detalle.dictado.curso.pk dictado_pk=detalle.dictado.pk %}" class="btn btn-info btn-detalle btn-sm">
+                        Ir</a>
+                    </td>
+                    <td class="text-end">${{ detalle.precioFinal }}</td>
+                    <td class="text-end">{{ detalle.descuento }}%</td>
+                    <td class="text-end">${{ detalle.precioConDescuento }}</td>
+                    <td class="text-center" >{{ detalle.get_periodo_pago_display }}</td>
+                    <td class="text-center">{{ detalle.cantidad }}</td>
+                    <td class="text-end">${{ detalle.total }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+                <p class="text-end">Total: <strong>${{ pago.total }} </strong></p>
+
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm " data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+</div>
+
+{% endfor %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block container %}
+<br>
+  <h3 class="titulo">{{ titulo }}</h3>
+  <br>
+  <div class="container">
+    <p>Alumnos inscritos en el dictado "{{ dictado.curso.nombre }}"</p>
+
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha Inicio</th>
+          <th>Cupo</th> 
+          <th>Desc</th>
+          <th>Duración</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <td>{{ alumno.persona.nombre }}</td>
+      </tbody>
+    </table>
+  </div>
+
+
+    <div class="row">
+        <div class="col-md-2" id="btn-new-afiliado"> <!-- Utiliza col-md-6 para que el botón esté a la izquierda en dispositivos medianos y grandes -->
+            {% block botones %}
+            {% endblock %}
+        </div>
+        <div class="col-md-6 text-center"> 
+          {% comment %} ACA IRIA EL PAGINATOR {% endcomment %}
+        </div>
+    </div>
+</div>
+
+  <div class="container-sm">
+    <div class="table-responsive">
+
+    {% block tabla_listado %}
+      {% endblock %}
+    </div>
+  </div>
+</div>
+
+{% comment %} {% block nav_lateral_filtro %} {% endcomment %}
+    {% comment %} {% include 'nav_filtro.html' %} {% endcomment %}
+  {% comment %} {% endblock %} {% endcomment %}
+{% endblock %}

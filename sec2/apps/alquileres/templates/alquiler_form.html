@@ -1,0 +1,74 @@
+{% extends 'alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+
+<style>
+  .two-columns {
+    column-count: 2;
+    column-gap: 20px; /* Espacio entre columnas */
+}
+</style>
+
+<form  method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <br />
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        {{ form.afiliado.label_tag }}
+        {{ form.afiliado }}
+        <small class="error-text" style="color: red;">{{ form.afiliado.error }}</small>
+      </div>
+    </div>
+    
+    <div class="col">
+      <div class="form-group">
+        {{ form.salon.label_tag }}
+        {{ form.salon }}
+        <small class="error-text" style="color: red;">{{ form.salon.error }}</small>
+      </div>
+    </div>
+  </div> 
+  
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        {{ form.turno.label_tag }}
+        {{ form.turno }}
+        <small class="error-text" style="color: red;">{{ form.turno.error }}</small>
+      </div>
+    </div>
+    
+    <div class="col">
+      <div class="form-group">
+        {{ form.seguro.label_tag }}
+        {{ form.seguro }}
+        <small class="error-text" style="color: red;">{{ form.seguro.error }}</small>
+      </div>
+    </div>
+    
+    <div class="col">
+      <div class="form-group">
+        {{ form.fecha_alquiler.label_tag }}
+        {{ form.fecha_alquiler }}
+        <small class="error-text" style="color: red;">{{ form.fecha_alquiler.error }}</small>
+      </div>
+    </div>
+  </div>
+
+    <div class="row text-center">
+      <div class="col">
+        <button href="{% url 'alquiler:pagar_alquiler_crear' %}" class="btn btn-success">Pagar</button>
+      </div>
+    </div>
+  </form>
+
+  <script type="text/javascript" src="{% static 'Libs/js/jquery-1.11.2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'Libs/js/jquery-iu.js' %}"></script>
+<script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+
+{% endblock %}

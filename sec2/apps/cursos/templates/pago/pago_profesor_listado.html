@@ -1,0 +1,63 @@
+{% extends 'listado.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block botones %}
+<a href="{% url 'cursos:pago_profesor' %}" class="btn btn-outline-success btn-sm btn-detalle"><i class="fa-solid fa-plus"></i> Nuevo</a>
+{% endblock %}
+
+{% block tabla_listado %}
+
+<table class="table table-sm table-hover">
+    <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          {% include 'tabla_persona_cabecera.html' %}
+          <th>Monto</th>
+          <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pago in page_obj %}
+        <tr>
+            <td class="negrita"> {{ page_obj.start_index|add:forloop.counter0 }}</td>
+            <td> {{pago.fecha}}</td>
+            {% include 'tabla_persona_cuerpo.html' with persona=pago.profesor.persona %}
+            <td>$ {{ pago.total }}</td>
+            <td class="text-end">
+                <button type="button" class="btn btn-info btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#modalPagoProfesor{{ pago.pk }}">
+                    <i class="fa-regular fa-eye"></i>
+                    Detalle
+                </button>
+                {% include 'pago/modal_detalle_pago_profesor.html' with pago=pago %}
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  var jq = $.noConflict();
+  jq(document).ready(function() {
+      // Cuando cambia la selección del campo de curso
+      jq('#id_profesor__dictados__curso').change(function() {
+        var selectedCurso = jq(this).val();
+
+        var url = 'obtenerDictadosEnCurso/';
+        jq.ajax({
+            url: '/home/app_cursos/pago/' + url + selectedCurso ,
+            dataType: 'json',
+            success: function(data) {
+                jq('#id_profesor__dictados').empty();
+                jq('#id_profesor__dictados').append(data.options);
+          },
+        });
+      });
+    });
+</script>
+
+{% endblock %}

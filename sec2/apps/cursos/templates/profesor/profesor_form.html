@@ -1,0 +1,78 @@
+{% extends 'app_cursos_alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+
+<style>
+/* Estilos para dividir en tres columnas */
+.actividades-columns {
+  -webkit-column-count: 3; /* Chrome, Safari, Opera */
+  -moz-column-count: 3; /* Firefox */
+  column-count: 3;
+}
+</style>
+  <form method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-12">
+        <div class="tab-content" id="form-tabs-content">
+          {% comment %}SECCION 1{% endcomment %}
+          <div id="section1" class="tab-pane fade show active">
+            {% include 'persona_alta.html' %}
+          </div>
+
+          {% comment %}SECCION 2{% endcomment %}
+          <div id="section2" class="tab-pane fade">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="{{ form.ejerce_desde.id_for_label }}">Ejerce desde:</label>
+                  {{ form.ejerce_desde }}
+                  <small class="help-text">{{ form.ejerce_desde.help_text }}</small>
+                  <small class="error-text">{{ form.ejerce_desde.errors }}</small>
+                  <br />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  {{ form.actividades }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>      
+      <br>      
+      <br>      
+      <br>      
+      <br>      
+      <br>      
+      <div class="row text-center">
+        <div class="col">
+          {% if editar %}
+          <button type="submit" class="btn btn-success" style="display: none;">Guardar</button>
+          {% else %}
+          <button type="submit" class="btn btn-success" style="display: none;" name="guardar_y_recargar">Guardar y agregar otro</button>
+          <button type="submit" class="btn btn-success" style="display: none;" name="guardar_y_listar">Guardar y listar</button>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <button id="prev-button" class="btn btn-info" style="display: none;"><i class="fa-solid fa-arrow-left"></i> Anterior </button>
+        </div>
+        
+        <div class="col text-end">
+          <button id="next-button" class="btn btn-info">Siguiente <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block extrajs_intermedia %}
+  <script src="{% static 'js/afiliado_formulario.js' %}"></script>
+{% endblock %}

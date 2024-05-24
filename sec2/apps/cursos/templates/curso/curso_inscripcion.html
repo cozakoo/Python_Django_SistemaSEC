@@ -1,0 +1,186 @@
+{% extends 'alta_ventana_nueva.html' %}
+{% load static %}
+
+{% block formulario %}
+  <form id="buscarPersonaForm">
+    <div class="d-flex align-items-center justify-content-center">
+      <select class="form-control mr-2" name="enc_roles" id="enc_roles" onchange="deshabilitarResultadosPersona()">
+
+        <option value="" disabled selected hidden>Ingrese el dni/nombre/apellido</option>
+        {% for rol in roles %}
+          <option value="{{rol.id}}">
+            {{rol.abrevituraTipoRol}} {{rol.persona.dni}} {{rol.persona.apellido}} {{rol.persona.nombre}} 
+          </option>
+        {% endfor %}
+      </select>
+    
+      <button class="btn btn-outline-success" type="button" onclick="buscarPersona()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </div>
+
+      <a href="{% url 'cursos:curso_lista_espera' pk=curso_pk %}" 
+      class="btn btn-warning btn-sm btn-detalle" >
+      <i class="fa-solid fa-list"></i>
+      L. espera
+      </a>
+
+
+      <a href="{% url 'cursos:gestion_lista_espera' pk=curso_pk rol_pk=9999 accion='inscribir_alumno_potencial' %}" 
+      class="btn btn-outline-success btn-sm btn-detalle" >
+      <i class="fa-solid fa-plus"></i> Nuevo
+      </a> 
+
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-sm btn-secondary ml-2" onclick="cerrarVentana()">Cerrar</button>
+    </div>
+  </form>
+
+  <div id="resultadosPersona"></div>
+
+
+  <!-- Incluir archivos estáticos de Select2 desde CDN -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{% static 'Libs/js/cerrar_ventana.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+
+<script>
+  
+  var jq = $.noConflict();
+  jq('#enc_roles').select2();
+
+  var busquedaRealizada = false
+  var inscritosEsperaIds = {{ inscritosEsperaIds_json|safe }}
+  var inscritosEnDictadoIds = {{ inscritosEnDictadoIds_json|safe }}
+
+  function deshabilitarResultadosPersona() {
+    document.getElementById('resultadosPersona').innerHTML = '';
+  }
+
+  function buscarPersona() {
+    // Limpiar el contenido del div resultadosPersona
+    document.getElementById('resultadosPersona').innerHTML = '';
+    // Verificar si ya se realizó una búsqueda
+    if (busquedaRealizada) {
+      return
+    }
+    // Obtener el id de mi rol
+    var enc_roles = document.getElementById('enc_roles').value
+    
+    if (enc_roles !== '0'){
+      // Marcar la búsqueda como realizada
+      busquedaRealizada = true
+
+      // Realizar la llamada AJAX
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "{% url 'cursos:buscar_persona' %}?id_rol=" + enc_roles, true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          // Procesar la respuesta
+          var respuesta = JSON.parse(xhr.responseText);
+          mostrarResultados(respuesta.rol);
+        }
+      };
+      xhr.send();
+    }
+  }
+
+  function mostrarInformacion(persona) {
+    return `
+      <hr>
+      <h2>Información:</h2>
+      <p>DNI: ${persona.dni} | ${persona.apellido} ${persona.nombre}</p>`;
+  }
+
+  function mostrarTipoPersona(tipo, persona) {
+    let result = ``;
+
+    if (tipo == '1'){ 
+    }else if (tipo == '2'){//si es familiar
+    }else if (tipo == '3'){//si es alumno
+    }else if (tipo == '4'){// si es profesor
+    }else if (tipo == '5'){// si es encargado
+    }
+    return result;
+}
+
+function mostrarResultados(rol) {
+    var resultadosDiv = document.getElementById('resultadosPersona');
+    
+    // PERSONA ENCONTRADA
+    if (rol) {
+      //resultadosDiv.innerHTML = mostrarInformacion(rol.persona);
+      //resultadosDiv.innerHTML += ` <p>Rol principal: ${rol.tipo_rol} .</p>`;
+      //resultadosDiv.innerHTML += `<p>Rol secundario:</p>`;
+      //resultadosDiv.innerHTML += mostrarTipoPersona(rol.tipo, rol.persona);
+      
+      // Si la persona NO esta incrita y NO esta en lista de espera. Muestro los botones
+      var total_en_espera = {{ total_en_espera|default:0|safe }};
+      
+      if (total_en_espera !== 0){
+        //ya existen inscritos
+        resultadosDiv.innerHTML += '<hr>';
+        if (!existeEnListaEspera(rol)) {
+
+          //if (!existeEnDictadoActivo(rol)){
+            resultadosDiv.innerHTML += mostrarBotonListaEspera(rol, 'Agregar a la lista de espera');
+          //}else{
+//            resultadosDiv.innerHTML += `<p>La persona ya existe inscrita en uno de los dictados activos.</p>`;
+          //}
+        }else{
+          resultadosDiv.innerHTML += `<p>La persona ya existe en la lista de espera.</p>`;
+        }
+      }else{
+        //caso unico del primer inscrito
+        resultadosDiv.innerHTML += mostrarBotonListaEspera(rol, 'Agregar a la lista de espera');
+      }
+    }
+      // Restablecer la variable para permitir nuevas búsquedas
+      busquedaRealizada = false;
+  }
+
+  // Función para mostrar el botón de lista de espera
+  function mostrarBotonListaEspera(rol, mensaje) {
+    return `
+      <div class="text-center">
+        <button class="btn btn-warning btn-sm btn-detalle" onclick="gestionListaEspera('agregar_lista', {{ curso_pk }}, ${rol.pk})">${mensaje}</button>
+      </div>`;
+  }
+
+  //------------------- GESTION DE LISTA DE LISTA DE ESPERA --------------------
+  function gestionListaEspera(accion, pk, rol_pk) {
+    var url = `{% url 'cursos:gestion_lista_espera' pk=9999 rol_pk=8888 accion='placeholder' %}`
+      .replace('9999', pk)
+      .replace('8888', rol_pk)
+      .replace('placeholder', accion);  // Reemplazar la acción dinámicamente
+      window.location.href = url;
+  }
+
+
+  function gestionListaEsperaAlumnoNuevo(accion, curso_pk, persona_pk) {
+    gestionListaEspera(accion, curso_pk, 9999999999);
+  }
+    
+  // Función que devuelve el estado de inscripción
+    function existeEnListaEspera(rol) {
+      console.log("inscritosEsperaIds:", inscritosEsperaIds);
+      console.log("persona.pk:", rol.pk);
+      // Verificar si la persona está asociada a algún afiliado
+      var estaAsociada = inscritosEsperaIds.includes(rol.pk);
+      return estaAsociada;
+    }
+
+    function existeEnDictadoActivo(rol) {
+      console.log("inscritosEnDictadoIds:", inscritosEnDictadoIds);
+      console.log("persona.pk:", rol.pk);
+      // Verificar si la persona está asociada a algún afiliado
+      var estaAsociada = inscritosEnDictadoIds.includes(rol.pk);
+      return estaAsociada;
+  }
+
+</script>
+
+{% endblock %}

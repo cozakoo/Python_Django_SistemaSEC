@@ -1,0 +1,34 @@
+{% load static %}
+
+{% block extracss %}
+<link href="{% static 'Libs/css/nav_principal.css' %}" rel="stylesheet" />
+<link href="{% static 'Libs/css/nav_curso.css' %}" rel="stylesheet" />
+{% endblock %}
+
+<div class="menu" id="menu_afiliado_principal">
+  <br />
+  <h3 class="titulo-menu">USUARIOS</h3>
+  <ul class="menu">
+    <li>
+      <a href="/home" id="mostrarMenuPrincipal"><i class="fa-solid fa-arrow-left-long"></i> Menu principal</a>
+    </li>
+  </ul>
+
+  <a class="enlace" id="enlaceActividad" href="{% url 'users:user_register' %}">
+    <i class="fa-solid fa-user-plus"></i> 
+    Crear Usuario</a>
+  
+  <hr>
+  
+  <a class="enlace" id="enlaceReporte" href="{% url 'users:user_listado' %}">
+    <i class="fa-solid fa-list "></i> 
+    Listado de usuarios
+  </a>
+</div>
+
+<hr>
+{% include 'documentacion_info.html' %}
+
+{% comment %}{% block extrajs %}
+  <script src="{% static 'Libs/js/nav_salon.js' %}"></script>
+{% endblock %}{% endcomment %}

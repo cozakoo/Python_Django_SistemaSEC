@@ -1,0 +1,27 @@
+{% extends 'home_afiliado.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/alta.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block dinamica %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="border p-3 mb-3 curso-form rounded-5">
+        <h3 class="titulo">{{ titulo }}</h3>
+
+        {% block formulario %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+  {% block extrajs_intermedia_00 %}
+  {% endblock %}
+{% endblock %}
+
+{% block extrajs_intermedia %}
+
+
+{% endblock %}

@@ -1,0 +1,19 @@
+.status {
+    font-weight: bold;
+}
+
+.pending-status {
+    color: rgb(255, 140, 0);
+}
+
+.active-status {
+    color: rgb(0, 158, 0);
+}
+
+.inactive-status {
+    color: #777;
+}
+
+.moroso-status{
+    color: #f00;
+}

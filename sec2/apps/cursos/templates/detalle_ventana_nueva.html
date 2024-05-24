@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'css/detalle.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block container %}
+
+  <div class="container-sm">
+    {% include 'message.html' %}
+
+
+    <h2 class="titulo">{{ titulo }}</h2>
+    <br />
+    <div class="row">
+      {% block detalle %}
+        {% block detalle_lado_izquierdo %}
+
+        {% endblock %}
+
+        {% block detalle_lado_derecho %}
+
+        {% endblock %}
+      {% endblock %}
+      <br />
+      <div class="row">
+        {% block botones %}
+
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+
+  {% block listado_asociado %}
+
+  {% endblock %}
+{% endblock %}

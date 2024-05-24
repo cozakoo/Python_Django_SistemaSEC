@@ -1,0 +1,69 @@
+{% extends 'detalle_listado_afiliado.html' %}
+{% load crispy_forms_tags %}
+
+{% block detalle %}
+{% include "persona_detalle.html" with persona=familiar.persona %}
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Vinculo:</strong>
+      {{ familiar.get_tipo_display }}
+    </p>
+  </div>
+  <div class="col">
+    <p>
+      <strong>AFiliado Asociado:</strong>
+      {{ afiliado.persona.nombre }}
+      {{ afiliado.persona.apellido }}
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Estado:</strong>
+      {% if familiar.activo %}
+      Activo
+      {% else %}
+      Inactivo
+      {% endif %}
+    </p>
+  </div>
+</div> 
+{% endblock %}
+
+{% block botones %}
+<div class="col"> 
+  <a href="{% url 'afiliados:grupo_familiar_listar' %}" class="btn btn-sm btn-secondary btn-detalle">
+    <i class="fa-solid fa-arrow-left"></i> Ir al listado
+  </a>
+  
+</div>
+
+  <div class="col">
+    <a href="{% url 'afiliados:familiar_editar' pk=afiliado.pk familiar_pk=familiar.pk %}" class="btn btn-sm btn-primary"><i class="fa-regular fa-pen-to-square"></i> Modificar</a>
+  </div>
+
+  <div class="col text-end">
+    <a href="{% url 'afiliados:afiliado_detalle' pk=afiliado.pk %}" class="btn btn-sm btn-detalle btn-warning">Ir al afiliado</a>
+  </div>
+
+  {% if familiar.activo %}
+  <div class="col text-end">
+    <a href="{% url 'afiliados:familiar_eliminar' pk=afiliado.pk familiar_pk=familiar.pk %}" class="btn btn-sm btn-danger">Dar de baja</a>
+  </div>
+  {% endif %}
+  
+{% endblock %}
+
+{% block listado_asociado %}
+{% if familiar.dictados.all %}
+<div class="container-sm">
+  <h3 class="subtitulo">{{ tituloListado }}</h3>
+  {% include "inscripcion_dictado.html" with dictados=afiliado.dictados.all %}
+{% endif %}
+
+{% endblock %}
+

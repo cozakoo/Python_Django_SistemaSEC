@@ -1,0 +1,32 @@
+{% extends 'app_alquiler_listado.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block botones %}
+<a href="{% url 'alquiler:encargado_alta' %}" class="btn btn-outline-success btn-sm  btn-detalle"><i class="fa-solid fa-plus"></i> Nuevo</a>
+{% endblock %}
+
+{% block tabla_listado %}
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      {% include 'tabla_persona_cabecera.html' %}
+      <th></th>
+    </tr>
+  </thead>
+    <tbody>
+      {% for encargado in page_obj %}
+        <tr>
+          <td class="negrita"> {{ page_obj.start_index|add:forloop.counter0 }}</td>
+          {% include 'tabla_persona_cuerpo.html' with persona=encargado.persona %}
+          <td class="text-center">
+            <a href="{% url 'alquiler:encargado_detalle' encargado.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+

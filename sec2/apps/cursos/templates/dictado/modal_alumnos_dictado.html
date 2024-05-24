@@ -1,0 +1,55 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="exampleModalLabel">Inscritos</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% if alumnos_inscritos or afiliado_inscritos or familiares_inscritos or profesores_inscritos %}
+          <table class="table table-sm table-hover">
+            <thead>
+              <tr>
+                {% include "tabla_persona_cabecera.html" %}
+                <th>Rol</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for inscrito in todos_inscritos_sorted %}
+              <tr>
+                {% include "tabla_persona_cuerpo.html" with persona=inscrito.persona %}
+                <td>{{ inscrito.persona.obtenerTipo }}</td>
+                <td class="text-end">
+                  {% if not dictado.estado == 3 %}
+                  <button type="button" class="btn btn-danger btn-sm btn-detalle" 
+                  onclick="gestionInscripcion{% if inscrito.persona.es_afiliado %}Afiliado{% elif inscrito.persona.es_grupo_familiar %}Familiar{% elif inscrito.persona.es_profesor %}Profesor{% elif inscrito.persona.es_alumno %}Alumno{% endif %}('desinscribir', {{ dictado.curso.pk }}, {{ dictado.pk }}, {{ inscrito.persona.pk }})">Desinscribir</button>
+                  {% else %}
+                  <a href="{% url 'cursos:generar_pdf_dictado_finalizado_afiliado' dictado_pk=dictado.pk  persona_pk=inscrito.persona.pk %}" class="btn btn-light btn-sm btn-detalle"><i class="fa-solid fa-file-pdf"></i> PDF</a>
+                  {% endif %}
+
+
+                  {% if inscrito.persona.es_afiliado %}
+                  <a href="{% url 'afiliados:afiliado_detalle' inscrito.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+                  {% comment %} {% elif inscrito.persona.es_grupo_familiar %} {% endcomment %}
+                  {% comment %} <a href="{% url 'afiliados:familiar_detalle_' inscrito.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a> {% endcomment %}
+                  {% elif inscrito.persona.es_profesor %}
+                  <a href="{% url 'cursos:profesor_detalle' inscrito.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+                  {% elif inscrito.persona.es_alumno %}
+                  <a href="{% url 'cursos:alumno_detalle' pk=inscrito.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <p>No hay alumnos/afiliado/Grupo Familiar inscriptos.</p>
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

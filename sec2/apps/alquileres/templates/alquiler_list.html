@@ -1,0 +1,101 @@
+{% extends 'home_alquiler.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+  {% comment %} <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script> {% endcomment %}
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+    </script>
+
+    <style>
+      #calendar a{
+        color: black;
+        text-decoration: none; /* Quitar subrayado */
+
+      }
+      thead{
+        background-color: #99BC85;
+      }
+    </style>
+
+{% endblock %}
+
+{% block dinamica %}
+{% comment %} <h3 class="titulo">{{ titulo }}</h3> {% endcomment %}
+<br>
+
+<div class="container-sm">
+  <div style="border: 1px solid #ccc; padding: 10px; background-color: #AEBDCA; border-radius: 10px;">
+    <a href="{% url 'alquiler:alquiler_crear' %}" class="btn btn-outline-success btn-sm "><i class="fa-solid fa-plus"></i> Alquilar</a>
+    <div id='calendar' style="width: 100%; color: black;">
+    </div>
+  </div>
+</div>
+
+
+{% comment %} {% include 'lista_alquileres.html' %} {% endcomment %}
+
+</div>
+
+{% block nav_lateral_filtro %}
+    {% include 'nav_filtro.html' %}
+  {% endblock %}
+  {% block extrajs %}
+        <script>
+        conectarBotonesAModal('.btn-eliminar')
+        </script>
+
+        {% comment %} <script src="{% static 'libs/fullcalendar/main.js' %}"> </script> {% endcomment %}
+        {% comment %} <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales/es.js'></script> {% endcomment %}
+
+        <script>
+            // Paso 1: Inicializar el calendario
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    // Paso 2: Configurar opciones
+                    timeZone: 'UTC', // Zona horaria local
+                    locale: 'es',
+                    buttonText: {
+                      today: 'Hoy'
+                    },
+
+                    initialView: 'dayGridMonth', // Vista inicial del calendario
+                    // Paso 3: Definir eventos
+                    events: [ 
+                    {% for alquiler in object_list %}
+                    {
+                        title: "{{alquiler.salon}}",
+                        start: "{{alquiler.fecha_alquiler | date:'c'}}",
+                        url: '/home/app_alquileres/alquileres/alquiler/{{alquiler.pk}}',
+                        {% if alquiler.estado == 1 %}
+                        backgroundColor: '#848685', // Verde para estado "En curso"
+                          //backgroundColor: '#FF5733', // Naranja para estado "Confirmado"
+                        {% elif alquiler.estado == 2 %}
+                          backgroundColor: '#2D7FF0', // Verde para estado "En curso"
+                        {% elif alquiler.estado == 3 %}
+                          backgroundColor: '#459C0C', // Verde para estado "Finalizado"
+                        {% elif alquiler.estado == 4 %}
+                          backgroundColor: '#FF0000', // Rojo para estado "Cancelado"
+                        {% endif %}
+                    },
+                    {% endfor %}
+                    ]
+                });
+                // Paso 4: Renderizar el calendario
+                calendar.render();
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

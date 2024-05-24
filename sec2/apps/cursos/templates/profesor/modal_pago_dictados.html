@@ -1,0 +1,51 @@
+<!-- Modal -->
+<div class="modal fade" id="modalPagos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Cuotas</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+            
+            {% if pagos %}
+            
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Precio</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        {% for pago in pagos %}
+                        <tr>
+                            <td class="negrita">{{ forloop.counter }}</td>
+                            <td> {{pago.fecha}} </td>
+                            <td> {{pago.total}} </td>
+                            <td class="text-end">
+                                <a href="{% url 'cursos:pago_profesor_detalle' pago.pk %}" class="btn btn-sm btn-info btn-detalle ">
+                                <i class="fa-regular fa-eye"></i> Detalle</a>
+                                <a href="{% url 'cursos:pago_profesor_detalle' pago.pk %}?pdf=true" class="btn btn-light btn-sm btn-detalle">
+                                    <i class="fa-solid fa-file-pdf"></i> PFD
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table>
+            {% else %}
+            <p>No tiene pagos registrados.</p>
+            {% endif %}
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

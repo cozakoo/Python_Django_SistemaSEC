@@ -1,0 +1,234 @@
+{% extends 'reporte_appCurso.html' %}
+{% load static %}
+
+
+{% block head %}
+<link href="{% static 'Libs/highcharts/code/css/dash.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+
+{% block grafico %}
+
+
+<figure class="highcharts-figure">
+    <div id="container"></div>
+</figure> 
+
+<figure class="highcharts-figure">
+    <div id="container_anio1" ></div>
+</figure> 
+
+<figure class="highcharts-figure">
+    <div id="container_anio2" ></div>
+</figure> 
+
+
+<script>
+Highcharts.chart('container', {
+    chart: {
+        type: 'spline'
+    },
+    title: {
+        text: 'REPORTE INGRESOS TOTALES POR MES - PERIODOS COMPARADOS '+ {{periodos | safe}},
+    },
+    xAxis: {
+        categories: {{categorias | safe}},
+        accessibility: {
+            description: 'Ingresos (ARS)'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Ingresos (ARS)'
+        },
+        labels: {
+           formatter: function () {
+                    return '$' + this.value; // Formatear valores decimales en el eje Y
+                }
+        }
+    },
+    tooltip: {
+        crosshairs: true,
+        shared: true
+    },
+    plotOptions: {
+        spline: {
+            marker: {
+                radius: 4,
+                lineColor: '#666666',
+                lineWidth: 1
+            }
+        }
+    },
+    series: {{ datos|safe }}
+});
+</script>
+
+<script type="application/javascript">
+   Dashboards.board('container_anio1', {
+    dataPool: {
+        connectors: [{
+            id: 'transactions',
+            type: 'JSON',
+            options: {
+                firstRowAsNames: false,
+                columnNames: ['nombre persona','curso_abonado','fecha_pago', 'monto'],
+                data: {{pagos_detall_anio1 | safe}}
+            }
+        }]
+    },
+    gui: {
+        layouts: [{
+            rows: [ {
+                cells: [{
+                    id: 'dashboard-row-3-cell-1'
+                }, {
+                    id: 'dashboard-row-3-cell-2'
+                }, {
+                    id: 'dashboard-row-3-cell-3'
+                }]
+            }]
+        }]
+    },
+    components: [ {
+        type: 'KPI',
+        renderTo: 'dashboard-row-3-cell-1',
+        title: 'Total recaudado año ' + {{anio1 | safe}},
+        value: {{total_anio1 | safe}},
+        valueFormat: '$ {value}',
+        linkedValueTo: {
+            enabled: false
+        },
+        chartOptions: {
+            series:  {{ data_anio1|safe }}
+        }
+    }, {
+        type: 'KPI',
+        renderTo: 'dashboard-row-3-cell-2',
+        title: 'Porcentaje de ganancia o perdida del año '+ {{anio1 | safe}} + ' respecto al año ' + {{anio2 | safe}} ,
+        value: '',
+        linkedValueTo: {
+            enabled: false
+        },
+        chartOptions: {
+            title: {
+                verticalAlign: 'middle',
+                floating: true,
+                text: {{porcent_cambio_anio1 | safe}}
+            },
+            series: [{
+                type: 'pie',
+                enableMouseTracking: false,
+                data: [70, 0],
+                size: '100%',
+                innerSize: '75%',
+                dataLabels: {
+                    enabled: false
+                }
+            }]
+        }
+    }, {
+        renderTo: 'dashboard-row-3-cell-3',
+        connector: {
+            id: 'transactions'
+        },
+        title: 'Pagos Detallados año '+ {{anio1 | safe}},
+        type: 'DataGrid',
+        dataGridOptions: {
+            cellHeight: 37,
+            editable: false
+        }
+    }]
+}, true);
+</script>
+
+<script type="application/javascript">
+   Dashboards.board('container_anio2', {
+    dataPool: {
+        connectors: [{
+            id: 'transactions',
+            type: 'JSON',
+            options: {
+                firstRowAsNames: false,
+                columnNames: ['nombre persona','curso_abonado','fecha_pago', 'monto'],
+                data: {{pagos_detall_anio2 | safe}},
+            }
+        }]
+    },
+    gui: {
+        layouts: [{
+            rows: [ {
+                cells: [{
+                    id: 'dashboard-row-3-cell-1'
+                }, {
+                    id: 'dashboard-row-3-cell-2'
+                }, {
+                    id: 'dashboard-row-3-cell-3'
+                }]
+            }]
+        }]
+    },
+    components: [ {
+        type: 'KPI',
+        renderTo: 'dashboard-row-3-cell-1',
+        title: 'Total recaudado año ' + {{anio2 | safe}},
+        value: {{total_anio2 | safe}},
+        valueFormat: '$ {value}',
+        linkedValueTo: {
+            enabled: false
+        },
+        chartOptions: {
+            series:  {{ data_anio2|safe }}
+        }
+    }, {
+        type: 'KPI',
+        renderTo: 'dashboard-row-3-cell-2',
+        title: 'Porcentaje de ganancia o perdida del año '+ {{anio2 | safe}} + ' respecto al año ' + {{anio1 | safe}} ,
+        value: '',
+        linkedValueTo: {
+            enabled: false
+        },
+        chartOptions: {
+            title: {
+                verticalAlign: 'middle',
+                floating: true,
+                text: {{porcent_cambio_anio2 | safe}}
+            },
+            series: [{
+                type: 'pie',
+                enableMouseTracking: false,
+                data: [0, 100],
+                size: '100%',
+                innerSize: '75%',
+                dataLabels: {
+                    enabled: false
+                }
+            }]
+        }
+    }, {
+        renderTo: 'dashboard-row-3-cell-3',
+        connector: {
+            id: 'transactions'
+        },
+        title: 'Pagos Detallados año '+ {{anio1 | safe}},
+        type: 'DataGrid',
+        dataGridOptions: {
+            cellHeight: 37,
+            editable: false
+        }
+    }]
+}, true);
+</script>
+
+
+
+
+
+{% endblock %}
+
+
+{% comment %} series: [{
+    name: 'cursos',
+    ingresos: "ingresos",
+    data: data.map(item => parseFloat(item.data[0][1]) ) ,
+}] {% endcomment %}

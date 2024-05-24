@@ -1,0 +1,65 @@
+{% extends 'alta_y_listado.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block alta %}
+  <form method="post" action="{% url 'cursos:gestion_aula' %}">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          {{ form.tipo.label_tag }}
+          {{ form.tipo }}</div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          {{ form.numero.label_tag }}
+          <input type="number" name="numero" step="1" min="1" required class="form-control" value="{{ form.numero.value|default:'' }}" />
+          <small class="text-muted">{{ form.numero.help_text }}</small>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-group">
+          {{ form.capacidad.label_tag }}
+          <input type="number" name="capacidad" step="1" min="1" required class="form-control" value="{{ form.capacidad.value|default:'' }}" />
+          <small class="text-muted">{{ form.capacidad.help_text }}</small>
+        </div>
+      </div>
+    <div class="col align-self-center">
+      <button type="submit" class="btn btn-success btn-sm">Crear</button>
+    </div>
+  </div>
+  </form>
+{% endblock %}
+
+{% block listado %}
+
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Capacidad</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for obj in object_list %}
+    <tr class="bg-transition fila-personalizada">
+        <td class="negrita"> {{ page_obj.start_index|add:forloop.counter0 }}</td>
+        <td>{{ obj }}</td>
+        <td>{{ obj.capacidad }}</td>
+        <td class="text-end">
+          <a href="{% url 'cursos:aula_detalle' pk=obj.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+          <a href="{% url 'cursos:aula_editar' obj.pk %}" class="btn btn-primary btn-sm btn-detalle"><i class="fa-regular fa-pen-to-square"></i> Modificar</a>
+          <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal_dar_de_baja_{{ obj.pk }}"><i class="fa-regular fa-circle-down"></i> Eliminar</button>
+          {% include 'aula/modal_confirm_baja.html' with object=obj %}            
+
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+{% endblock %}

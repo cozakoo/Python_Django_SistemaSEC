@@ -1,0 +1,77 @@
+{% for pago in page_obj %}
+<div class="modal fade" id="modalPagoProfesor{{ pago.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Detalle de pago</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: left;"> <!-- Apply left alignment -->
+
+              <div class="row">
+                <div class="col">
+                  <p><strong>Profesor:</strong> {{ pago.profesor }}</p>
+                </div>
+                <div class="col">
+                  <p><strong>Fecha:</strong> {{ pago.fecha }}</p>
+                </div>
+              </div>
+
+              <div class="row text-center">
+                <div class="col">
+                  <a href="{% url 'cursos:pago_profesor_detalle' pago.pk %}?pdf=true" class="btn btn-light btn-sm btn-detalle">
+                    <i class="fa-solid fa-file-pdf"></i> PFD
+                  </a>
+                </div>
+                <div class="col">
+                  <a href="{% url 'cursos:profesor_detalle' pago.profesor.pk %}" class="btn btn-sm btn-primary btn-detalle">
+                    <i class="fa-solid fa-person-chalkboard"></i> Ir al profesor
+                </a>
+                </div>
+              </div>
+
+              <br>
+              <table class="table table-sm table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th >Curso</th>
+                    <th colspan="2" class="text-center">Dictado</th>
+                    <th class="text-end">Precio base</th>
+                    <th class="text-center">Clases en mes</th>
+                    <th class="text-center">Clases asistidas</th>
+                    <th class="text-center">Asistencia </th>
+                    <th class="text-end">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for detalle in pago.detalles_pago.all %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ detalle.dictado.curso.nombre }}</td>
+                    <td>{{ detalle.dictado.legajo }}</td>
+                    <td class="text-end">
+                      <a href="{% url 'cursos:dictado_detalle' curso_pk=detalle.dictado.curso.pk dictado_pk=detalle.dictado.pk %}" class="btn btn-info btn-detalle btn-sm">
+                        Ir</a>
+                    </td>
+                    <td class="text-end">${{ detalle.dictado.precio_real_profesor }}</td>
+                    <td class="text-center">{{ detalle.total_clases }}</td>
+                    <td class="text-center">{{ detalle.clases_asistidas }}</td>
+                    <td class="text-center">{{ detalle.porcentaje_asistencia }}%</td>
+                    <td class="text-end">${{ detalle.precioFinal }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+                <p class="text-end">Total: <strong>${{ pago.total }} </strong></p>
+
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm " data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+</div>
+
+{% endfor %}

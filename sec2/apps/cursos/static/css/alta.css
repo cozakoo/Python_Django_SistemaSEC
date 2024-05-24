@@ -1,0 +1,79 @@
+/* Estilo para el contenedor principal */
+.container {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    width: 70%;
+
+    padding: 2% 4% 1% 4%;
+
+
+    border-radius: 40px;
+    background-color: #fff;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los botones */
+.btn {
+    margin: 5px;
+}
+
+/* Estilo para los campos del formulario */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Estilo para los labels */
+label {
+    font-weight: bold;
+}
+
+/* Estilo para los campos de entrada y selects */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilo para los botones Guardar y Volver */
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #555e66;
+}
+
+.error-text {
+    color: red;
+    /* Color de texto rojo para mensajes de error */
+    font-size: 14px;
+    /* Tamaño de fuente para mensajes de error */
+}
+
+/* Tu archivo de estilos CSS */
+.disabled-field {
+    background-color: #f2f2f2;
+    /* Cambia el color de fondo a un tono gris claro */
+    color: #555;
+    /* Cambia el color del texto a un tono gris oscuro */
+    border: 1px solid #ddd;
+    /* Añade un borde gris claro */
+    pointer-events: none;
+    /* Deshabilita las interacciones del puntero para que no se pueda hacer clic */
+}

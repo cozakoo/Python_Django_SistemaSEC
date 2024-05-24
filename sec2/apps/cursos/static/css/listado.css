@@ -1,0 +1,48 @@
+.btn-detalle {
+    font-size: 10px;
+    /*Ajusta el tamaño de fuente del botón según tus necesidades */
+    /* padding: 5px 10px; */
+    /*Ajusta el espaciado interno del botón según tus necesidades*/
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.table-transparent {
+    background-color: transparent !important;
+}
+
+.table>:not(caption)>*>* {
+    background-color: rgba(133, 131, 131, 0);
+}
+
+.table-sm>:not(caption)>*>* {
+    padding: 0;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.container-sm{
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+/* Estilo para los campos de entrada y selects */
+input[type="text"],
+select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+.cuadrado-background{
+    background-color: #ebebebc5;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    margin-top: 2%;
+}

@@ -1,0 +1,45 @@
+{% load static %}
+
+{% block extracss %}
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet" />
+  <link href="{% static 'Libs/css/nav_lateral.css' %}" rel="stylesheet" />
+{% endblock %}
+
+<nav id="sidebar">
+  <div class="custom-menu">
+    <button type="button" id="sidebarCollapse" class="btn btn-primary" style="z-index:10"><span class="sr-only">Toggle Menu</span></button>
+  </div>
+  <div class="p-4">
+    <h1><a href="{% url 'afiliados:index' %}" class="logo">HISTORIAL</a></h1>
+    <h1><a href="{% url 'home' %}" class="logo"><span>Volver a la Gestión de Afiliados</span></a></h1>
+    <ul class="list-unstyled components mb-5">
+      <li class="active">
+        <a href="{% url 'afiliados:afiliado_crear' %}"><span class="fa fa-arrow-circle-up mr-3"></span>Datos Afiliados</a>
+      </li>
+      <li class="active">
+        {% comment %} <a href="{% url 'afiliados:afiliado_listar' %}"><span class="fa fa-id-badge mr-3"></span>Grupo Familiar</a> {% endcomment %}
+      </li>
+      <li class="active">
+        {% comment %} <a href="{% url 'afiliados:afiliado_listar' %}?estado=1"><span class="fa fa-check-square mr-3"></span>Cursos realizados</a> {% endcomment %}
+      </li>
+      <li class="active">
+        {% comment %} <a href="{% url 'afiliados:afiliado_listar' %}?estado=1"><span class="fa fa-check-square mr-3"></span>Capacitaciones realizadas</a> {% endcomment %}
+      </li>
+    </ul>
+
+    <div class="mb-5">
+      <br /><br /><br /><br /><br /><br /><br /><br />
+    </div>
+
+    <div class="footer">
+      <p>© 2022 Sindicato Empleados de Comercio | SEC2. Todos los derechos reservados</p>
+    </div>
+  </div>
+</nav>
+
+{% block extrajs %}
+  <!-- !YA ESTA EN EL BASE LOS SIGUIENTES SCRIPT -->
+  <!--  <script src="{% static 'Libs/js/jquery.min.js' %}"></script>
+<script src="{% static 'Libs/js/popper.js' %}"></script>
+<script src="{% static 'Libs/js/main.js' %}"></script>  -->
+{% endblock %}

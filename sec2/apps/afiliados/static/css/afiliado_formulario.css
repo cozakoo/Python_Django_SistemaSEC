@@ -1,0 +1,40 @@
+/* Personalización de estilos */
+#form-container {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+#form-tabs {
+    border-bottom: none;
+}
+
+.nav-link {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.nav-link.active {
+    background-color: #fff;
+    color: #007bff;
+}
+
+/* Estilos para mensajes de ayuda */
+.help-text {
+    color: gray;
+    /* Color de texto gris para mensajes de ayuda */
+    font-size: 14px;
+    /* Tamaño de fuente para mensajes de ayuda */
+}
+
+/* Estilos para mensajes de error */
+.error-text {
+    color: red;
+    /* Color de texto rojo para mensajes de error */
+    font-size: 14px;
+    /* Tamaño de fuente para mensajes de error */
+}

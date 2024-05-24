@@ -1,0 +1,78 @@
+{% load permissions_tags %}
+<div class="modal fade" id="modalpass_{{user.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Cambio de permisos</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+         
+              <form method="post" action="{% url 'users:actualizar_permisos' pk=user.id %}">
+              {% csrf_token %}
+                 <p id="exampleModalLabel">Nombre: <strong>{{user.username}}</strong></p>
+
+                 {% comment %} <h1>{{ user.get_all_permissions }} </h1> {% endcomment %}
+                 <div class="form-group">
+                  <label>Seleccione o deseleccione los permisos a actualizar:</label>
+                  </div>
+                
+
+         <div class="row">
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="permiso_afiliado" id="permiso_afiliado" {% if  user|user_has_perm:"afiliados.permission_gestion_afiliado" %} checked {% endif %}>
+                    <label class="form-check-label" for="flexCheckDefault">
+                        G. afiliados
+                    </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="permiso_curso" id="permiso_curso" {% if user|user_has_perm:"cursos.permission_gestion_curso" %} checked {% endif %}>
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        G. Cursos
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="permiso_alquiler" id="permiso_alquiler" {% if user|user_has_perm:"alquileres.permission_gestion_alquiler"%} checked {% endif %}>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        G. Alquileres
+                    </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="permiso_administrador" id="permiso_administrador" {% if user|user_has_perm:"auth.permission_gestion_usuario" %} checked {% endif %}>
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        G. Administrador
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+             
+
+                      
+        
+               
+
+              <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-success mb-2">Actualizar Permisos</button>
+        </div>
+          </form>
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+           

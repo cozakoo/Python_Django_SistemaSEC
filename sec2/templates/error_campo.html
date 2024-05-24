@@ -1,0 +1,5 @@
+{% if field.errors %}
+    <small class="error-text" style="color: red;">{{ field.errors.0 }}</small>
+{% else %}
+    <small class="form-text text-muted">{{ field.help_text }}</small>
+{% endif %}

@@ -1,0 +1,179 @@
+{% extends 'reporte_appCurso.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block grafico %}
+
+
+{% comment %} <label class="text-white">Seleccione un curso para vizualizar su informacion completa</label> {% endcomment %}
+<div class="form-group">
+   
+     <form class="d-flex" role="search" method="get" style="width:  80%; hight:20%;">
+    <label class="text-white" style="padding:10px"> ingrese un año : </label>
+      {{form_year.year}}
+    <button id="submit-button" class="btn btn-outline-success" type="submit" >
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+
+     </form>
+</div>
+
+
+
+ <figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+    </p>
+    <div>
+</figure>
+
+
+<figure class="highcharts-figure">
+    <div id="container2"></div>
+    <p class="highcharts-description">
+    
+    </p>
+</figure>
+
+
+
+
+  <script>
+         document.getElementById('id_year').addEventListener('keypress', function (e) {
+            // Obtener el carácter de la tecla presionada
+            var char = String.fromCharCode(e.which);
+
+            // Verificar si el carácter no es un número (0-9)
+            if (!/[0-9]/.test(char)) {
+                e.preventDefault(); // Evitar que el carácter se ingrese en el campo
+            }
+        });
+    
+    </script>
+
+
+<script type="application/javascript">
+var cursoDest = {{dest | safe}}
+
+Highcharts.chart('container2', {
+
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Curso Destacado ' + cursoDest['curso__nombre'] + ' - Informacion detallada de Inscriptos' ,
+        align: 'left'
+    },
+    subtitle: {
+        text: 'Source: <a ' +
+            'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
+            'target="_blank">Wikipedia.org</a>',
+        align: 'left'
+    },
+    xAxis: {
+        categories: ['afiliados', 'familiares','profesores', 'alumnos'],
+        title: {
+            text: null
+        },
+        gridLineWidth: 1,
+        lineWidth: 0
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'N° (inscritos)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        },
+        gridLineWidth: 0
+    },
+    tooltip: {
+        valueSuffix: ' inscritos'
+    },
+    plotOptions: {
+        bar: {
+            borderRadius: '50%',
+            dataLabels: {
+                enabled: true
+            },
+            groupPadding: 0.1
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    colors: ['#FFD700 ', '#6A5ACD', '#20B2AA'],
+    series: {{historial_dest | safe}}
+});
+
+</script>
+
+<script>
+function obtenerDatoCurso() {
+    
+    document.getElementById('datos_titular').innerHTML = '';
+    
+    if (busquedaRealizada) {
+        return
+    }
+    
+    var enc_rol = document.getElementById('enc_alumno').value
+    var url = 'get_dictados_por_alumno/';
+    
+    if (enc_rol && enc_rol !== '0') {
+        jq.ajax({
+            url: '../../' + url + enc_rol,
+            type: 'GET',
+            data: {},
+            dataType: 'json',
+            success: function(data) {
+                construirGrafico(data.titulo, data.dictados);
+            }
+        });
+    }
+}
+</script>
+
+<script type="application/javascript">
+        var datos =  {{ datos|safe }};
+    
+        console.log(datos); // Ahora deberías ver tus datos en la consola sin errores
+    
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Reporte de inscripciones a cursos en el año '+ {{year}} 
+
+            },
+            tooltip: {
+                valueSuffix: ' estudiantes'
+            },
+            series: [{
+                name: 'Inscritos',
+                colorByPoint: true,
+                data: datos.map(item => ({
+                    name: item.curso__nombre,
+                    y: item.afiliados_count + item.familiares_count + item.profesores_count + item.alumnos_count
+                }))
+            }]
+        });
+
+    </script>
+    
+
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'app_cursos_alta.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block formulario %}
+<style>
+  .radio-columns > ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.radio-columns > ul > li {
+    flex-basis: 50%; /* Divide en dos columnas */
+}
+</style>
+
+
+{% comment %} {% if profesores_capacitados %} {% endcomment %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <div class="form-group text-center">
+            <label>{{ form.periodo_pago.label }}</label>
+            <div class="row">
+                <div class="col">
+                    {{ form.periodo_pago.0 }}
+                    {{ form.periodo_pago.0.label_tag }}
+                </div>
+                <div class="col">
+                    {{ form.periodo_pago.1 }}
+                    {{ form.periodo_pago.1.label_tag }}
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="col">
+        <label>Profesor asigado:</label>
+        <div class="form-group">
+          
+          <select name="enc_profesor" id="enc_profesor">
+            {% for profesor in profesores_lookup %}
+              <option value="{{profesor.id}}">{{profesor.dni}} {{profesor.nombre}} {{profesor.apellido}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          {{ form.precio_real_profesor.label_tag }}
+          <input type="number" name="precio_real_profesor" step="1" min="1" required class="form-control" value="{{ form.precio_real_profesor.value|default:'' }}" />
+          {% include "error_campo.html" with field=form.precio_real_profesor %}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          {{ form.descuento.label_tag }}
+          <input type="number" name="descuento" step="1" min="0" max="100"required class="form-control" value="{{ form.descuento.value|default:'' }}" />
+          <small class="error-text" style="color: red;">{{ form.descuento.error }}</small>
+          <small class="form-text text-muted">{{ form.descuento.help_text }}</small>
+        </div>
+      </div>
+      
+      <div class="col">
+        <div class="form-group">
+          {{ form.modulos_por_clase.label_tag }}
+          <input type="number" name="modulos_por_clase" step="1" min="1" max="3" required class="form-control" value="{{ form.modulos_por_clase.value|default:'' }}" />
+          <small class="form-text text-muted">{{ form.modulos_por_clase.help_text }}</small>
+        </div>
+      </div>
+      
+      
+      
+      {% if not tiene_fecha_cargada %}
+      <div class="col">
+        <div class="form-group">
+          {{ form.fecha.label_tag }}
+          <input type="datetime-local" name="fecha" required class="form-control" value="{{ form.fecha.value|default:'' }}" min="{{ current_date }}" />
+          {% include "error_campo.html" with field=form.fecha %}
+
+          {% comment %} <small class="form-text text-muted">{{ form.fecha.help_text }}</small> {% endcomment %}
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="col">
+        <div class="form-group">
+          {{ form.cupo_real.label_tag }}
+          <input type="number" name="cupo_real" step="1" min="1"max="50" required class="form-control" value="{{ form.cupo_real.value|default:'' }}" />
+          {% include "error_campo.html" with field=form.cupo_real %}
+        </div>
+      </div>
+      
+      
+      <script>
+        // Obtener la fecha y hora actuales en formato ISO
+        var currentDate = new Date().toISOString().slice(0, 16)
+        
+        // Obtener el día de la semana actual (0 para domingo, 1 para lunes, etc.)
+        var currentDayOfWeek = new Date().getDay()
+        
+        // Calcular la diferencia para llegar al próximo domingo
+        var daysUntilNextSunday = (7 - currentDayOfWeek) % 7
+        
+        // Calcular la fecha del próximo domingo en formato ISO
+        var nextSunday = new Date()
+        nextSunday.setDate(nextSunday.getDate() + daysUntilNextSunday)
+        var nextSundayISO = nextSunday.toISOString().slice(0, 16)
+        
+        // Establecer el límite mínimo y máximo en el campo de fecha
+        document.getElementsByName('fecha')[0].min = nextSundayISO
+      </script>
+    </div>
+    
+    
+    {% if curso.es_convenio %}
+    <div class="row mx-auto">
+      <div class="col text-center">
+        <div class="form-group">
+          {{ form.asistencia_obligatoria }}
+          <label for="{{ form.asistencia_obligatoria.id_for_label }}">Control de asistencia</label>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="row text-center">
+      <div class="col">
+          {% if editar %}
+          <button type="submit" class="btn btn-success">Guardar</button>
+          {% else %}
+          <div class="d-flex justify-content-start mb-3">
+              <a href="{% url 'cursos:curso_detalle' pk=curso.pk %}" class="btn btn-secondary">
+                  <i class="fa-solid fa-arrow-left"></i>
+                  Volver al curso
+              </a>
+          </div>
+          <button type="submit" class="btn btn-success" name="guardar_y_recargar">Guardar y agregar otro</button>
+          <button type="submit" class="btn btn-success" name="guardar_y_listar">Guardar y listar</button>
+          {% endif %}
+      </div>
+  </div>
+  
+  </form>
+  {% comment %} {% else %} {% endcomment %}
+  {% comment %} No hay profesores capacitados para esta actividad. {% endcomment %}
+  {% comment %} <a href="{% url 'cursos:profesor_crear' %}" class="btn btn-primary btn-sm btn-detalle"><i class="fa-solid fa-plus"></i> Crear profesor</a> {% endcomment %}
+
+{% comment %} {% endif %} {% endcomment %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+<script>
+
+var jq = $.noConflict();
+jq('#enc_profesor').select2();
+</script>
+
+{% endblock %}

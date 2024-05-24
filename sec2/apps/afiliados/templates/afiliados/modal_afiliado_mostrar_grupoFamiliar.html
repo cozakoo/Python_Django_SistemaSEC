@@ -1,0 +1,55 @@
+<!-- Modal -->
+<div class="modal fade" id="modalGrupoFamiliar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="exampleModalLabel">Grupo Familiar</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% if relacion_familiar_list %}
+          <table class="table table-sm table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Dni</th>
+                <th>Vinculo</th>
+                <th>Apellido</th> 
+                <th>Nombre</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              {% for relacion_familiar in relacion_familiar_list %}
+              <tr>
+                  <td class="negrita">{{ forloop.counter }}</td>
+                  <td>{{ relacion_familiar.familiar.persona.dni }}</td>
+                  <td>{{ relacion_familiar.get_tipo_relacion_display }}</td>
+                  <td>{{ relacion_familiar.familiar.persona.apellido }}</td>
+                  <td>{{ relacion_familiar.familiar.persona.nombre }}</td>
+                  <td class="text-end">
+                      <a href="{% url 'afiliados:familiar_detalle' pk=afiliado.pk familiar_pk=relacion_familiar.familiar.pk %}" class="btn btn-info btn-detalle btn-sm">
+                          <i class="fa-regular fa-eye"></i> Detalle
+                      </a>
+                  </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <p>No familiar asociado al afiliado.</p>
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+            {% if afiliado.estado == 1 or afiliado.estado == 2 %}
+            <a href="{% url 'afiliados:crear_familiar' afiliado.pk %}" 
+                class="btn btn-outline-success btn-sm">
+                <i class="fa-solid fa-plus"></i> Nuevo Familiar
+            {% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  

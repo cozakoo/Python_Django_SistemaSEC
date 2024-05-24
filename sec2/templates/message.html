@@ -1,0 +1,14 @@
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+      <span>{{ message|safe }}</span>
+      {% if form.errors %}
+        <br />
+        {% for error in form.non_field_errors %}
+          {{ error|safe }}
+        {% endfor %}
+      {% endif %}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}

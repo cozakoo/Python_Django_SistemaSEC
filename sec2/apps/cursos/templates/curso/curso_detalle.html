@@ -1,0 +1,249 @@
+{% extends 'detalle_listado_app_cursos.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block detalle %}
+  <div class="row">
+    <div class="col-md-2">
+      <p>
+        <strong>Nombre:</strong>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <p>{{ curso.nombre }}</p>
+    </div>
+    <div class="col-md-2">
+      <p>
+        <strong>Área:</strong>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <p>
+        {{ curso.get_area_display }}
+        {% if curso.area != 2 %}
+          |{% if curso.es_convenio %}
+            Convenio
+          {% else %}
+            SEC
+          {% endif %}
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <p>
+        <strong>Total Modulos:</strong>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <p>{{ curso.modulos_totales }} hrs.</p>
+    </div>
+    <div class="col-md-2">
+      <p><strong>Costo Total:</strong></p>
+    </div>
+    <div class="col-md-4">
+      {% if not curso.es_convenio %}
+      <p>${{ curso.precio_total }}</p>
+      {% else %}
+      <p>Gratuito</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <p class="negrita">Descripción:</p>
+    </div>
+    <div class="col-md-4">
+      <p>{{ curso.descripcion }}</p>
+    </div>
+    <div class="col-md-2">
+      <p>
+        <strong>Actividad:</strong>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <p>{{ curso.actividad }}</p>
+    </div>
+  </div>
+
+  {% if curso.area == 2 %}
+    <div class="row">
+      <div class="col-md-2">
+        <p class="negrita">Certificado Médico:</p>
+      </div>
+
+      {% if curso.requiere_certificado_medico %}
+        <div class="col-md-5">
+          <p>Se requiere certificado médico para participar.</p>
+        </div>
+      {% else %}
+        <div class="col-md-5">
+          <p>No requiere</p>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="row">
+    
+    {% if curso.area != 2 %}  
+    <div class="col-md-2">
+      <p class="negrita">Equip. Informatico</p>
+    </div>
+    <div class="col-md-4">
+      <p>
+        {% if curso.requiere_equipamiento_informatico %}
+        Si requiere
+        {% else %}
+        No requiere
+        {% endif %}
+      </p>
+    </div>
+    {% endif %}
+
+    {% if curso.es_convenio%}
+    <div class="col-md-2">
+      <p><strong>Asistencia:</strong></p>
+    </div>
+    <div class="col-md-4">
+      <p>80% de asistencia para aprobar</p>
+    </div>
+    {% endif %}
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-2">
+      <p>
+        <strong>Cupo:</strong>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <p>{{ curso.cupo_estimativo }} participantes maximo por dictado</p>
+    </div>
+
+    {% if curso.fechaBaja %}
+
+    <div class="col-md-2">
+      <p>
+        <strong>Fecha de Baja:</strong>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <p>{{ curso.fechaBaja }}</p>
+    </div>
+    {% endif %}
+
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-2">
+      <p>
+        <strong>Costo por profesor:</strong>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <p>${{ curso.precio_estimativo_profesor }} Estimativo</p>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block botones %}
+{% if not curso.fechaBaja %}
+
+
+{% if not tiene_dictados %}
+<div class="col d-flex justify-content-center"> 
+  <a href="{% url 'cursos:curso_editar' curso.pk %}" class="btn btn-primary btn-sm btn-detalle" role="button">
+    <i class="fa-regular fa-pen-to-square"></i> Modifica
+  </a>
+</div>
+{% endif %}
+
+<div class="col d-flex justify-content-center"> 
+  <a href="{% url 'cursos:curso_lista_espera' curso.pk %}" 
+    class="btn btn-warning btn-sm btn-detalle" 
+    onclick="openOrFocusWindow(this.href, 'Lista de espera', 700, 400); return false;">
+    <i class="fa-solid fa-list"></i>
+    Lista de espera
+  </a>
+</div>
+
+<div class="col d-flex justify-content-end">
+  <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal_eliminar"><i class="fa-regular fa-circle-down"></i> Dar de Baja</button>
+  {% include 'curso/modal_confirm_baja.html' %}
+</div>
+{% endif  %}
+
+{% endblock %}
+
+{% block listado_asociado %}
+<div class="container-sm">
+  
+  <h3 class="subtitulo">{{ tituloListado }}</h3>
+  
+  {% if not curso.fechaBaja %}
+
+  {% if tiene_dictados %}
+  <a href="{% url 'cursos:dictado_crear' pk=object.pk %}" class="btn btn-outline-success btn-sm btn-detalle"><i class="fa-regular fa-plus"></i> Nuevo Dictado</a>
+  {% else %}
+  <button type="button" class="btn btn-outline-success btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-regular fa-plus"></i> Nuevo Dictado</button>
+  {% include 'curso/modal_primer_dictado.html' %}
+  {% endif %}
+
+  {% endif %}
+
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Legajo</th>
+        <th>Fecha Inicio</th>
+        <th>Desc</th>
+        <th>Duración</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for dictado in dictados %}
+      <tr>
+        <td class="negrita"> {{ dictados.start_index|add:forloop.counter0 }}</td>
+        <td>{{ dictado.legajo }}</td>
+        <td>{{ dictado.fecha }}</td>
+        <td>{{ dictado.descuento }} %</td>
+        <td>{{ dictado.modulos_por_clase }} hrs</td>
+        <td>{{ dictado.get_estado_display }} </td>
+        <td class="text-end">
+          <a href="{% url 'cursos:dictado_detalle' curso_pk=curso.pk dictado_pk=dictado.pk %}" class="btn btn-info btn-detalle btn-sm"><i class="fa-regular fa-eye"></i> Detalle</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include 'pagination.html' with page_obj=dictados %}
+</div>
+
+
+<script>
+  var listaEsperaWindow = null;
+
+  function openOrFocusWindow(url, name, width, height) {
+    // Verifica si la ventana ya está abierta
+    if (listaEsperaWindow && !listaEsperaWindow.closed) {
+      // Si está abierta, enfócala
+      listaEsperaWindow.focus();
+    } else {
+      // Si no está abierta, abre una nueva ventana
+      listaEsperaWindow = window.open(url, name, 'width=' + width + ',height=' + height);
+    }
+  }
+</script>
+
+{% endblock %}

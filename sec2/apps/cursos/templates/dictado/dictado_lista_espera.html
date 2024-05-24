@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block container %}
+  <br />
+  <h3 class="titulo">{{ titulo }}</h3>
+  <div class="container">
+    {% include 'message.html' %}
+    <div class="row justify-content-center">
+      {% if todos_inscritos_listaEspera %}
+        <table class="table table-sm table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Dni</th>
+              <th>Nombre</th>
+              <th>Rol</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for inscrito_listaEspera in todos_inscritos_listaEspera %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ inscrito_listaEspera.persona.dni }}</td>
+                    <td>{{ inscrito_listaEspera.persona.apellido }} {{ inscrito_listaEspera.persona.nombre }}</td>
+                    {% with tipo_persona=inscrito_listaEspera.persona.es_afiliado|yesno:"Afiliado," %}
+                    {% with tipo_persona_grupo_familiar=inscrito_listaEspera.persona.es_grupo_familiar|yesno:"Familiar," %}
+                    {% with tipo_persona_profesor=inscrito_listaEspera.persona.es_profesor|yesno:"Profesor," %}
+                    {% with tipo_persona_es_alumno=inscrito_listaEspera.persona.es_alumno|yesno:"Alumno," %}
+                    
+                    <td>
+                      {{ tipo_persona }}
+                      {{ tipo_persona_grupo_familiar }} 
+                      {{ tipo_persona_profesor }}
+                      
+                      {% if not tipo_persona and not tipo_persona_grupo_familiar and not tipo_persona_profesor %}
+                      {{ tipo_persona_es_alumno }}
+                      {% endif %}
+                    </td>
+                    
+                    <td class="text-end">
+                      {% if hay_cupo %}
+                      <button class="btn btn-success btn-sm btn-detalle" data-bs-toggle="modal"
+                        data-bs-target="#modal_inscribir_sacar_lista_espera_{{ inscrito_listaEspera.persona.pk }}"
+                        data-tipo="{{ tipo_persona|default:'' }}{{ tipo_persona_grupo_familiar|default:'' }}{{ tipo_persona_profesor|default:'' }}{{ tipo_persona_es_alumno|default:'' }}">
+                        Inscribir
+                      </button>
+                      {% endif %}
+                      <button class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal"
+                        data-bs-target="#modal_eliminar_sacar_lista_espera_{{ inscrito_listaEspera.persona.pk }}"
+                        data-tipo="{{ tipo_persona|default:'' }}{{ tipo_persona_grupo_familiar|default:'' }}{{ tipo_persona_profesor|default:'' }}{{ tipo_persona_es_alumno|default:'' }}">
+                        Eliminar
+                      </button>
+                    </td>
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+                    {% include "dictado/modal_confirm_sacar_lista_espera.html" with tipo=tipo_persona %}
+                    {% include "dictado/modal_confirm_inscribir_lista_espera.html" with tipo=tipo_persona %}
+                  </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+      {% else %}
+        <p>No hay alumnos inscriptos.</p>
+      {% endif %}
+    </div>
+    <div class="d-flex justify-content-between">
+      <a href="{% url 'cursos:verificar_persona' curso_pk=curso_pk dictado_pk=dictado.pk %}" 
+         class="btn btn-primary btn-sm">
+          <i class="fa-regular fa-pen-to-square"></i> Inscribir
+      </a>
+      <div class="ml-auto">
+          <button type="button" class="btn btn-sm btn-secondary" onclick="cerrarVentana()">Cerrar</button>
+      </div>
+  </div>
+  </div>
+  {% endblock %}
+
+  {% block extrajs %}
+  <script src="{% static 'Libs/js/cerrar_ventana.js' %}"></script>
+  {% endblock %}

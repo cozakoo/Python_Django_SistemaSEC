@@ -1,0 +1,54 @@
+{% extends 'listado.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block botones %}
+  <a href="{% url 'cursos:profesor_crear' %}" class="btn btn-outline-success btn-sm btn-detalle"><i class="fa-solid fa-plus"></i> Nuevo</a>
+{% endblock %}
+
+{% block tabla_listado %}
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Dni</th>
+      <th>Nombre</th>
+      <th>Actividad</th>
+      <th class="text-center">Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+    <tbody>
+    {% for profesor in object_list %}
+      <tr>
+        <td class="negrita"> {{ page_obj.start_index|add:forloop.counter0 }}</td>
+        <td>{{ profesor.persona.dni }}</td>
+        <td>{{ profesor }}</td>
+        <td>
+          {% for actividad in profesor.actividades.all %}
+          {{actividad}}
+          {% endfor %}
+        </td>
+
+        
+        <td class="text-center">
+          
+          {% if profesor.esRolActivo %}
+            <i class="fa-regular fa-circle-check" style="color: #008f00;"></i>
+          {% else %}
+            <i class="fa-solid fa-circle-minus" style="color: #a80000;"></i>
+          {% endif %}
+        </td>
+        <td class="text-end">
+          <a href="{% url 'cursos:profesor_detalle' profesor.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+          <a href="{% url 'cursos:profesor_editar' profesor.pk %}" class="btn btn-primary btn-sm btn-detalle"><i class="fa-regular fa-pen-to-square"></i> Modificar</a>
+          {% comment %} <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#profesor_dar_de_baja_{{ profesor.pk }}"><i class="fa-regular fa-circle-down"></i> Dar de baja</button> {% endcomment %}
+          {% comment %} {% include 'profesor/modal_confirm_baja.html' with object=profesor %}             {% endcomment %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+

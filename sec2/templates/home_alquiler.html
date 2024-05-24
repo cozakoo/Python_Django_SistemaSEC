@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/home.css' %}" rel="stylesheet" />
+  <link href="{% static 'Libs/css/nav_top.css' %}" rel="stylesheet" />
+  {% block extracss_intermedia %}
+  {% endblock %}
+{% endblock %}
+
+{% block container %}
+  <div id="wrapper">
+    <div id="sidebar">
+      {% block nav_lateral %}
+        {% include 'nav_alquiler.html' %}
+      {% endblock %}
+
+      <!-- Este div se mostrará al final del #sidebar -->
+      <div id="messages-container">
+        {% include 'message.html' %}
+      </div>
+    </div>
+
+    <div id="content">
+      {% include 'nav_top.html' %}
+      {% block dinamica %}
+        {% include 'index.html' %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block extrajs %}
+  {% comment %} <script src="{% static 'Libs/js/home_afiliado.js' %}"></script> {% endcomment %}
+  {% block extrajs_intermedia %}
+  {% endblock %}
+{% endblock %}

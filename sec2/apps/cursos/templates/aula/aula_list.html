@@ -1,0 +1,38 @@
+{% extends 'listado.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block botones %}
+  <a href="{% url 'cursos:aula_crear' %}" class="btn btn-outline-success btn-detalle"><i class="fa-solid fa-plus"></i> Nuevo</a>
+{% endblock %}
+
+{% block tabla_listado %}
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Capacidad</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for obj in object_list %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ obj }}</td>
+          <td>{{ obj.capacidad }}</td>
+          <td>
+            <a href="{% url 'cursos:aula_detalle' pk=obj.pk %}" class="btn btn-info btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}
+
+

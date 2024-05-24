@@ -1,0 +1,62 @@
+body {
+    overflow-y: hidden;
+}
+
+/* Estilos generales para los menús */
+#menu_principal,
+#menu_curso_principal,
+#menu_afiliado {
+    color: #fff;
+    padding: 0px;
+}
+
+.titulo-menu {
+    font-size: 150%;
+    color: #fff;
+    text-align: center;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    margin-bottom: 2%;
+    /* Añade espaciado */
+}
+
+.menu li a {
+    text-decoration: none;
+    color: #fff;
+    padding-left: 4%;
+    font-size: 120%;
+    transition: color 0.3s, background-color 0.3s;
+    display: block;
+    /* Hace que el enlace ocupe todo el ancho del contenedor <li> */
+}
+
+.menu li a {
+    color: #ffffff;
+    background-color: #5c5c5c;
+}
+
+.menu li:hover a {
+    color: #FFA500;
+    background-color: #000000;
+}
+
+ul.menu {
+    margin: 0;
+}
+
+ul.menu li {
+    padding-left: 0;
+    color: #ffffff;
+    background-color: #5c5c5c;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+ul.menu li:hover {
+    background-color: #000000;
+}

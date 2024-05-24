@@ -1,0 +1,89 @@
+{% load static %}
+
+{% block extracss %}
+<link href="{% static 'Libs/css/nav_principal.css' %}" rel="stylesheet" />
+<link href="{% static 'Libs/css/nav_curso.css' %}" rel="stylesheet" />
+{% endblock %}
+
+<div class="menu" id="menu_afiliado_principal">
+  <br />
+  <h3 class="titulo-menu">SALONES</h3>
+  <ul class="menu">
+    <li>
+      <a href="/home" id="mostrarMenuPrincipal"><i class="fa-solid fa-arrow-left-long"></i> Menu principal</a>
+    </li>
+  </ul>
+</div>
+<hr>
+
+<div class="menu">
+  <button class="submenu-toggle" data-submenu="curso" style="background-color: #124076;">
+    <div class="button-content">
+      <span><i class="fa-solid fa-file-contract"></i>  Alquiler </span>
+    </div>
+    <i class="fa-solid fa-caret-down"></i>
+  </button>
+  <ul class="submenu" id="profesor-submenu">
+    <li>
+      <a href="{% url 'alquiler:alquiler_listar' %}"><i class="fa-solid fa-plus item-subMenu"></i> Crear alquiler</a>
+    </li>
+  </ul>
+</div>
+<hr>
+
+<div class="menu">
+  <!-- Botón desplegable para Curso -->
+  <button class="submenu-toggle" data-submenu="curso">
+    <div class="button-content">
+    <span><i class="fa-solid fa-person-shelter"></i> Encargado </span>
+  </div>
+
+    <i class="fa-solid fa-caret-down"></i>
+  
+  </button>
+  <ul class="submenu" id="curso-submenu">
+    <li>
+      <a href="{% url 'alquiler:encargado_alta' %}"><i class="fa-solid fa-plus item-subMenu"></i> Alta de encargado</a>
+    </li>
+    <li>
+      <a href="{% url 'alquiler:encargado_listar' %}"><i class="fa-solid fa-list item-subMenu"></i> Lista encargados</a>
+    </li>
+  </ul>
+</div>
+<hr>
+
+<div class="menu">
+  <!-- Botón desplegable para Salon -->
+  <button class="submenu-toggle" data-submenu="profesor">
+    <div class="button-content">
+
+    <span> <i class="fa-solid fa-house"></i> Salon </span>
+    </div>
+    
+    <i class="fa-solid fa-caret-down"></i>
+  
+  </button>
+  <ul class="submenu" id="curso-submenu">
+    <li>
+      <a href="{% url 'alquiler:salon_crear' %}"><i class="fa-solid fa-plus item-subMenu"></i> Crear salon</a>
+    </li>
+    <li>
+      <a href="{% url 'alquiler:salon_listar' %}"><i class="fa-solid fa-list item-subMenu"></i> Lista de salones</a>
+    </li>
+  </ul>
+</div>
+<hr>
+
+{% comment %} BOTON DE SERVICIO {% endcomment %}
+<a class="enlace" id="enlaceActividad" href="{% url 'alquiler:gestion_servicio' %}"><i class="fa-solid fa-clipboard-list"></i> Servicio</a>
+
+<hr>
+{% comment %} BOTON DE SERVICIO {% endcomment %}
+<a class="enlace" id="enlaceReporte" href="{% url 'reportes:alquileres_por_mes' %}"><i class="fa-solid fa-chart-column"></i> Reportes</a>
+
+
+{% include 'documentacion_info.html' %}
+
+{% block extrajs %}
+  <script src="{% static 'Libs/js/nav_salon.js' %}"></script>
+{% endblock %}

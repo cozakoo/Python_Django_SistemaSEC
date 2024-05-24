@@ -1,0 +1,12 @@
+{% extends 'listado.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block botones %}
+  <a href="{% url 'cursos:curso_crear' %}" class="btn btn-outline-success btn-sm btn-detalle"><i class="fa-solid fa-plus"></i> Nuevo</a>
+{% endblock %}
+
+{% block tabla_listado %}
+{% include 'curso/curso_include_listado.html' with cursos=object_list %}
+{% endblock %}

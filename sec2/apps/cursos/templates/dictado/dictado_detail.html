@@ -1,0 +1,255 @@
+{% extends 'detalle_listado_app_cursos.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block detalle %}
+<div class="row">
+
+  <div class="col-md-2">
+    <p class="negrita">Desc. afiliados:</p>
+  </div>
+  <div class="col-md-3">
+    <p>{{ dictado.descuento }}% de descuento</p>
+  </div>
+  <div class="col-md-2">
+    <p class="negrita">Titular:</p>
+  </div>
+  <div class="col-md-3">
+    <p>{{ nombre_profesor }}</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-2">
+    <p class="negrita">Valor:</p>
+  </div>
+  <div class="col-md-3">
+    <p>{{costo_parcial}}</p> 
+  </div>
+  <div class="col-md-2">
+    <p class="negrita">Módulos por Clase:</p>
+  </div>
+  <div class="col-md-4">
+    <p>
+      {% if dictado.modulos_por_clase == 1 %}
+      {{ dictado.modulos_por_clase }} módulo ({{ dictado.modulos_por_clase }} hora por clase)
+      {% else %}
+      {{ dictado.modulos_por_clase }} módulos ({{ dictado.modulos_por_clase }} horas por clase)
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-2">
+    <p class="negrita">Total de cupos:</p>
+  </div>
+  <div class="col-md-3">
+    <p>{{ total_inscritos }}/{{ dictado.cupo_real }} participantes</p>
+  </div>
+  <div class="col-md-2">
+    <p class="negrita">Fecha de inicio:</p>
+  </div>
+  <div class="col-md-2">
+    <p>{{ dictado.fecha|date:"d \d\e F \d\e Y" }} </p>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-2">
+    <p class="negrita">Estado:</p>
+  </div>
+  <div class="col-md-3">
+    <p>{{dictado.get_estado_display}}</p>
+  </div>
+  <div class="col-md-2">
+    <p class="negrita">Legajo:</p>
+  </div>
+  <div class="col-md-3">
+    <p>{{dictado.legajo}}</p>
+  </div>
+</div>
+
+  {% if dictado.fecha_fin %}
+  <div class="row">
+    <div class="col-md-2">
+      <p class="negrita">Fecha de finalizacion:</p>
+    </div>
+    <div class="col-md-4">
+      <p>{{ dictado.fecha_fin|date:"d \d\e F \d\e Y" }}</p>
+    </div>
+  </div>
+  {% endif %}
+
+
+<div class="row">
+  <div class="col-md-2">
+    <p class="negrita">Precio del profesor:</p>
+  </div>
+  <div class="col-md-3">
+    <p>${{dictado.precio_real_profesor}}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block horarios %}
+<div class="d-flex justify-content-center">
+  {% include "dictado/modal_horario_dictado.html" %}
+</div>
+{% endblock %}
+
+{% block botones %}
+<div class="col">
+  <a href="{% url 'cursos:curso_detalle' pk=dictado.curso.pk %}" class="btn btn-sm btn-secondary btn-detalle">
+    <i class="fa-solid fa-arrow-left"></i> Volver al curso
+  </a>
+</div>
+
+<div class="col"> 
+  {% if not dictado.curso.fechaBaja %}
+  <a href="{% url 'cursos:curso_lista_espera' curso.pk %}" 
+    class="btn btn-warning btn-sm btn-detalle" 
+    onclick="openOrFocusWindow(this.href, 'Lista de espera', 700, 400); return false;">
+    <i class="fa-solid fa-list"></i>
+    Lista de espera
+  </a>
+  {% endif %}
+</div>
+
+<div class="col">
+    <button type="button" class="btn btn-info btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <i class="fa-solid fa-list"></i>
+      Alumnos
+    </button>
+    {% include "dictado/modal_alumnos_dictado.html" %}
+</div>
+  
+<div class="col">
+    {% if not  hay_reserva %}
+      <a href="{% url 'cursos:horario_crear' curso_pk=dictado.curso.pk dictado_pk=dictado.pk %}" class="btn btn-sm btn-outline-success btn-detalle">
+        <i class="fa-regular fa-clock"></i> Nuevo Horario
+      </a>
+
+      {% elif todos_los_horarios_con_aula %}
+      {% if not clases %}
+      {% comment %} <a id="generar-clases-btn" href="{% url 'cursos:generar_clases' curso_pk=curso.pk dictado_id=dictado.pk %}" class="btn btn-outline-success btn-detalle"> {% endcomment %}
+        <button id="generar-clases-btn" class="btn btn-outline-success btn-detalle" onclick="generarClases()">
+          <i class="fa-solid fa-plus"></i> Generar clases
+        </button>
+        
+        <script>
+        function generarClases() {
+          // Cambiar el contenido del botón al hacer clic en él
+          var btn = document.getElementById('generar-clases-btn');
+          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando clases...';
+        
+          // Deshabilitar el botón después de hacer clic para evitar múltiples clics
+          btn.setAttribute('disabled', 'disabled');
+        
+          // Redirigir a la URL deseada
+          window.location.href = "{% url 'cursos:generar_clases' curso_pk=curso.pk dictado_id=dictado.pk %}";
+        }
+        </script>
+
+
+      {% elif dictado.estado == 2 %}
+      <a href="{% url 'cursos:dictado_finalizar' curso_pk=curso.pk dictado_pk=dictado.pk %}" class="btn btn-sm btn-outline-danger btn-detalle">
+        <i class="fa-solid fa-plus"></i> Finalizar
+      </a>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block listado_asociado %}
+
+  {% if clases %}
+
+  <div class="container-sm">
+    <h3 class="subtitulo">{{ tituloListado }}</h3>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          <th class="text-center">Asistencia</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for clase in clases %}
+          <tr>
+            <td class="negrita"> {{ clases.start_index|add:forloop.counter0 }}</td>
+            <td>{{ clase.reserva.horario.get_dia_semana_display }} {{ clase.reserva.fecha }}</td>
+            <td class="text-center">  
+              {% if clase.asistencia_tomada %}
+              <i class="fa-solid fa-check" style="color:green"></i>
+              {% else %}
+              <i class="fa-solid fa-circle-exclamation" style="color: #FF8000;"></i>
+              {% endif %}
+            </td>
+            {% comment %} <a href="{% url 'cursos:clase_detalle' curso_pk = curso.pk dictado_pk = dictado.pk clase_pk = clase.pk %}" class="btn btn-primary btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a> {% endcomment %}
+            <td class="text-end">
+              <a href="{% url 'cursos:clase_detalle' curso_pk=curso.pk dictado_pk=dictado.pk clase_pk=clase.pk %}" class="btn btn-info btn-detalle btn-sm"><i class="fa-regular fa-eye"></i> Detalle</a>
+              {% comment %} <a href="{% url 'cursos:clase_detalle' curso_pk = curso.pk dictado_pk = dictado.pk clase_pk = clase.pk %}" class="btn btn-primary btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a> {% endcomment %}
+            </td>
+          </tr>
+          
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include 'pagination.html' with page_obj=clases %}
+
+  {% endif %}
+  </div>
+
+  <script>
+//------------------- GESTION DE INSCRIPCION --------------------
+function gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, tipo) {
+  var url = `{% url 'cursos:gestion_inscripcion' curso_pk=9999 dictado_pk=9999 persona_pk=8888 tipo='placeholder' accion='placeholder' %}`
+    .replace('9999', curso_pk)
+    .replace('9999', dictado_pk)
+    .replace('8888', persona_pk)
+    .replace('placeholder', tipo)  // Reemplazar el tipo dinámicamente
+    .replace('placeholder', accion);  // Reemplazar la acción dinámicamente
+  window.location.href = url;
+}
+// Llamadas específicas
+function gestionInscripcionAfiliado(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, 'Afiliado');
+}
+
+function gestionInscripcionFamiliar(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, 'Familiar');
+}
+
+function gestionInscripcionProfesor(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, 'Profesor');
+}
+
+function gestionInscripcionAlumno(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, 'Alumno');
+}
+  </script>
+
+    
+  <script>
+    var listaEsperaWindow = null;
+  
+    function openOrFocusWindow(url, name, width, height) {
+      // Verifica si la ventana ya está abierta
+      if (listaEsperaWindow && !listaEsperaWindow.closed) {
+        // Si está abierta, enfócala
+        listaEsperaWindow.focus();
+      } else {
+        // Si no está abierta, abre una nueva ventana
+        listaEsperaWindow = window.open(url, name, 'width=' + width + ',height=' + height);
+      }
+    }
+  </script>
+  
+
+  {% endblock %}
+
+  

@@ -1,0 +1,94 @@
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/nav_principal.css' %}" rel="stylesheet" />
+  <link href="{% static 'Libs/css/nav_curso.css' %}" rel="stylesheet" />
+{% endblock %}
+
+<div class="menu" id="  ">
+  <br />
+  <h3 class="titulo-menu">AFILIADOS</h3>
+  <ul class="menu">
+    <li>
+      <a href="/home" id="mostrarMenuPrincipal"><i class="fa-solid fa-arrow-left-long"></i> Menu principal</a>
+    </li>
+  </ul>
+</div>
+
+<hr />
+<div class="menu">
+
+  <button class="submenu-toggle" data-submenu="curso">
+    <div class="button-content">
+        <span> <i class="fa-regular fa-user"></i> Afiliado</span>
+    </div>
+    <i class="fa-solid fa-caret-down"></i>
+</button>
+  <ul class="submenu" id="curso-submenu">
+    <li>
+      <a href="{% url 'afiliados:afiliado_crear' %}"><i class="fa-solid fa-plus"></i> Alta afiliado</a>
+    </li>
+    <li>
+      <a href="{% url 'afiliados:afiliado_listar' %}"><i class="fa-solid fa-list"></i> Lista de afiliados</a>
+    </li>
+  </ul>
+</div>
+
+<hr />
+
+<div class="menu">
+  <button class="submenu-toggle" data-submenu="profesor">
+    <div class="button-content">
+      <span><i class="fa-solid fa-users"></i> Grupo Familiar</span>
+    </div>
+    <i class="fa-solid fa-caret-down"></i>
+  </button>
+  
+  <ul class="submenu" id="curso-submenu">
+    <li>
+      <a href="{% url 'afiliados:crear_familiar_directo' %}"><i class="fa-solid fa-plus"></i> Alta Familiar</a>
+    </li>
+    <li>
+      <a href="{% url 'afiliados:grupo_familiar_listar' %}"><i class="fa-solid fa-list"></i> Lista de familiares</a>
+    </li>
+  </ul>
+</div>
+<hr />
+
+<div class="menu">
+  <!-- Botón desplegable para Pago -->
+  <button class="submenu-toggle" data-submenu="pago">
+    <div class="button-content">
+      <span>
+        <i class="fa-solid fa-dollar-sign"></i> 
+        Pago de Cuotas
+      </span>
+    </div>
+    <i class="fa-solid fa-caret-down"></i>
+  </button>
+
+  <ul class="submenu" id="pago-submenu">
+    <li>
+      <a href="{% url 'afiliados:pagar_cuota_sindical' %}"><i class="fa-solid fa-sack-dollar"></i> Cuota sindical</a>
+    </li>
+    <li>
+      <a href="{% url 'afiliados:pago_cuota_listado' %}"><i class="fa-solid fa-list"></i> Lista de cuotas</a>
+    </li>
+  </ul>
+</div>
+<hr />
+
+{% comment %} BOTON DE SERVICIO {% endcomment %}
+<a class="enlace" id="enlaceReporte" href="{% url 'reportes:afiliados_historico' %}"><i class="fa-solid fa-chart-column"></i> Reportes</a>
+
+
+{% include 'documentacion_info.html' %}
+
+
+
+
+
+
+  {% block extrajs %}
+  <script src="{% static 'Libs/js/nav_curso.js' %}"></script>
+{% endblock %}

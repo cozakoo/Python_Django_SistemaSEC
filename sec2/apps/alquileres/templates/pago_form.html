@@ -1,0 +1,42 @@
+{% extends 'alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+
+<style>
+  .turno-radio {
+    column-count: 2; /* Divide las opciones en dos columnas */
+}
+</style>
+  <form  method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <br />
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+              {{ form.forma_pago.label_tag }}
+              {{ form.forma_pago }}
+              <small class="error-text" style="color: red;">{{ form.forma_pago.error }}</small>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+              {{ form.alquiler.label_tag }}
+              {{ form.alquiler }}
+              <small class="error-text" style="color: red;">{{ form.alquiler.error }}</small>
+            </div>
+        </div>
+    </div> 
+
+    <div class="row">
+      <div class="col">
+        <a href="{% url 'alquiler:alquiler_listar' %}" class="btn btn-secondary">Cancelar</a>
+      </div>
+      <div class="col text-center">
+        <button type="submit" class="btn btn-success">Guardar</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}

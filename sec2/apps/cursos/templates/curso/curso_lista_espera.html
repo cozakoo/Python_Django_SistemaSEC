@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block container %}
+<div class="container-lg">
+  <br />
+  <h3 class="titulo">{{ titulo }}</h3>
+  {% include 'message.html' %}
+  {% if lista_espera %}
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Rol</th>
+        <th>Fecha</th>
+        {% include 'tabla_persona_cabecera.html' %}
+        <th colspan="2">Celular</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lista in lista_espera %}
+      <tr>
+        <td class="negrita">{{ forloop.counter }}</td>
+        <td>{{ lista.rol.obtenerTipo }}</td>
+        <td>{{ lista.fechaInscripcion|date:"y/m/d" }} </td>
+        {% include 'tabla_persona_cuerpo.html' with persona=lista.rol.persona %}
+        <td>{{ lista.rol.persona.celular }}</td>
+        <td class="text-end">
+          {% if dictados %}
+          <button class="btn btn-success btn-sm btn-detalle" data-bs-toggle="modal"
+            data-bs-target="#modal_inscribir_sacar_incribir_dictado{{ lista.pk }}">
+            Inscribir
+          </button>
+          {% endif %}
+          <button class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal"
+            data-bs-target="#modal_eliminar_sacar_lista_espera_{{ lista.pk }}">
+            Eliminar
+          </button>
+          
+          {% if hay_cupo %}
+          <button class="btn btn-success btn-sm btn-detalle" data-bs-toggle="modal"
+            data-bs-target="#modal_inscribir_sacar_lista_espera_{{ inscrito_listaEspera.persona.pk }}"
+            data-tipo="{{ tipo_persona|default:'' }}{{ tipo_persona_grupo_familiar|default:'' }}{{ tipo_persona_profesor|default:'' }}{{ tipo_persona_es_alumno|default:'' }}">
+            Inscribir
+          </button>
+          {% endif %}
+        </td>
+        {% include "curso/modal_confirm_sacar_lista_espera.html"  %}
+        {% include "curso/modal_confirm_inscribir_lista_espera.html" with tipo=tipo_persona %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="text-center">No hay Inscritos en la lista todavía.</p>
+  {% endif %}
+
+  <div class="row text-center">
+    <div class="col">
+      <a href="{% url 'cursos:verificar_persona' curso_pk=curso_pk %}" 
+        class="btn btn-primary btn-sm">
+        <i class="fa-regular fa-pen-to-square"></i> Agregar
+      </a>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-sm btn-secondary" onclick="cerrarVentana()">Cerrar</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script src="{% static 'Libs/js/cerrar_ventana.js' %}"></script>
+{% endblock %}

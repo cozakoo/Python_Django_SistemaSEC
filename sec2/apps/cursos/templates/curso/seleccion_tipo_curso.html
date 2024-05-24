@@ -1,0 +1,29 @@
+{% extends 'app_cursos_alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+  <div class="d-flex justify-content-center flex-column">
+    <h5>Seleccione el Área</h5>
+    <button id="btnSec" type="button" class="btn btn-outline-primary mb-2">Curso propio del Sec</button>
+    <button id="btnConvenio" type="button" class="btn btn-outline-primary">Convenio con el Gobierno Provincial</button>
+    <button id="btnActividad" type="button" class="btn btn-outline-primary">Alta de actividad (Gimnasio Saludable)</button>
+  </div>
+  <script>
+    document.getElementById('btnSec').addEventListener('click', function () {
+      mostrarFormulario('sec')
+    })
+    
+    document.getElementById('btnConvenio').addEventListener('click', function () {
+      mostrarFormulario('convenio')
+    })
+
+    document.getElementById('btnActividad').addEventListener('click', function () {
+      mostrarFormulario('actividad')
+    })
+    
+    function mostrarFormulario(tipoCurso) {
+      window.location.href = '{% url "cursos:curso_crear" %}?tipo=' + tipoCurso
+    }
+  </script>
+{% endblock %}

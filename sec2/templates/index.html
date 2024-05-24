@@ -1,0 +1,19 @@
+{% load static %}
+{% block dinamica %}
+  {% block extracss %}
+    <link href="{% static 'Libs/css/index.css' %}" rel="stylesheet" />
+  {% endblock %}
+
+    <!-- Contenedor del mensaje de bienvenida -->
+    <div class="centrado" >
+      <h1>¡Bienvenido {{ user.username }}!</h1>
+      <p> Ultima conexión: {{user.date_joined}}</p>
+      <p><em>"Establecer objetivos es el primer paso para hacer visible lo invisible" Tony Robbins</em></p>
+      {% comment %} <p>Esperamos que tengas una gran experiencia.</p> {% endcomment %}
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}

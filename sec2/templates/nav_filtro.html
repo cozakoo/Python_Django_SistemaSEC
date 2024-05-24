@@ -1,0 +1,22 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/nav_filtro.css' %}" rel="stylesheet" />
+{% endblock %}
+
+<nav id="filtro">
+  <div class="p-4">
+    <h2 id="titulo-filtro">Filtros</h2>
+    {% crispy filtros %}
+    
+  </div>
+</nav>
+<script type="text/javascript" src="{% static 'Libs/js/jquery-1.11.2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'Libs/js/jquery-iu.js' %}"></script>
+<script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+
+{% block extrajs %}
+
+{% endblock %}

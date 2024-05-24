@@ -1,0 +1,36 @@
+{% extends 'alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+  <form  method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <label>Ingrese el nuevo afiliado:</label>
+        <select name="enc_afiliado" id="enc_afiliado">
+          <option value="" disabled selected hidden>---------------</option>
+          {% for afiliado in listaEspera.all %}
+          <option value="{{afiliado.pk}}">
+            {{afiliado.persona.dni}} {{afiliado.persona.apellido}} {{afiliado.persona.nombre}}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+            <label for="forma_pago">Forma de pago:</label>
+            <select name="forma_pago" id="forma_pago" class="form-select">
+              <option value="total">Total</option>
+              <option value="cuota">Cuota</option>
+            </select>
+      </div>
+    </div>
+
+
+    <br>
+    <div class="row text-center">
+      <div class="col">
+        <button type="submit" class="btn btn-success" >Guardar</button>
+      </div>
+    </div>
+{% endblock %}

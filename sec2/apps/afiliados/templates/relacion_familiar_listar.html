@@ -1,0 +1,47 @@
+{% extends 'listado_afiliado.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block botones %}
+  <a href="{% url 'afiliados:crear_familiar_directo' %}" class="btn btn-outline-success btn-sm btn-detalle"><i class="fa-solid fa-plus"></i> Nuevo</a>
+{% endblock %}
+
+{% block tabla_listado %}
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr class="text-center">
+        <th style="border-right: 1px solid #ccc;"></th>
+        <th colspan="2">GRUPO FAMILIAR</th>
+        <th style="border-right: 1px solid #ccc;"></th>
+        <th colspan="4">AFILIADO</th>
+      </tr>
+      <tr>
+        <th style="border-right: 1px solid #ccc;">#</th>
+        {% include "tabla_persona_cabecera.html" %}
+        <th style="border-right: 1px solid #ccc;">Relacion</th>
+        {% include "tabla_persona_cabecera.html" %}
+        <th class="text-center">Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for relacion in page_obj %}
+        <tr>
+            <td class="negrita">{{ forloop.counter }}</td>
+            {% include "tabla_persona_cuerpo.html" with persona=relacion.familiar.persona %}
+            <td >{{ relacion.get_tipo_relacion_display }}</td>
+            {% include "tabla_persona_cuerpo.html" with persona=relacion.afiliado.persona %}
+            <td class="text-center">
+              {% if relacion.afiliado.estado == 1 %}<i class="fa-solid fa-circle-exclamation" style="color: #FF8000;"></i>{% endif %}
+              {% if relacion.afiliado.estado == 2 %}<i class="fa-regular fa-circle-check" style="color: #008f00;"></i>{% endif %}
+              {% if relacion.afiliado.estado == 3 %}<i class="fa-solid fa-circle-minus" style="color: #a80000;"></i>{% endif %}
+            </td>
+            <td class="text-end">
+              <a href="{% url 'afiliados:familiar_detalle' pk=relacion.afiliado.pk familiar_pk=relacion.familiar.pk %}" class="btn btn-info btn-sm btn-detalle"; return false;"> <i class="fa-regular fa-eye"></i> Detalle</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

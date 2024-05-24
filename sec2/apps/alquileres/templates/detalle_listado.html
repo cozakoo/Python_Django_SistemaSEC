@@ -1,0 +1,30 @@
+{% extends 'home_alquiler.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/detalle.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/afiliado_confirm_delete.css' %}" rel="stylesheet" />
+
+{% endblock %}
+
+{% block dinamica %}
+  <div class="container-sm">
+    <h2 class="titulo">{{ titulo }}</h2>
+    {% block detalle %}
+
+    {% endblock %}
+    <div class="row">
+      {% block botones %}
+
+      {% endblock %}
+    </div>
+  </div>
+  
+  {% block listado_asociado %}
+  {% endblock %}
+
+
+{% endblock %}

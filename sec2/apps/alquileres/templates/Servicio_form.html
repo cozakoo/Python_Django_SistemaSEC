@@ -1,0 +1,29 @@
+{% extends 'alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <br />
+    <div class="row">
+            <div class="col-md-6">
+            <div class="form-group">
+            <label for="{{ form.nombre.id_for_label }}">Nombre:</label>
+            {{ form.nombre }}
+            </div>
+      
+        </div>
+    </div> 
+   
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
+      <div class="col">
+        <a href="{% url 'alquiler:index' %}" class="btn btn-secondary">Cancelar</a>
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}

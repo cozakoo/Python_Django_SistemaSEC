@@ -1,0 +1,107 @@
+{% comment %} ESTADO - RAZON SOCIAL - HORA JORNADA {% endcomment %}
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+    <div class="col">
+      <p class="negrita">Estado:</p>
+    </div>
+    <div class="col">
+        <p class="status">
+            {% if afiliado.estado == 1 %}  <span class="pending-status">PENDIENTE</span>
+            {% elif afiliado.estado == 2 %} <span class="active-status">ACTIVO</span>
+            {% elif afiliado.estado == 3 %} <span class="inactive-status">INACTIVO</span>
+            {% elif afiliado.estado == 4 %} <span class="inactive-status">DADO DE BAJA</span>
+            {% elif afiliado.estado == 5 %} <span class="moroso-status">MOROSO</span>
+            {% endif %}
+        </p>
+    </div>
+  
+    <div class="col">
+      <p class="negrita">Razón Social:</p>
+    </div>
+    <div class="col">
+      <p>{{ afiliado.razon_social }}</p>
+    </div>
+  
+    <div class="col">
+      <p class="negrita">Hora jornada:</p>
+    </div>
+    <div class="col">
+      <p>{{ afiliado.horaJornada }} hrs semanales</p>
+    </div>
+</div>
+
+{% comment %} DOMICILIO - FECHA INGRESO - RAMA {% endcomment %}
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+    <div class="col">
+      <p class="negrita">Domicilio (empresa):</p>
+    </div>
+    <div class="col">
+        <p>{{ afiliado.domicilio_empresa }}</p>
+    </div>
+  
+    <div class="col">
+      <p class="negrita">Fecha Ingreso:</p>
+    </div>
+    <div class="col">
+      <p>{{ afiliado.fechaIngresoTrabajo }}</p>
+    </div>
+  
+    <div class="col">
+      <p class="negrita">Rama:</p>
+    </div>
+    <div class="col">
+      <p>{{ afiliado.rama }}</p>
+    </div>
+</div>
+
+{% comment %} FECHA AFILIACIÓN - CUIT EMPLEADOR - CATEGORIA LABORAL {% endcomment %}
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+    <div class="col">
+      <p class="negrita">Fecha afiliación:</p>
+    </div>
+    <div class="col">
+        <p>
+            {% if afiliado.fechaAfiliacion %}
+            {{ afiliado.fechaAfiliacion }}
+            {% else %}
+            -----------
+            {% endif %}
+        </p>
+    </div>
+  
+    <div class="col">
+      <p class="negrita">Cuit empleador:</p>
+    </div>
+    <div class="col">
+      <p>{{ afiliado.cuit_empleador }}</p>
+    </div>
+  
+    <div class="col">
+      <p class="negrita">Categoría laboral:</p>
+    </div>
+    <div class="col">
+      <p>{{ afiliado.categoria_laboral }}</p>
+    </div>
+</div>
+
+{% comment %} LOCALIDAD - SUELDO {% endcomment %}
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+    <div class="col">
+      <p class="negrita">Localidad:</p>
+    </div>
+    <div class="col">
+        <p>{{ afiliado.localidad_empresa }}</p>
+    </div>
+  
+    <div class="col">
+      <p class="negrita">Sueldo (base):</p>
+    </div>
+    <div class="col">
+      <p>${{ afiliado.sueldo }},00</p>
+    </div>
+    <div class="col">
+      <p class="negrita">Descuento (1 %):</p>
+    </div>
+    <div class="col">
+      <p>${{ afiliado.valorCuota }}</p>
+    </div>
+</div>

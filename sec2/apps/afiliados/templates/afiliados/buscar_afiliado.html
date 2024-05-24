@@ -1,0 +1,16 @@
+{% extends 'alta_gestion_afiliados.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"></button>
+</form>
+
+{% endblock %}
+
+{% block extrajs_intermedia_00 %}
+{% endblock %}

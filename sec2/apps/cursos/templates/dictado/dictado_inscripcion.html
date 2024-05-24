@@ -1,0 +1,272 @@
+{% extends 'alta_ventana_nueva.html' %}
+{% load static %}
+
+{% block formulario %}
+  <form id="buscarPersonaForm">
+    <label for="dni">Ingrese DNI (8 dígitos):</label>
+    <br>
+    <input class="form-control" type="number" id="dni" name="dni" required minlength="8" maxlength="8" />
+
+    <div class="d-flex justify-content-between">
+      <button class="btn btn-info btn-sm btn-detalle" type="button" onclick="buscarPersona()">
+          <i class="fa-solid fa-magnifying-glass"></i> Buscar
+      </button>
+      <a href="{% url 'cursos:dictado_lista_espera' curso_pk=curso_pk dictado_pk=dictado_pk %}" 
+         class="btn btn-warning btn-sm">
+          <i class="fa-solid fa-list"></i> Lista de espera
+      </a>
+      
+      <div class="d-flex">
+          <button type="button" class="btn btn-sm btn-secondary ml-2" onclick="cerrarVentana()">Cerrar</button>
+      </div>
+  </div>
+  </form>
+
+  <div id="resultadosPersona"></div>
+
+  <script src="{% static 'Libs/js/cerrar_ventana.js' %}"></script>
+<!-- Incluir archivos estáticos de Select2 desde CDN -->
+
+  <script>
+  // Variable para evitar múltiples búsquedas simultáneas
+  var busquedaRealizada = false
+  var hayCupo = {{ hay_cupo|lower }};
+
+// Función para realizar la búsqueda de persona por DNI
+function buscarPersona() {
+  // Limpiar el contenido del div resultadosPersona
+  document.getElementById('resultadosPersona').innerHTML = '';
+  
+  // Verificar si ya se realizó una búsqueda
+  if (busquedaRealizada) {
+    console.log('Búsqueda ya realizada, evitando otra solicitud.')
+    return
+  }
+  // Obtener el valor del DNI
+  var dni = document.getElementById('dni').value
+
+  // Validar el formato del DNI
+  if (!dni) {
+    alert('Por favor, ingrese un número de DNI.')
+    return
+  }  
+
+  
+  if (dni.length !== 8) {
+    alert('El DNI debe tener exactamente 8 dígitos.')
+    return
+  }
+  
+  // Marcar la búsqueda como realizada
+  busquedaRealizada = true
+  
+  // Realizar la llamada AJAX
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "{% url 'cursos:buscar_persona' %}?dni=" + dni, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      // Procesar la respuesta
+      var respuesta = JSON.parse(xhr.responseText);
+      mostrarResultados(respuesta.persona);
+    }
+  };
+  xhr.send();
+}
+
+function mostrarInformacion(persona) {
+  return `
+    <h2>Información:</h2>
+    <p>DNI: ${persona.dni} | ${persona.apellido} ${persona.nombre}</p>`;
+}
+
+function mostrarTipoPersona(persona) {
+  if (persona.es_afiliado) {
+    if (persona.es_alumno) {
+      return `<p>Es afiliado y alumno.</p>`;
+    } else {
+      return `<p>Es afiliado.</p>`;
+    }
+  } else if (persona.es_grupo_familiar) {
+    if (persona.es_alumno) {
+      return `<p>Es Grupo Familiar y alumno.</p>`;
+    } else {
+      return `<p>Es Grupo Familiar.</p>`;
+    }
+  } else if (persona.es_profesor) {
+    if (persona.es_alumno) {
+      return `<p>Es profesor y alumno.</p>`;
+    } else {
+      return `<p>Es profesor.</p>`;
+    }
+  } else if (persona.es_alumno) {
+    return `<p>Es alumno.</p>`;
+  } else if (persona.es_encargado) {
+    return `<p>Es encargado [FALTA INSCRIBIRLO].</p>`;
+  }
+  return '';
+}
+
+// Función para mostrar el botón de inscripción
+function mostrarBotonInscripcion(persona, mensaje) {
+  var nombreFuncion = obtenerNombreFuncion(persona);
+  return `
+    <div class="text-center">
+      <button class="btn btn-secondary btn-sm btn-detalle" onclick="gestionInscripcion${nombreFuncion}('inscribir', {{ curso_pk }}, {{ dictado_pk }}, ${persona.pk})">${mensaje}</button>
+    </div>`;
+}
+
+// Función para mostrar el botón de lista de espera
+function mostrarBotonListaEspera(persona, mensaje) {
+  var nombreFuncion = obtenerNombreFuncion(persona);
+  return `
+    <div class="text-center">
+      <button class="btn btn-warning btn-sm btn-detalle" onclick="gestionListaEspera${nombreFuncion}('agregar_lista', {{ curso_pk }}, {{ dictado_pk }}, ${persona.pk})">${mensaje}</button>
+    </div>`;
+}
+
+// Función para obtener el nombre de la función según el tipo de persona
+function obtenerNombreFuncion(persona) {
+  if (persona.es_afiliado) {
+    return "Afiliado";
+  } else if (persona.es_grupo_familiar) {
+    return "Familiar";
+  } else if (persona.es_profesor) {
+    return "Profesor";
+  } else if (persona.es_alumno) {
+    return "Alumno";
+  }
+}
+
+// Función para mostrar los resultados en la página
+function mostrarResultados(persona) {
+  
+  var resultadosDiv = document.getElementById('resultadosPersona');
+
+  // PERSONA ENCONTRADA
+  if (persona) {
+    resultadosDiv.innerHTML = mostrarInformacion(persona);
+    resultadosDiv.innerHTML += mostrarTipoPersona(persona);
+
+    // Si la persona NO esta incrita y NO esta en lista de espera. Muestro los botones
+    if (!estaInscrita(persona) && !existeEnListaEspera(persona)) {
+      if (hayCupo) {
+        resultadosDiv.innerHTML += mostrarBotonInscripcion(persona, 'Inscribir');
+      }else{
+        resultadosDiv.innerHTML += mostrarBotonListaEspera(persona, 'Poner en lista de espera');
+      }
+    }else{
+      if (!existeEnListaEspera(persona)) {
+        resultadosDiv.innerHTML += `<p>La persona está inscrita en el dictado.</p>`;
+      }else{
+        resultadosDiv.innerHTML += `<p>La persona esta en lista de espera en el dictado.</p>`;
+      }
+    }
+
+  }else{
+    resultadosDiv.innerHTML += `<p>La persona <strong>NO</strong> existe en el sistema.</p>`;
+
+    if (hayCupo) {
+      // Mostrar el botón de dar de alta como alumno
+      resultadosDiv.innerHTML += `
+      <div class="text-center">
+        <button class="btn btn-secondary btn-sm btn-detalle" onclick="gestionInscripcionAlumnoNuevo('inscribir_alumno_nuevo', {{ curso_pk }}, {{ dictado_pk }}, null)">Dar de alta como alumno e inscribir</button>
+      </div>`;
+    } else {
+      // Mostrar el mensaje de no hay cupo
+      resultadosDiv.innerHTML += `
+      <div class="text-center">
+        <button class="btn btn-warning btn-sm btn-detalle" onclick="gestionListaEsperaAlumnoNuevo('inscribir_alumno_nuevo', {{ curso_pk }}, {{ dictado_pk }}, null)">Dar de alta y poner en lista de espera</button>
+      </div>`;
+    }
+  }
+  // Restablecer la variable para permitir nuevas búsquedas
+  busquedaRealizada = false;
+}
+
+// Función que devuelve el estado de inscripción
+function estaInscrita(persona) {
+  var inscritosIds = {{ inscritos_ids }};
+  // Verificar si la persona está asociada a algún afiliado
+  var estaAsociada = inscritosIds.includes(persona.pk);
+  console.log("inscritosIds:", inscritosIds);
+  console.log("persona.pk:", persona.pk);
+
+  return estaAsociada;
+}
+
+// Función que devuelve el estado de inscripción
+function existeEnListaEspera(persona) {
+  var inscritosEsperaIds = {{ inscritosEspera_ids }};
+  // Verificar si la persona está asociada a algún afiliado
+  var estaAsociada = inscritosEsperaIds.includes(persona.pk);
+  console.log("inscritosEsperaIds:", inscritosEsperaIds);
+  console.log("persona.pk:", persona.pk);
+
+  return estaAsociada;
+}
+
+//------------------- GESTION DE LISTA DE LISTA DE ESPERA --------------------
+function gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, tipo) {
+  var url = `{% url 'cursos:gestion_lista_espera' curso_pk=9999 dictado_pk=9999 persona_pk=8888 tipo='placeholder' accion='placeholder' %}`
+    .replace('9999', curso_pk)
+    .replace('9999', dictado_pk)
+    .replace('8888', persona_pk)
+    .replace('placeholder', tipo)  // Reemplazar el tipo dinámicamente
+    .replace('placeholder', accion);  // Reemplazar la acción dinámicamente
+  window.location.href = url;
+}
+
+// Llamadas específicas
+function gestionListaEsperaAfiliado(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, 'Afiliado');
+}
+
+function gestionListaEsperaFamiliar(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, 'Familiar');
+}
+
+function gestionListaEsperaProfesor(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, 'Profesor');
+}
+
+function gestionListaEsperaAlumno(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, 'Alumno');
+}
+
+function gestionListaEsperaAlumnoNuevo(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, 9999999999, 'AlumnoNuevo');
+}
+
+//------------------- GESTION DE INSCRIPCION --------------------
+function gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, tipo) {
+  var url = `{% url 'cursos:gestion_inscripcion' curso_pk=9999 dictado_pk=9999 persona_pk=8888 tipo='placeholder' accion='placeholder' %}`
+    .replace('9999', curso_pk)
+    .replace('9999', dictado_pk)
+    .replace('8888', persona_pk)
+    .replace('placeholder', tipo)  // Reemplazar el tipo dinámicamente
+    .replace('placeholder', accion);  // Reemplazar la acción dinámicamente
+  window.location.href = url;
+}
+// Llamadas específicas
+function gestionInscripcionAfiliado(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, 'Afiliado');
+}
+
+function gestionInscripcionFamiliar(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, 'Familiar');
+}
+
+function gestionInscripcionProfesor(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, 'Profesor');
+}
+
+function gestionInscripcionAlumno(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, persona_pk, 'Alumno');
+}
+
+function gestionInscripcionAlumnoNuevo(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionInscripcion(accion, curso_pk, dictado_pk, 9999999999, 'AlumnoNuevo');
+}
+
+</script>
+{% endblock %}

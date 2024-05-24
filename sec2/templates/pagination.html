@@ -1,0 +1,41 @@
+<nav aria-label="...">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link small-btn" href="?{{ filter_parameters }}&amp;page=1">&laquo; Primero</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link small-btn" href="?{{ filter_parameters }}&amp;page={{ page_obj.previous_page_number }}">Anterior</a>
+      </li>
+    {% endif %}
+
+    {% if page_obj.number <= 9 %}
+      {% for num in page_obj.paginator.page_range|slice:":10" %}
+        <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+          <a class="page-link small-btn" href="?{{ filter_parameters }}&amp;page={{ num }}">{{ num }}</a>
+        </li>
+      {% endfor %}
+    {% elif page_obj.number > 9 and page_obj.number <= 20 %}
+      {% for num in page_obj.paginator.page_range|slice:"9:20" %}
+        <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+          <a class="page-link small-btn" href="?{{ filter_parameters }}&amp;page={{ num }}">{{ num }}</a>
+        </li>
+      {% endfor %}
+    {% else %}
+      {% for num in page_obj.paginator.page_range|slice:"-10:" %}
+        <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+          <a class="page-link small-btn" href="?{{ filter_parameters }}&amp;page={{ num }}">{{ num }}</a>
+        </li>
+      {% endfor %}
+    {% endif %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link small-btn" href="?{{ filter_parameters }}&amp;page={{ page_obj.next_page_number }}">Siguiente</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link small-btn" href="?{{ filter_parameters }}&amp;page={{ page_obj.paginator.num_pages }}">Último &raquo;</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>

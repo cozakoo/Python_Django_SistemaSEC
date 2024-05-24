@@ -1,0 +1,39 @@
+
+
+
+/* Anchura de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Color de fondo de la barra de desplazamiento */
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+/* Color de la barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+/* Efecto al pasar el mouse sobre la barra de desplazamiento */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.titulo {
+    font-family: Georgia, serif;
+    text-align: center;
+}
+
+.subtitulo {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+}
+.negrita {
+    font-weight: bold;
+    color: black;
+}
+
+
+

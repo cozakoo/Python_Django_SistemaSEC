@@ -1,0 +1,55 @@
+{% extends 'home_alquiler.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block dinamica %}
+<br>
+  <h3 class="titulo">{{ titulo }}</h3>
+
+  <br />
+
+  <div class="container-sm">
+    <div class="table-responsive">
+
+    {% block tabla_listado %}
+    <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+    
+        <tbody>
+          {% for Servicio in object_list %}
+            <tr class="bg-transition fila-personalizada">
+              <td>{{ forloop.counter }}</td>
+              <td>{{ Servicio.nombre }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endblock %}
+    </div>
+  </div>
+
+
+  <div class="container ">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1">
+      <div class="col" id="btn-new-alquiler">
+        <a href="{% url 'alquiler:servicio_crear' %}" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i> Nuevo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% block nav_lateral_filtro %}
+    {% include 'nav_filtro.html' %}
+  {% endblock %}
+{% endblock %}

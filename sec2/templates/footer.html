@@ -1,0 +1,25 @@
+<style>
+  .footer {
+    background-color: slategray;
+    color: #fff;
+    padding: 0;
+    position: fixed;
+    bottom: 0;
+
+  }
+
+  .bandera{
+    width: 1.5%;
+
+  }
+
+</style>
+
+{% load static %}
+
+<div class="footer text-center">
+      © 2024 Sindicato Empleados de Comercio | SEC2 | @Todos los derechos reservados
+      <img class="bandera" src="{% static 'images/argentina.png' %}" alt="Descripción de la imagen">
+      <img class="bandera" src="{% static 'images/chile.png' %}" alt="Descripción de la imagen">
+      <img class="bandera" src="{% static 'images/peru.png' %}" alt="Descripción de la imagen">
+</div>

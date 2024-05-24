@@ -1,0 +1,43 @@
+{% extends 'home_curso.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block dinamica %}
+<div class="cuadrado-background">
+  <br />
+  <h3 class="titulo">{{ titulo }}</h3>
+  <div class="row justify-content-center">
+    <div class="border curso-form rounded-4" style="width: 80%;padding-left: 20px; padding-top: 20px;">
+      {% block alta %}
+
+      {% endblock %}
+    </div>
+  </div>
+
+  <br />
+  <div class="container">
+    <div class="row justify-content-center">
+      <div style="width: 80%">
+        {% block listado %}
+
+        {% endblock %}
+      </div>
+    </div>
+    {% include 'pagination.html' %}
+    
+  </div>
+  <br>
+</div>
+</div>
+
+  {% include 'nav_filtro.html'%}
+  <script type="text/javascript" src="{% static 'Libs/js/jquery-1.11.2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'Libs/js/jquery-iu.js' %}"></script>
+<script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+
+{% endblock %}

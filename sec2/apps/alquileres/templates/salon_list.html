@@ -1,0 +1,13 @@
+{% extends 'app_alquiler_listado.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block botones %}
+<a href="{% url 'alquiler:salon_crear' %}" class="btn btn-outline-success btn-sm  btn-detalle"><i class="fa-solid fa-plus"></i> Nuevo</a>
+
+{% endblock %}
+
+{% block tabla_listado %}
+{% include "listado_salones.html" with salones=object_list %}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'app_cursos_alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" id="total_a_pagar" name="total_a_pagar" value="">
+    <input type="hidden" id="dictados_seleccionados" name="dictados_seleccionados">
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="form-tabs-content">
+                {% comment %}SECCION 1{% endcomment %}
+                <div id="section1" class="tab-pane fade show active">
+                    <label>Seleccione al alumno en dictado activo:</label>
+                    <div class="form-group">
+                        <select name="alumno" id="enc_alumno" onchange="deshabilitarResultadosPersona()">
+                            <option value="" disabled selected hidden>---------------</option>
+                            {% for alumno in alumnos %}
+                                <option value="{{ alumno.alumnos.pk }}">{{ alumno.alumnos.persona.dni }} - {{ alumno.alumnos.persona.apellido }} {{ alumno.alumnos.persona.nombre }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <button class="btn btn-outline-success" type="button" onclick="obtenerDictadosPorAlumno()">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                          </button>
+                    </div>
+
+                    <div id="datos_titular"></div>
+                </div>
+
+                {% comment %}SECCION 2{% endcomment %}
+                <div id="section2" class="tab-pane fade">
+                    <div id="seleccionados"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="guardar_y_recargar">Guardar y agregar otro</button>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="guardar_y_listar">Guardar y listar</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+          <button id="prev-button" class="btn btn-info" style="display: none;"><i class="fa-solid fa-arrow-left"></i> Anterior </button>
+        </div>
+        
+        <div class="col text-end">
+          <button id="next-button" class="btn btn-info">Siguiente <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+<script>
+    var jq = $.noConflict();
+    jq('#enc_alumno').select2();
+</script>
+
+
+
+<script src="{% static 'js/pago_alumno.js' %}"></script>
+<script src="{% static 'js/tab_control.js' %}"></script>
+{% endblock %}

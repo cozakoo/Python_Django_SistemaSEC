@@ -1,0 +1,22 @@
+.centrado {
+    width: 50%;
+    height: auto;    
+    padding: 2%;
+    background-color: #666;
+    color: #fff;
+    text-align: center;
+    border-radius: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+}
+
+.cuadrado-background {
+    /* opacity: 1; */
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 50%;
+    border-radius: 10px;
+    padding: 15px;
+}

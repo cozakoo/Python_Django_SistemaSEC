@@ -1,0 +1,146 @@
+{% extends 'alta_ventana_nueva.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/afiliado_formulario.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block formulario %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-12">
+        
+        <div class="tab-content" id="form-tabs-content">
+          <div id="section1" class="tab-pane fade show active">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="{{ form.dni.id_for_label }}">DNI:</label><br />
+                  {{ form.dni }}
+                  <br />
+                  <span class="help-text">{{ form.dni.help_text }}</span>
+                  <span class="error-text">{{ form.dni.errors }}</span>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="form-group">
+                  <label for="{{ form.cuil.id_for_label }}">CUIL:</label><br />
+                  {{ form.cuil }}
+                  <br />
+                  <span class="help-text">{{ form.cuil.help_text }}</span>
+                  <span class="error-text">{{ form.cuil.errors }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <br />
+                <div class="form-group">
+                  <label for="{{ form.nombre.id_for_label }}">Nombre:</label><br />
+                  {{ form.nombre }}
+                  <small class="help-text">{{ form.nombre.help_text }}</small><br />
+                  <small class="error-text">{{ form.nombre.errors }}</small>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <br />
+                  <label for="{{ form.apellido.id_for_label }}">Apellido:</label><br />
+                  {{ form.apellido }}
+                  <small class="help-text">{{ form.apellido.help_text }}</small><br />
+                  <small class="error-text">{{ form.apellido.errors }}</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <br />
+                  <label for="{{ form.fechaNacimiento.id_for_label }}">Fecha de Nacimiento:</label>
+                  <br />
+                  {{ form.fechaNacimiento }}
+                  <small class="help-text">{{ form.fechaNacimiento.help_text }}</small><br />
+                  <small class="error-text">{{ form.fechaNacimiento.errors }}</small>
+                  <br />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <br />
+                  <label for="{{ form.nacionalidad.id_for_label }}">Nacionalidad:</label>
+                  {{ form.nacionalidad }}
+                  <small class="help-text">{{ form.nacionalidad.help_text }}</small><br />
+                  <small class="error-text">{{ form.nacionalidad.errors }}</small>
+                  <br />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="{{ form.celular.id_for_label }}">Celular:</label>
+                  <br />
+                  {{ form.celular }}
+                  <br />
+                  <small class="help-text">{{ form.celular.help_text }}</small><br />
+                  <small class="error-text">{{ form.celular.errors }}</small>
+                  <br />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="{{ form.estado_civil.id_for_label }}">Estado Civil:</label><br />
+                  {{ form.estado_civil }}
+                  <small class="help-text">{{ form.estado_civil.help_text }}</small><br />
+                  <small class="error-text">{{ form.estado_civil.errors }}</small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="{{ form.direccion.id_for_label }}">Dirección:</label><br />
+                  {{ form.direccion }}
+                  <br />
+                  <small class="help-text">{{ form.direccion.help_text }}</small><br />
+                  <small class="error-text">{{ form.direccion.errors }}</small>
+                  <br />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="form-group">
+                  <label for="{{ form.mail.id_for_label }}">Correo Electrónico:</label>
+                  <br />
+                  {{ form.mail }}
+                  <br />
+                  <small class="help-text">{{ form.mail.help_text }}</small><br />
+                  <small class="error-text">{{ form.mail.errors }}</small>
+                  <br />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center mt-3">
+          <button id="prev-button" class="btn btn-info" style="display: none;"><i class="fa-solid fa-arrow-left"></i> Anterior</button>
+          <button id="next-button" class="btn btn-info">Siguiente<i class="fa-solid fa-arrow-right"></i></button>
+          <button type="submit" class="btn btn-success" style="display: none;">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block extrajs_intermedia %}
+{% endblock %}

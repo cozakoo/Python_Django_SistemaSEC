@@ -1,0 +1,41 @@
+/* Estilo para la barra de navegación lateral */
+#sidebar {
+    width: 16%;
+    background-color: #333333;
+    /* Ocupa el 100% de la altura del contenedor principal */
+    height: 100%;
+    /* Estilos adicionales */
+    display: flex;
+    flex-direction: column;
+}
+
+#messages-container {
+    margin-top: auto; /* Empuja el contenedor de mensajes al final */
+}
+
+#wrapper {
+    display: flex;
+    /* Altura del menu altura */
+    height: 100.4vh;
+    /* 100% de la altura de la ventana (viewport height) */
+}
+
+/* Estilo para el contenido principal */
+#content {
+    /* Ocupa todo el espacio restante */
+    flex: 1;
+    /* Establece una altura máxima */
+    max-height: 100%;
+    max-width: 100%;
+    /* Agrega una barra de desplazamiento vertical cuando sea necesario */
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Estilos adicionales */
+    
+    background-color: #EEEEEE;
+    /* Estilos adicionales */
+}
+
+#content{
+    background-image: url("../../images/fondoPantalla04.jpg");
+}

@@ -1,0 +1,105 @@
+{% extends 'alta_gestion_afiliados.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col">
+            <label>Seleccione al empleador:</label>
+            <div class="form-group">
+                <select name="enc_cuit" id="enc_cuit">
+                    <option value="" disabled selected hidden>---------------</option>
+                    {% for empleador in empleadores %}
+                        <option value="{{ empleador.cuit_empleador }}">{{ empleador.cuit_empleador }} {{ empleador.razon_social }}</option>
+                    {% endfor %}
+                </select>
+                {% comment %} {% include "error_campo.html" with field=form.afiliado %} {% endcomment %}
+            </div>
+        </div>
+
+        <div class="col">
+            <label>Seleccione al afiliado:</label>
+            <div class="form-group">
+                <select name="enc_afiliado" id="enc_afiliado">
+                <option value="" disabled selected hidden>---------------</option>
+                  {% for item in afiliados %}
+                    <option value="{{item.id}}">{{item.persona.dni}} {{item.persona.nombre}} {{item.persona.apellido}}</option>
+                  {% endfor %}
+                </select>
+                {% comment %} {% include "error_campo.html" with field=form.afiliado %} {% endcomment %}
+              </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="{{ form.monto.id_for_label }}">Monto:</label>
+            {{form.monto}}
+            {% include "error_campo.html" with field=form.monto %}
+
+        </div>
+
+        <div class="col">
+            <label for="{{ form.fecha_pago.id_for_label }}">Fecha de pago</label>
+            {{form.fecha_pago}}
+            {% include "error_campo.html" with field=form.fecha_pago %}
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col">
+            {{form.pdf_transferencia}}
+        </div>
+    </div>
+
+    <br>
+    <div class="row text-center">
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="guardar_y_recargar" >Guardar y agregar otro</button>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="guardar_y_listar">Guardar y listar</button>
+        </div>
+    </div>
+
+</form>
+
+<!-- Incluir archivos estáticos de Select2 desde CDN -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+<script>
+    var jq = $.noConflict();
+    jq('#enc_cuit').select2();
+    jq('#enc_afiliado').select2();
+
+    jq(document).ready(function() {
+    jq('#enc_cuit').change(function() {
+        var cuit_empleador = $(this).val();
+        var url = 'ruta_para_actualizar_afiliados/';
+        jq.ajax({
+
+            url: '../' + url,
+            data: {
+                'cuit_empleador': cuit_empleador
+            },
+            dataType: 'json',
+            success: function(data) {
+                jq('#enc_afiliado').empty();
+                jq.each(data, function(key, value) {
+                    jq('#enc_afiliado').append($('<option></option>').attr('value', value.id).text(value.nombre_completo));
+                });
+            }
+        });
+      });
+    });
+
+</script>
+{% endblock %}

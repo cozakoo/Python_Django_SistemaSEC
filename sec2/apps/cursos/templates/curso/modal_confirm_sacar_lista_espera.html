@@ -1,0 +1,22 @@
+<div class="modal fade" id="modal_eliminar_sacar_lista_espera_{{ lista.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Quitar de la lista</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body text-center">
+              ¿Seguro que quieres sacar de la lista al <strong> {{lista.rol.obtenerTipo}}</strong> {{ lista.rol.persona.nombre }} {{ lista.rol.persona.apellido }}?
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <a href="{% url 'cursos:gestion_lista_espera' pk=curso.pk rol_pk=lista.rol.pk  accion='quitar_lista' %}" class="btn btn-danger">
+                    Eliminar
+                </a>
+              </div>
+        </div>
+    </div>
+</div>
+

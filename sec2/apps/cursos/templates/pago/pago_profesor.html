@@ -1,0 +1,120 @@
+{% extends 'app_cursos_alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+<form method="post">
+    {% csrf_token %}
+    
+    <input type="hidden" id="total_a_pagar" name="total_a_pagar" value="">
+    <input type="hidden" id="datos_dictados" name="datos_dictados" value="">
+
+
+    <div class="row">
+        <div class="col">
+            <label>Seleccione al Titular:</label>
+            <div class="form-group">
+                <select name="profesor" id="enc_profesor" onchange="deshabilitarResultadosPersona()">
+                    <option value="" disabled selected hidden>---------------</option>
+                    {% for profesor in profesores %}
+                        <option value="{{ profesor.pk }}">{{ profesor.persona.dni }} - {{ profesor.persona.apellido }} {{profesor.persona.nombre}}</option>
+                    {% endfor %}
+                </select>
+                {% include "error_campo.html" with field=form.profesor %}
+                <button class="btn btn-outline-success" type="button" onclick="obtenerDictadosPorTitular()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="datos_titular"></div>
+
+    <div class="row text-center">
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="guardar_y_recargar">Guardar y agregar otro</button>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success" name="guardar_y_listar">Guardar y listar</button>
+        </div>
+    </div>
+
+</form>
+
+<!-- Incluir archivo estático de Select2 desde CDN -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script>
+    var jq = $.noConflict();
+    var busquedaRealizada = false
+
+    jq('#enc_profesor').select2();
+    
+    function deshabilitarResultadosPersona() {
+        document.getElementById('datos_titular').innerHTML = '';
+    }
+
+    function obtenerDictadosPorTitular() {
+    
+        document.getElementById('datos_titular').innerHTML = '';
+        
+        if (busquedaRealizada) {
+            return
+        }
+        
+        var titular_id = document.getElementById('enc_profesor').value
+        var url = 'get_dictados_por_titular/';
+        
+        if (titular_id && titular_id !== '0') {
+            jq.ajax({
+                url: '../../' + url + titular_id,
+                type: 'GET',
+                data: {},
+                dataType: 'json',
+                success: function(data) {
+                    var total = data.valor_total;
+                    var datosDiv = $('#datos_titular');
+                    var html = '<p>Dictados a pagar:</p>';
+                    html += '<table class="table table-sm table-hover">';
+                        html += '<thead>';
+                            html += '<tr>';
+                                html += '<th>Curso</th>';
+                                html += '<th>Dictado</th>';
+                                html += '<th>Estado</th>';
+                                html += '<th class="text-end">Precio</th>';
+                                html += '<th class="text-center">Clases (total)</th>';
+                                html += '<th class="text-center">Clases (Asistidas)</th>';
+                                html += '<th class="text-center">% Asistencia</th>';
+                                html += '<th class="text-end">Total</th>';
+                            html += '</tr>';
+                        html += '</thead>';
+                        html += '<tbody>';
+                        data.dictados.forEach(function(dictado) {
+                            html += '<tr>';
+                                html += '<td>' + dictado.curso + '</td>';
+                                html += '<td>' + dictado.legajo + '</td>';
+                                html += '<td>' + dictado.estado + '</td>';
+                                html += '<td class="text-end">$' + dictado.precio + '</td>';
+                                html += '<td class="text-center">' + dictado.total_clases + '</td>';
+                                html += '<td class="text-center">' + dictado.clases_asistidas + '</td>';
+                                html += '<td class="text-center">' + dictado.porcentaje_asistencia + '%</td>';
+                                html += '<td class="text-end">$' + dictado.precioFinal + '</td>';
+                            html += '</tr>';
+                        });
+                        html += '</tbody>';
+                    html += '</table>';
+                    html += '<p class="text-end"> TOTAL <strong>$' + total + '</strong></p>';
+
+                    datosDiv.html(html);
+
+                    // Actualiza los campos ocultos
+                    jq('#total_a_pagar').val(total); // Actualiza el campo oculto con el total a pagar
+                    jq('#datos_dictados').val(JSON.stringify(data.dictados)); // Actualiza el campo oculto con los datos de los dictados
+                }
+            });
+        }
+    }
+
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'reporte_appCurso.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block grafico %}
+
+<div class="cuadrado-background">
+  <br />
+  <h3 class="titulo text-white">Ingrese dos años para generar un reporte comparativo de finanzas
+  </h3>
+  <div class="row container justify-content-center">
+    <div class="border curso-form rounded-4 bg-white p-4 shadow-sm" style="width: 40%; background:white; padding-left: 20px; padding-top: 20px;">
+     <form>
+     <div>
+      <div class="form-group">
+                            {{ form.year1 }}
+                        </div>
+                        <div class="form-group">
+                            <label style="margin: 20px;" for="year2">Año a comparar con:</label>
+                            {{ form.year2 }}
+                        </div>
+                        <div class="text-center">
+                            <button style="margin-top: 20px;" id="submit-button" class="btn btn-outline-success" type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i> Comparar
+                            </button>
+
+    
+     {% comment %} {{form.year1}}
+    
+      <label style="padding:10px"> Año a comparar con : </label>
+     {{form.year2}}
+     </div>
+     <button style="align:center;" id="submit-button" class="btn btn-outline-success" type="submit" >
+        <i class="fa-solid fa-magnifying-glass"></i>
+        </button> {% endcomment %}
+     </form>
+    </div>
+  </div>
+    </div>
+
+
+{% endblock %}

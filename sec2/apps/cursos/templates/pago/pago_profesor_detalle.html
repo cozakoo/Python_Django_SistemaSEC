@@ -1,0 +1,66 @@
+{% extends 'detalle_listado_app_cursos.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block detalle %}
+
+<div class="row">
+    <div class="col-md-2">
+        <p class="negrita">Fecha :</p>
+    </div>
+    
+    <div class="col-md-4">
+        <p>{{ pago.fecha }}</p>
+    </div>
+
+    <div class="col-md-2">
+        <p class="negrita">Profesor:</p>
+    </div>
+    <div class="col-md-4">
+        <p>{{ pago.profesor }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <p class="negrita">Total :</p>
+    </div>
+    
+    <div class="col-md-4">
+        <p>${{ pago.total }}</p>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block botones %}
+
+
+
+<div class="col d-flex justify-content-between text-center">
+    
+    <a href="{% url 'cursos:pago_cuota_profesor_listado' %}" class="btn btn-sm btn-secondary btn-detalle">
+        <i class="fa-solid fa-arrow-left"></i> Ir al listado
+    </a>
+    
+    <a href="{% url 'cursos:pago_profesor_detalle' pago.pk %}?pdf=true" class="btn btn-light btn-sm btn-detalle">
+        <i class="fa-solid fa-file-pdf"></i> PFD
+    </a>
+
+    <a href="{% url 'cursos:profesor_detalle' pago.profesor.pk %}" class="btn btn-sm btn-primary btn-detalle">
+        <i class="fa-solid fa-person-chalkboard"></i> Ir al profesor
+    </a>
+
+
+</div>
+
+{% endblock %}
+
+{% block listado_asociado %}
+<div class="container-sm">
+    <h3 class="subtitulo">{{ tituloListado }}</h3>
+    {% include "pago/pago_profesor_detalle_dictados_pagados.html" with detalles=pago.detalles_pago.all %}
+</div>
+{% endblock %}

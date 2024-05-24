@@ -1,0 +1,99 @@
+{% extends 'detalle_listado_afiliado.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block detalle %}
+<link href="{% static 'css/afiliado_confirm_delete.css' %}" rel="stylesheet" />
+
+<h3>{{subtitulodetalle1}}</h3>
+{% include "persona_detalle.html" with persona=afiliado.persona %}
+<h3>{{subtitulodetalle2}}</h3>
+{% include "afiliados/afiliado_mostrar_datos.html" %}
+{% endblock %}
+
+
+{% block botones %}
+<div class="col"> 
+  <a href="{% url 'afiliados:afiliado_listar' %}" class="btn btn-sm btn-secondary btn-detalle">
+    <i class="fa-solid fa-arrow-left"></i> Ir al listado
+  </a>
+</div>
+
+{% if afiliado.estado == 1 or afiliado.estado == 2 %}
+<div class="col text-center"> 
+    <a href="{% url 'afiliados:afiliado_actualizar' afiliado.pk %}" class="btn btn-sm btn-detalle btn-primary ">
+      <i class="fa-regular fa-pen-to-square"></i>
+       Modificar</a>
+</div>
+{% endif %}
+
+<div class="col text-center"> 
+  <a href="{% url 'afiliados:confeccionar_nota' afiliado.pk %}" class="btn btn-sm btn-light btn-detalle">
+    <i class="fa-solid fa-file-pdf"></i>PDF</a>
+</div>
+
+<div class="col text-center">
+  <button type="button" class="btn btn-info btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#modalGrupoFamiliar">
+    <i class="fas fa-users"></i>
+    Grupo Familiar
+  </button>
+  {% include "afiliados/modal_afiliado_mostrar_grupoFamiliar.html" with relacion_familiar_list=relacion_familiar_list%}
+</div>
+
+<div class="col text-center">
+  <button type="button" class="btn btn-warning btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#modalCuotas  ">
+  <i class="fa-solid fa-credit-card"></i>
+  Cuotas
+</button>
+{% include "afiliados/modal_estado_cuotas.html" with cuotas=cuotas%}
+</div>
+
+<div class="col text-center">
+  <button type="button" class="btn btn-warning btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#modalPagos">
+    <i class="fa-solid fa-sack-dollar"></i>
+    Pagos
+  </button>
+  {% include "afiliados/modal_estado_pagos.html" with pagos=pagos%}
+  </div>
+
+<div class="col text-end">
+  {% if afiliado.estado == 1 %}
+  <button type="button" class="btn btn-success btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#modal_afiliar_{{ afiliado.pk }}">
+    <i class="fa-regular fa-circle-down"></i> Aceptar
+  </button>
+  {% include 'modal_confirm_alta.html' with object=afiliado detalleAfiliadoParam='detalleAfiliado' %}
+  {% endif %}
+  
+  {% if afiliado.estado == 2 %}
+  <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#modal_desafiliar_{{ afiliado.pk }}"><i class="fa-regular fa-circle-down"></i> Desafiliar</button>
+  {% include 'modal_confirm_baja.html' with object=afiliado detalleAfiliadoParam='detalleAfiliado' %}
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block listado_asociado %}
+{% if afiliado.dictados.all %}
+  <div class="container-sm">
+    <h3 class="subtitulo">{{ tituloListado1 }}</h3>
+    {% include "inscripcion_dictado.html" with dictados=afiliado.dictados.all %}
+  </div>
+{% endif %}
+
+{% if alquileres %}
+<div class="container-sm">
+  <h3 class="subtitulo">{{ tituloListado2 }}</h3>
+  {% include "afiliados/afiliado_alquiler.html" with alquileres=alquileres.all %}
+</div>
+{% endif %}
+
+{% if alquileres %}
+<div class="container-sm">
+  <h3 class="subtitulo">{{ tituloListado3 }}</h3>
+  {% include "afiliados/afiliado_alquiler.html" with alquileres=alquileres_lista_espera.all %}
+</div>
+{% endif %}
+
+
+{% endblock %}

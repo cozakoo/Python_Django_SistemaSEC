@@ -1,0 +1,32 @@
+{% extends 'home_curso.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/detalle.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block dinamica %}
+  <div class="container-sm">
+    <h2 class="titulo">{{ titulo }}</h2>
+    <br />
+    <div class="row">
+      {% block detalle_lado_izquierdo %}
+
+      {% endblock %}
+
+      {% block detalle_lado_derecho %}
+
+      {% endblock %}
+
+      <br />
+      <div class="row">
+        {% block botones %}
+
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

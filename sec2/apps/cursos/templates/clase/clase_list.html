@@ -1,0 +1,94 @@
+{%extends "home_curso.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block dinamica %}
+<head>
+    {% comment %} <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script> {% endcomment %}
+    <h1>listado de clases</h1>
+
+  </head>
+  <body>
+    <div id='calendar'></div>
+  </body>
+  
+  <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Dia</th>
+                <th scope="col">Hora de inicio</th>
+                <th scope="col">Hora fin</th>
+                <th scope="col">Editar</th>
+                <th scope="col">Eliminar</th>    
+                <th scope="col">Ver Dictados</th>                  
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for obj in object_list %}
+                <tr class="bg-transition">
+                    <td>{{ obj.dia }}</td>
+                    <td>{{ obj.hora_inicio }}</td>
+                    <td><a href="{% url 'cursos:curso_editar' obj.pk %}"class="btn btn-primary">Editar</a></td>
+                    <td><a href="{% url 'cursos:curso_eliminar' obj.pk %}"class="btn btn-primary">Eliminar</a></td>
+                    <td><a href="{% url 'cursos:dictados_listado' obj.pk %}"class="btn btn-primary">Ver Dictados</a></td>                
+                                                               
+                </tr>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    {% crispy filtros %}
+    <a href="{% url 'cursos:curso_crear' %}"class="btn btn-outline-success">Nuevo Curso</a>
+{% endblock %}
+
+
+{% block extrajs %}
+  <script>
+        
+    document.addEventListener('DOMContentLoaded', function()  {
+      calendar.render();
+    });
+
+    function renderCalendar(){
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+          left: '',
+          center: 'title',
+        },
+        events: getEvents(),
+        eventClick: handleClick,   
+        initialView: 'dayGridMonth',
+        buttonText: {
+          today: 'Hoy',
+        },
+        dayHeaderFormat: { weekday: 'long' }
+      });
+      calendar.render();
+      calendar.setOption('locale','es'); 
+    }
+
+    unction handleClick(info) {
+      info.jsEvent.preventDefault();
+
+      if (info.event.url) {
+        $('#datos').load(info.event.url)
+      }
+    }
+
+    function getEvents() {
+      return [
+           {% for obj in object_list %}
+              {
+              title: "{{obj.pk }}",
+              start: "{{obj.dia | date:'c'}}",
+              url: 'Dictado/{{orden.pk}}',
+             classNames: '{{orden.get_class_dot}}',
+              },
+            {% endfor %}
+        ]
+    }
+
+  </script>
+{% endblock %}

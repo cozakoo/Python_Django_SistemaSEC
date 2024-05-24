@@ -1,0 +1,109 @@
+{% extends 'alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+
+<style> 
+  .servicios-checkbox {
+    column-count: 3; /* Divide las opciones en dos columnas */
+    
+  }
+    .tipo_salon-radio {
+      column-count: 2;
+}
+</style>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <br />
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="{{ form.nombre.id_for_label }}">Nombre:</label>
+          {{ form.nombre }}
+        </div>
+        {% include "error_campo.html" with field=form.nombre %}
+
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="{{ form.localidad.id_for_label }}">Localidad:</label>
+          {{ form.localidad }}
+        </div>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.direccion.id_for_label }}">Dirección:</label>
+          {{ form.direccion }}
+          {% include "error_campo.html" with field=form.direccion %}
+        </div>
+      </div>
+
+
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              {{ form.capacidad.label_tag }}
+              {{ form.capacidad }}
+              {% include "error_campo.html" with field=form.capacidad %}
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              {{ form.precio.label_tag }}
+              {{ form.precio }}
+              {% include "error_campo.html" with field=form.precio %}
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label class="form-label negrita">Encargado:</label>
+          {{form.encargado}}
+        </div>
+      </div>
+      <div class="col text-center">
+        <div class="form-group">
+          {{ form.tipo_salon.label_tag }}
+          {{ form.tipo_salon }}
+          {% include "error_campo.html" with field=form.tipo_salon %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.servicios.id_for_label }}">Servicios:</label>
+          {{ form.servicios }}
+          {% include "error_campo.html" with field=form.servicios %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <div class="col">
+        <button type="submit" name="guardar_y_recargar" value="guardar_y_recargar" class="btn btn-success">Guardar y Recargar</button>
+      </div>
+      <div class="col">
+        <button type="submit" name="guardar_y_listar" value="guardar_y_listar" class="btn btn-success">Guardar y Listar</button>
+      </div>
+    </div>
+  </form>
+
+  <script type="text/javascript" src="{% static 'Libs/js/jquery-1.11.2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'Libs/js/jquery-iu.js' %}"></script>
+<script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+
+
+{% endblock %}

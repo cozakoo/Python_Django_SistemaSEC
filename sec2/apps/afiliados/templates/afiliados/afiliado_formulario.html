@@ -1,0 +1,50 @@
+{% extends 'alta_gestion_afiliados.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-12">
+        <div class="tab-content" id="form-tabs-content">
+          {% comment %}SECCION 1{% endcomment %}
+          <div id="section1" class="tab-pane fade show active">
+            {% include 'persona_alta.html' %}
+          </div>
+          {% comment %}SECCION 2{% endcomment %}
+          <div id="section2" class="tab-pane fade">
+            {% include 'afiliados/datos_afiliado_alta.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <div class="col">
+        {% if editar %}
+        <button type="submit" class="btn btn-success" style="display: none;">Guardar</button>
+        {% else %}
+        <button type="submit" class="btn btn-success" style="display: none;" name="guardar_y_recargar">Guardar y agregar otro</button>
+        <button type="submit" class="btn btn-success" style="display: none;" name="guardar_y_listar">Guardar y listar</button>
+        {% endif %}
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col">
+        <button id="prev-button" class="btn btn-info" style="display: none;"><i class="fa-solid fa-arrow-left"></i> Anterior </button>
+      </div>
+      
+      <div class="col text-end">
+        <button id="next-button" class="btn btn-info">Siguiente <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+    
+
+</form>
+{% endblock %}
+
+{% block extrajs_intermedia_00 %}
+<script src="{% static 'js/afiliado_formulario.js' %}"></script>
+{% endblock %}

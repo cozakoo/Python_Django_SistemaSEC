@@ -1,0 +1,72 @@
+body {
+    background-image: url("../../images/fondos.jpeg");
+    backdrop-filter: blur(5px); 
+    display: flex; /* Para usar flexbox */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+#icono{
+    color: #3c053d; 
+    text-align: center;
+    font-size: 300%;
+    /* max-width: 100px; */
+}
+
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    background-color: #eee;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .5);
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.form-signin:hover {
+    transform: scale(1.05);
+}
+
+.form-signin .checkbox {
+    font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[type='email'] {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type='password'] {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.login-title {
+    text-align: center;
+    font-weight: bold;
+    color: rgba(0, 0, 0, .8)
+}
+
+.error-message {
+    color: tomato;
+    text-align: center;
+    font-weight: bold;
+}
+
+.divider {
+    height: 1px;
+    color: rgba(0, 0, 0, 0.4)
+}
+
+.logo {
+    left: 25%;
+    text-align: center;
+    width: 50%;
+    padding: 1rem;
+}

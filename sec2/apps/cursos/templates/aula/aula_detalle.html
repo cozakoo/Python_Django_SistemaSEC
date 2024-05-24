@@ -1,0 +1,68 @@
+{% extends 'detalle_listado_app_cursos.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block detalle %}
+<div class="row">
+  <div class="col">
+    <p><strong>Nombre:</strong> {{ aula }}</p>
+  </div>
+  <div class="col">
+    <p><strong>Capacidad Máxima:</strong> {{ aula.capacidad }}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block botones %}
+<div class="col d-flex">
+  <a href="{% url 'cursos:gestion_aula' %}" class="btn btn-sm btn-secondary btn-detalle">
+    <i class="fa-solid fa-arrow-left"></i> Volver
+  </a>
+</div>
+
+<div class="col d-flex justify-content-center">
+  <a href="{% url 'cursos:aula_editar' aula.pk %}" class="btn btn-primary btn-sm btn-detalle"><i class="fa-regular fa-pen-to-square"></i> Modificar</a>
+</div>
+
+<div class="col d-flex justify-content-end">
+  <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal_dar_de_baja_{{ aula.pk }}"><i class="fa-regular fa-circle-down"></i> Eliminar</button>
+  {% include 'aula/modal_confirm_baja.html' with obj=aula %}            
+</div>
+{% endblock %}
+
+
+{% block listado_asociado %}
+
+{% if reservas %}
+<div class="container-sm">
+  <h3 class="subtitulo">{{ tituloListado }}</h3>
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Fecha</th>
+        <th>Horario</th>
+        <th colspan="2">Dictado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reserva in reservas %}
+      <tr>
+        <td class="negrita"> {{ forloop.counter }}</td>
+        <td>{{ reserva.fecha }}</td>
+        <td>{{ reserva.horario.hora_inicio }} - {{ reserva.horario.hora_fin }}</td>
+        <td>{{ reserva.horario.dictado.curso.nombre }}</td>
+        <td class="text-end">
+        <a href="{% url 'cursos:dictado_detalle' curso_pk=reserva.horario.dictado.curso.pk dictado_pk=reserva.horario.dictado.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Ir al dictado</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include 'pagination.html' with page_obj=reservas %}
+
+</div>
+{% endif %}
+
+{% endblock %}

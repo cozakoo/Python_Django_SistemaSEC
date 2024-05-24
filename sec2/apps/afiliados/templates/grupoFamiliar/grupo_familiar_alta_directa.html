@@ -1,0 +1,55 @@
+{% extends 'alta_gestion_afiliados.html' %}
+{% load static %}
+
+{% block formulario %}
+
+<style>
+  .tipo-radio label {
+    display: block;
+    float: left;
+    width: 50%;
+}
+</style>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2">
+      <div class="col">
+        <label>Seleccione al afiliado:</label>
+        <div class="form-group">
+          {{ form.afiliado }}
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.tipo.id_for_label }}"> Seleccione el parentezco:</label>
+          {{ form.tipo }}
+        </div>
+      </div>
+    </div>
+    
+      <div class="col-12">
+        <div class="tab-content" id="form-tabs-content">
+          {% comment %}SECCION 1{% endcomment %}
+          <div class="tab-pane fade show active">
+            {% include 'persona_alta.html' %}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col text-center">
+            <button type="submit" class="btn btn-success" name="guardar_y_recargar" >Guardar y agregar otro</button>
+            <button type="submit" class="btn btn-success" name="guardar_y_listar" >Guardar y listar </button>
+        </div>
+      </div>
+  </form>
+
+<script type="text/javascript" src="{% static 'Libs/js/jquery-1.11.2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'Libs/js/jquery-iu.js' %}"></script>
+<script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+
+{% endblock %}

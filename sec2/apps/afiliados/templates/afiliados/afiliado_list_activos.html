@@ -1,0 +1,58 @@
+{% extends 'listado_afiliado.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block tabla_listado %}
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Dni</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Fecha nacimiento</th>
+        <th scope="col">CUIT empleador</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <!-- {% comment %}<th scope="col" class="text-center">Opcion</th>{% endcomment %} -->
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr> -->
+      {% for afiliado in object_list %}
+        {% if afiliado.estado == 2 %}
+          <tr class="bg-transition fila-personalizada">
+            <td style="border-left-width: 0px; padding-left: 20px;">{{ afiliado.persona.dni }}</td>
+            <td>{{ afiliado.persona.apellido }}</td>
+            <td>{{ afiliado.persona.nombre }}</td>
+            <td>{{ afiliado.persona.fecha_nacimiento }}</td>
+            <td>{{ afiliado.cuit_empleador }}</td>
+            <td>
+              <a href="{% url 'afiliados:Afiliado' afiliado.pk %}" class="btn btn-info btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal_desafiliar"><i class="fa-regular fa-circle-down"></i> Dar de baja</button>
+              <div class="modal fade" id="exampleModal_desafiliar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <h5>¿Estás seguro de que deseas desafiliar?</h5>
+                    </div>
+                    <div class="modal-footer">
+                      {% comment %} <a href="{% url 'afiliados:desafiliar_afiliado' afiliado.pk %}" class="btn btn-danger">Confirmar</a> {% endcomment %}
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

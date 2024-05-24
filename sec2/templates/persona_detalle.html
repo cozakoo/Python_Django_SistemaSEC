@@ -1,0 +1,69 @@
+{% comment %} DNI - CUIT - NACIMIENTO {% endcomment %}
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+  <div class="col">
+    <p class="negrita">Dni:</p>
+  </div>
+  <div class="col">
+    <p>{{ persona.dni }}</p>
+  </div>
+
+  <div class="col">
+    <p class="negrita">Cuit:</p>
+  </div>
+  <div class="col">
+    <p>{{ persona.cuil }}</p>
+  </div>
+
+  <div class="col">
+    <p class="negrita">Nacimiento:</p>
+  </div>
+  <div class="col">
+    <p>{{ persona.fecha_nacimiento }}</p>
+  </div>
+</div>
+
+{% comment %} NOMBRE - APELLIDO - CELULAR {% endcomment %}
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+  <div class="col">
+    <p class="negrita">Nombre:</p>
+  </div>
+  <div class="col">
+    <p>{{ persona.nombre }}</p>
+  </div>
+
+  <div class="col">
+    <p class="negrita">Apellido:</p>
+  </div>
+  <div class="col">
+    <p>{{ persona.apellido }}</p>
+  </div>
+
+  <div class="col">
+    <p class="negrita">Celular:</p>
+  </div>
+  <div class="col">
+    <p>{{ persona.celular }}</p>
+  </div>
+</div>
+
+{% comment %} PAIS - ESTADO - MAIL {% endcomment %}
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+  <div class="col">
+    <p class="negrita">Nacionalidad:</p>
+  </div>
+  <div class="col">
+    <p>{{ persona.get_nacionalidad_display }}</p>
+  </div>
+  <div class="col">
+    <p><strong>Correo:</strong>
+    {{ persona.mail }}</p>
+  </div>
+  <div class="col">
+    </div>
+  <div class="col">
+    <p class="negrita">Estado Civil:</p>
+  </div>
+  <div class="col">
+    <p>{{ persona.get_estado_civil_display }}</p>
+  </div>
+</div>

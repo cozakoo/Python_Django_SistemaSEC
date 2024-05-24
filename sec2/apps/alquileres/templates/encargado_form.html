@@ -1,0 +1,24 @@
+{% extends 'alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+<br />
+
+  <form method="post">
+    {% csrf_token %}
+    {% include 'persona_alta.html' %}
+
+    <div class="row text-center">
+      <div class="col">
+        {% if editar %}
+        <button type="submit" class="btn btn-success">Guardar</button>
+        {% else %}
+        <button type="submit" name="guardar_y_recargar" value="guardar_y_recargar" class="btn btn-success">Guardar y agregar otro</button>
+        <button type="submit" name="guardar_y_listar" value="guardar_y_listar" class="btn btn-success">Guardar y Listar</button>
+        {% endif %}
+      </div>
+    </div>
+  <form>
+        
+{% endblock %}

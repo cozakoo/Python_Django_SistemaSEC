@@ -1,0 +1,80 @@
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/nav_principal.css' %}" rel="stylesheet" />
+  {% comment %} <link href="{% static 'Libs/css/nav_afiliado.css' %}" rel="stylesheet" /> {% endcomment %}
+  <link href="{% static 'Libs/css/nav_curso.css' %}" rel="stylesheet" />
+{% endblock %}
+
+
+<div class="menu" id="menu_principal">
+  <br>
+  <h3 class="titulo-menu">SEC 2</h3>
+  <ul class="menu">
+    {% if 'permission_gestion_afiliado' in permisos %}
+    <li>
+      <a href="#" id="mostrarMenuAfiliado">
+        <i class="fa-solid fa-person-dress"></i>
+        Gestión de Afiliados</a>
+    </li>
+    {% endif %}
+    {% if 'permission_gestion_curso' in permisos %}
+    <li>
+      <a href="#" id="mostrarMenuCurso">
+        <i class="fa-solid fa-graduation-cap"></i> 
+        Gestión de Cursos</a>
+    </li>
+    {% endif %}
+      {%if 'permission_gestion_alquiler' in permisos %} 
+    <li>
+      <a href="#" id="mostrarMenuSalon">
+        <i class="fa-solid fa-person-shelter"></i>
+         Gestión de Salon</a>
+    </li>
+     {% endif %} 
+     {% if 'permission_gestion_usuario' in permisos %} 
+    <li>
+       <a href="{% url 'users:user_register' %}" id="mostrarMenuSalon"> 
+        <a href="#" id="mostrarMenuUsers">
+        <i class="fa-solid fa-users-gear"></i>
+         Gestión de Usuarios</a>
+    </li>
+     {% endif %}  
+    {% include 'documentacion_info.html' %}
+
+    {% comment %} {% endif %} {% endcomment %}
+ 
+  </ul>
+  
+
+
+
+
+  </div>
+<div id="menu_afiliado_principal" style="display: none;">
+  <!-- Menú Afiliados -->
+  {% include 'nav_afiliado.html' %}
+</div>
+
+<div id="menu_curso_principal" style="display: none;">
+  <!-- Menú Cursos -->
+  {% include 'nav_curso.html' %}
+</div>
+
+<div id="menu_salon_principal" style="display: none;">
+  <!-- Menú Cursos -->
+  {% include 'nav_alquiler.html' %}
+</div>
+
+<div id="menu_usuarios_principal" style="display: none;">
+  <!-- Menú Usuarios -->
+  {% include 'nav_gestion_usuarios.html' %}
+</div>
+
+{% block extrajs %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'Libs/js/nav_principal.js' %}"></script>
+
+<script src="{% static 'Libs/js/abrir_documetacion.js' %}"></script>
+
+{% endblock %}

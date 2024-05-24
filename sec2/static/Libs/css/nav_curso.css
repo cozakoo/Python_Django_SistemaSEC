@@ -1,0 +1,277 @@
+.menu-button {
+    background-color: #444;
+    border: none;
+    color: #fff;
+    padding: 12px;
+    /* Aumenta el espacio interno del botón */
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    /* Aumenta el tamaño de fuente de los botones */
+    transition: background-color 0.3s;
+    /* Agrega una transición suave de fondo */
+    margin-bottom: 0px;
+    margin-top: 10px;
+
+}
+
+/* Estilos para los menús desplegables */
+.collapse {
+    display: none;
+}
+
+.collapse.show {
+    display: block;
+}
+
+/* Estilos para los botones de menú desplegable */
+[data-bs-toggle="collapse"]::after {
+    content: "\f078";
+    /* Icono de flecha hacia abajo */
+    float: right;
+    font-family: "Font Awesome 5 Free";
+}
+
+
+[data-expanded="true"]::after {
+    content: "\f077";
+    /* Icono de flecha hacia arriba */
+}
+
+
+[data-expanded="true"]+.collapse {
+    display: block;
+}
+
+/* Estilos para los submenús */
+.collapse.multi-collapse {
+    background-color: #333;
+    /* Fondo igual que el menú principal */
+    padding: 10px;
+}
+
+.collapse.multi-collapse li {
+    margin-bottom: 15px;
+}
+
+.collapse.multi-collapse a {
+    color: #fff;
+    /* Texto igual que el menú principal */
+    font-size: 18px;
+    /* Tamaño de fuente igual que el menú principal */
+}
+
+.collapse.multi-collapse a:hover {
+    background-color: #888;
+    /* Fondo al pasar el cursor por encima igual que el menú principal */
+}
+
+/* Estilos generales para los botones desplegables */
+/* Estilos generales para los botones desplegables */
+.submenu-toggle {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    text-align: left;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alinea verticalmente los elementos */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button-content {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+}
+
+.submenu-toggle i {
+    font-size: 20px;
+}
+
+/* Estilos para los botones desplegables cuando el submenú está visible (clase show) */
+.submenu-toggle.show {
+    background-color: #444;
+    /* Cambia el fondo cuando el submenú está visible */
+    color: #FFA500;
+    /* Cambia el color cuando el submenú está visible */
+}
+
+/* Efecto de hover para los botones desplegables */
+.submenu-toggle:hover {
+    background-color: #444;
+    /* Cambia el fondo al pasar el cursor por encima */
+    color: #FFA500;
+    /* Cambia el color al pasar el cursor por encima */
+}
+
+/* Estilos personalizados para los botones de cada submenú */
+.submenu-toggle[data-submenu="curso"] {
+    /* background-color: #009688; */
+    background-color: #627254;
+    
+    /* Color de fondo para el botón de Curso */
+}
+
+.submenu-toggle[data-submenu="profesor"] {
+    background-color: #240A34;
+    /* Color de fondo para el botón de Profesor (Indigo) */
+}
+
+.submenu-toggle[data-submenu="aulas"] {
+    background-color: #8B0000;
+    /* Color de fondo para el botón de Aulas (Dark Red) */
+}
+
+.submenu-toggle[data-submenu="pago"] {
+    background-color: #5F374B;
+    /* Color de fondo para el botón de Pago (Saddle Brown) */
+}
+
+/* Muestra los submenús con la clase 'show' */
+.submenu.show {
+    display: block;
+}
+
+/* Oculta los submenús sin la clase 'show' */
+.submenu:not(.show) {
+    display: none;
+}
+
+.menu li {
+    list-style-type: none;
+    /* Elimina el marcador */
+    margin-left: 0;
+    /* Elimina el espacio izquierdo del marcador */
+}
+
+.menu li a {
+    text-decoration: none;
+    color: #fff;
+    padding-left: 4%;
+    font-size: 120%;
+    transition: color 0.3s, background-color 0.3s;
+    display: block;
+}
+
+.menu li a {
+    color: #ffffff;
+    background-color: #5c5c5c;
+}
+
+.menu li:hover a {
+    color: #FFA500;
+    background-color: #000000;
+}
+
+.submenu {
+
+    background-color: #5c5c5c;
+    /* Color de fondo para la lista de submenús */
+    padding: 10px;
+    /* Espacio alrededor del contenido de la lista */
+}
+
+.submenu li {
+    list-style-type: none;
+    /* Elimina el marcador de lista de los elementos <li> */
+}
+
+#curso-submenu,
+#profesor-submenu,
+#aulas-submenu,
+#pago-submenu {
+    margin-bottom: 0px;
+    padding: 0px;
+
+}
+
+.item-subMenu {
+    padding-left: 5%;
+}
+
+.submenu a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 120%;
+    transition: color 0.3s, background-color 0.3s;
+    display: block;
+
+}
+
+.submenu a {
+    color: #ffffff;
+}
+
+.submenu li:hover a {
+    color: #FFA500;
+}
+
+hr {
+    margin-top: 0px;
+    border-top-width: 0px;
+    margin-bottom: 3%;
+}
+
+.enlace {
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 0px;
+
+    display: inline-block;
+    padding: 7px;
+    border-radius: 0px;
+    text-decoration: none; /* Quitar el subrayado del enlace */
+    color: white; /* Color del texto */
+    display: block; width: 100%;
+
+}
+
+#enlaceReporte:hover,
+#enlaceAlumno:hover,
+#enlaceDocTecnico:hover,
+#enlaceManualUsuario:hover,
+#enlaceActividad:hover,
+#enlaceAula:hover {
+    color: #FFA500; /* Cambiar el color en el hover */
+}
+
+#enlaceActividad{
+    background-color: #9B3922;
+    border: 2px solid #9B3922;
+    
+}
+#enlaceReporte{
+    background-color: #6c3fab;
+    border: 2px solid #6c3fab;
+    
+}
+
+#enlaceAula{
+    background-color: #C08B5C;
+    border: 2px solid #C08B5C;
+}
+
+#enlaceAlumno{
+    background-color: #8644A2;
+    border: 2px solid #8644A2;
+}
+
+#enlaceDocTecnico{
+    background-color: #51829B;
+    border: 2px solid #51829B;
+}
+#enlaceManualUsuario{
+    background-color: #51829B;
+    border: 2px solid #51829B;
+}
+
+#enlaceDocTecnico,
+#enlaceManualUsuario{
+    padding: 7px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}

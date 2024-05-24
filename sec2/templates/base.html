@@ -1,0 +1,42 @@
+{% load static %}
+{% load selectable_tags %}
+{% include_jquery_libs %}
+{{ block.super }}
+{% include_ui_theme 'flick' %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Martín Arcos Vargas">
+    <title>Sindicato Empleados De Comercio</title>
+    <!-- Enlace a hojas de estilo CSS desde archivos estáticos -->
+    <link href="{% static 'Libs/css/normalize.css' %}" rel="stylesheet" />
+    <link href="{% static 'Libs/bootstrap-5.3.1-dist/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'Libs/css/base.css' %}" rel="stylesheet" />
+    <link href="{% static 'Libs/fontawesome-free-6.4.2-web/fontawesome-free-6.4.2-web/css/all.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'Libs/fontawesome-free-6.4.2-web/fontawesome-free-6.4.2-web/css/brands.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'Libs/fontawesome-free-6.4.2-web/fontawesome-free-6.4.2-web/css/solid.css' %}" rel="stylesheet" />
+    <!-- Icono de la pestaña del navegador desde archivos estáticos -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}" />
+    <link src="{% static 'Libs/jquery-ui-1.13.2/jquery-ui.min.css' %}" rel="stylesheet"></script>
+    {% block extracss %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block container %}
+    {% endblock %}
+
+    <script src="{% static 'Libs/js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'Libs/bootstrap-5.3.1-dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'Libs/js/main.js' %}"></script>
+
+    <script src="{% static 'Libs/fullcalendar-6.1.11/dists/index.global.min.js' %}"></script>
+    <script src="{% static 'Libs/jquery-ui-1.13.2/jquery-ui.js' %}"></script>
+    <script src="{% static 'Libs/jquery-ui-1.13.2/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'Libs/js/jquery.min.js' %}"></script>
+    {% block extrajs %}
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,147 @@
+{% extends 'detalle_listado_app_cursos.html' %}
+{% load crispy_forms_tags %}
+
+{% block detalle %}
+
+
+<div class="container">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+    <div class="col"><p><strong>Fecha:</strong> {{ clase.reserva.fecha }}</p></div>
+    <div class="col"><p><strong>Hora Inicio:</strong> {{ clase.reserva.horario.hora_inicio }} hrs.</p></div>
+    <div class="col"><p><strong>Hora fin:</strong> {{ clase.reserva.horario.hora_fin }} hrs.</p></div>
+    <div class="col"><p><strong>Lugar:</strong> {{ clase.reserva.aula }}</p></div>
+  </div>
+</div>
+
+
+<div class="col d-flex">
+  <a href="{% url 'cursos:dictado_detalle' curso_pk=dictado.curso.pk dictado_pk=dictado.pk %}" class="btn btn-sm btn-secondary btn-detalle">
+    <i class="fa-solid fa-arrow-left"></i> Volver al dictado
+  </a>
+</div>
+
+{% endblock %}
+
+
+
+{% block listado_asociado %}
+<div class="container-sm">
+  <div class="row">
+    <div class="col">
+      <h3 class="subtitulo">{{ tituloListado }}</h3>
+    </div>
+    <div class="col">
+      <div class="d-flex align-items-center justify-content-center" >
+        {% if not clase.asistencia_tomada %}
+        <label for="accion" class="form-label negrita me-2">Marcar todos:</label>
+        <div class="btn-group dropend me-2">
+          <div class="btn border-info btn-sm bg-info bg-opacity-10 border">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault"></label>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  
+  <form method="post" action="{% url 'cursos:generar_asistencia' clase.id  %}">
+    {% csrf_token %}
+    
+    <h5 class="subtitulo">{{ tituloListado1 }}</h5>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          {% include "tabla_persona_cabecera.html" %}
+          <th colspan="1">Rol</th>
+          <th class="text-end">Asistencia</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for inscrito in inscritos %}
+        <tr>
+          {% include "tabla_persona_cuerpo.html" with persona=inscrito.persona%}
+          <td>{{ inscrito.persona.obtenerTipo }}</td>
+
+          <td class="text-end">
+            <input 
+            class="form-check-input"
+            type="checkbox"
+            name="alumnos_asistencia"
+            value="{{ inscrito.id }}"
+            {% if clase.asistencia_tomada %}disabled{% endif %}
+            {% if inscrito.persona.pk in lista_asistencia %}checked{% endif %}>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    <h5 class="subtitulo"> {{tituloListado2}}</h5>
+
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>Dni</th>
+          <th >Nombre</th>
+          <th colspan="2"></th>
+          <th class="text-end">Asistencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for titular in titulares %}
+        <tr>
+          {% include "tabla_persona_cuerpo.html" with persona=titular.profesor.persona%}
+          <td colspan="2"></td>
+
+          <td class="text-end">
+            <input 
+            class="form-check-input"
+            type="checkbox"
+            name="profesor__asistencia"
+            value="{{ titular.profesor.id }}" 
+            {% if clase.asistencia_tomada %}disabled{% endif %}
+            {% if titular.profesor.persona.pk in lista_asistencia_titular %}checked{% endif %}>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="text-center">
+      
+      {% if not dictado.finalizado and not clase.asistencia_tomada %}
+          <button class="btn btn-success btn-detalle" type="submit">Finalizar jornada</button>
+      {% else %}
+        <button class="btn btn-success btn-detalle" disabled type="submit">Jornada Finalizada</button>
+      {% endif %}
+    </div>
+
+  </form>
+</div>
+
+  
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en la opción "Todas" del menú desplegable
+      $('a.dropdown-item').click(function () {
+        var isChecked = $(this).text().toLowerCase() === 'todas';
+
+        // Establecer el estado de todos los checkboxes
+        $('input[type="checkbox"]').prop('checked', isChecked);
+      });
+
+      // Manejar el clic en el checkbox de la cabecera
+      $('#flexCheckDefault').change(function () {
+        // Establecer el estado de todos los checkboxes según el estado del checkbox de la cabecera
+        $('input[name="alumnos_asistencia"]').prop('checked', $(this).prop('checked'));
+        $('input[name="profesor__asistencia"]').prop('checked', $(this).prop('checked'));
+      });
+    });
+  </script>
+  
+  {% endblock %}
+  

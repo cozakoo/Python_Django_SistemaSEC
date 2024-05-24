@@ -1,0 +1,40 @@
+{% extends 'listado_afiliado.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block botones %}
+<a href="{% url 'afiliados:pagar_cuota_sindical' %}" class="btn btn-outline-success btn-sm btn-detalle"><i class="fa-solid fa-plus"></i> Nuevo</a>
+<a href="{% url 'afiliados:actualizar_estado' %}" class="btn btn-outline-success btn-sm btn-detalle"><i class="fa-solid fa-list-check"></i> Actualizar</a>
+{% endblock %}
+
+{% block tabla_listado %}
+
+
+<table class="table table-sm table-hover">
+    <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          <th>Empleador</th>
+          <th>Monto</th>
+          <th colspan="2">Afiliado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pago in page_obj %}
+        <tr>
+            <td class="negrita"> {{ page_obj.start_index|add:forloop.counter0 }}</td>
+            <td>{{ pago.fecha_pago }}</td>
+            <td>{{ pago.afiliado.cuit_empleador }} - {{pago.afiliado.razon_social}}</td>
+            <td>${{ pago.monto }}</td>
+            <td>{{ pago.afiliado.persona.dni }} - {{pago.afiliado.persona.apellido}} {{pago.afiliado.persona.nombre}}</td>
+            <td class="text-end">
+                <a href="{% url 'afiliados:afiliado_detalle' pago.afiliado.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-user"></i> Ir al afiliado</a>            
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% endblock %}

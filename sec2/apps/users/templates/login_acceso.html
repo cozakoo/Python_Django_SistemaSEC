@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/login.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block container %}
+  <div class="contenedor-login">
+    {% include 'message.html' %}
+    <main class="form-signin animate__animated animate__zoomIn text-center">
+      <i id="icono" class="fa-regular fa-circle-user"></i>
+      <hr class="divider" />
+
+      <form id="login-form" align="center" method="post">
+        {% csrf_token %}
+        <input type="{{ form.username.widget.type }}" name="{{ form.username.name }}" placeholder="{{ form.username.label }}" {% if form.username.value %}value="{{ form.username.value }}"{% endif %} class="form-control text-center" required>
+        <br>
+        <div class="password-input-container">
+
+          <input type="password" 
+          name="{{ form.password.name }}" 
+          placeholder="{{ form.password.label }}" 
+          {% if form.password.value %}value="{{ form.password.value }}"{% endif %}
+          class="form-control text-center password-input" required>
+          
+          <br>
+          
+          <label class="password-toggle" onclick="togglePassword()">
+            <i id="password-icon" class="fa-solid fa-eye"></i>
+          </label>
+
+        </div>
+        
+        <button type="submit" class="btn btn-primary " onclick="applyBlur()" style="margin-top: 20px; background-color: #00a0e3;"> Iniciar Sesión</button>
+      </form>
+
+    </main>
+  </div>
+  {% include 'footer.html' %}
+
+
+    <script>
+      function showLoginForm() {
+        var welcomeMessage = document.getElementById("welcome-message");
+        var loginForm = document.getElementById("login-form");
+        var backgroundContainer = document.getElementById("background-container");
+  
+        welcomeMessage.style.opacity = "0";
+        loginForm.style.opacity = "1";
+        loginForm.style.pointerEvents = "auto";
+        backgroundContainer.classList.add('blur-background');
+      }
+  
+      function togglePassword() {
+        var passwordInput = document.querySelector(".password-input");
+        passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+      }
+  
+      function togglePassword() {
+        var passwordInput = document.querySelector(".password-input");
+        var passwordIcon = document.getElementById("password-icon");
+    
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          passwordIcon.className = "fa-solid fa-eye-slash";
+        } else {
+          passwordInput.type = "password";
+          passwordIcon.className = "fa-solid fa-eye";
+        }
+      }
+  </script>
+{% endblock %}

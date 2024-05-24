@@ -1,0 +1,30 @@
+{% extends 'detalle_listado.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block detalle %}
+{% include "persona_detalle.html" with persona=encargado.persona %}
+{% endblock %}
+
+{% block botones %}
+<div class="col">
+    <a href="{% url 'alquiler:encargado_listar' %}" class="btn btn-sm btn-secondary btn-detalle">
+        <i class="fa-solid fa-arrow-left"></i> Ir al listado
+    </a>
+</div>
+
+<div class="col">
+    <a href="{% url 'alquiler:encargado_editar' encargado.pk %}" class="btn btn-primary btn-sm btn-detalle"><i class="fa-regular fa-pen-to-square"></i> Modificar</a>
+</div>
+{% endblock %}
+
+{% block listado_asociado %}
+{% if encargado.salon.all %}
+<div class="container-sm">
+    <h3 class="subtitulo">{{ tituloListado1 }}</h3>
+    {% include "listado_salones.html" with salones=encargado.salon.all %}
+</div>
+{% endif %}
+
+{% endblock %}

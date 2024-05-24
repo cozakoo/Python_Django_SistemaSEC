@@ -1,0 +1,33 @@
+{% extends 'app_cursos_alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+
+<form method="post" action="{% url 'cursos:actividad_editar' pk=object.pk %}"> {# Asegúrate de que la URL de actualización esté definida correctamente en tus urls.py #}
+    {% csrf_token %}
+    
+    <div class="row">
+      <div class="col-md-1 align-self-center">
+          {{ form.nombre.label_tag }}
+      </div>
+      
+      <div class="col-md-8 align-self-center">
+          {{ form.nombre }}
+          <small class="form-text text-muted">{{ form.nombre.help_text }}</small>
+      </div>
+      
+      
+      
+      <div class="col">
+          <button type="submit" class="btn btn-success btn-sm btn-detalle">Guardar</button>
+      </div>
+    </div>
+    <div class="col d-flex">
+      <a href="{% url 'cursos:gestion_actividad' %}" class="btn btn-sm btn-secondary btn-detalle">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+    </div>
+  </form>
+
+{% endblock %}

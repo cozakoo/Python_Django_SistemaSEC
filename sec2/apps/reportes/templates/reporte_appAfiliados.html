@@ -1,0 +1,21 @@
+{% extends 'home_afiliado.html' %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+<script src="{% static 'Libs/highcharts/code/highcharts.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/modules/exporting.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/modules/export-data.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/modules/accessibility.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/themes/dark-unica.js' %}"></script>
+{% endblock %}
+
+
+{% block dinamica %}
+<div class="container-sm">
+    <h2 class="titulo">{{ titulo }}</h2>
+    {% block grafico %}
+    {% endblock %}
+
+</div>
+{% endblock %}

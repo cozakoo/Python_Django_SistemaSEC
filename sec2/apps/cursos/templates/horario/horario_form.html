@@ -1,0 +1,34 @@
+{% extends 'app_cursos_alta.html' %}
+
+{% load crispy_forms_tags %}
+{% block formulario %}
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.dia_semana.id_for_label }}">Día de la semana:</label>
+          {{ form.dia_semana }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.hora_inicio.id_for_label }}">Hora de inicio:</label>
+          <input type="time" id="id_hora_inicio" name="hora_inicio" required class="form-control" value="{{ form.hora_inicio.value|default:'' }}" />
+          {% include "error_campo.html" with field=form.hora_inicio %}
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
+      <div class="col">
+        <a href="{% url 'cursos:dictado_detalle' curso_pk=dictado.curso.pk dictado_pk=dictado.pk %}" class="btn btn-secondary">Cancelar</a>
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-success">Guardar</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}

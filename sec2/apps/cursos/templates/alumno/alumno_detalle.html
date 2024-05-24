@@ -1,0 +1,31 @@
+{% extends 'detalle_listado_app_cursos.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block detalle %}
+  {% include "persona_detalle.html" with persona=alumno.persona %}
+{% endblock %}
+
+{% block botones %}
+<div class="col d-flex justify-content-center">
+    {% comment %} <a href="{% url 'cursos:profesor_editar' profesor.pk %}" class="btn btn-primary btn-sm btn-detalle"><i class="fa-regular fa-pen-to-square"></i> Modificar</a> {% endcomment %}
+  </div>
+
+  {% if not rol.hasta %}
+  <div class="col d-flex justify-content-end">
+    <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal_eliminar"><i class="fa-regular fa-circle-down"></i> Dar de Baja</button>
+    {% include 'alumno/modal_confirm_baja.html' %}
+  </div>
+  {% endif %}
+  
+  {% endblock %}
+
+{% block listado_asociado %}
+{% if alumno.dictados.all %}
+<div class="container-sm">
+  <h3 class="subtitulo">{{ tituloListado }}</h3>
+  {% include "inscripcion_dictado.html" with dictados=alumno.dictados.all %}
+</div>
+{% endif %}
+{% endblock %}

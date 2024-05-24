@@ -1,0 +1,190 @@
+.menu-button {
+    background-color: #444;
+    border: none;
+    color: #fff;
+    padding: 12px;
+    /* Aumenta el espacio interno del botón */
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    /* Aumenta el tamaño de fuente de los botones */
+    transition: background-color 0.3s;
+    /* Agrega una transición suave de fondo */
+    margin-bottom: 0px;
+    margin-top: 10px;
+
+}
+
+/* Estilos para los menús desplegables */
+.collapse {
+    display: none;
+}
+
+.collapse.show {
+    display: block;
+}
+
+/* Estilos para los botones de menú desplegable */
+[data-bs-toggle="collapse"]::after {
+    content: "\f078";
+    /* Icono de flecha hacia abajo */
+    float: right;
+    font-family: "Font Awesome 5 Free";
+}
+
+
+[data-expanded="true"]::after {
+    content: "\f077";
+    /* Icono de flecha hacia arriba */
+}
+
+
+[data-expanded="true"]+.collapse {
+    display: block;
+}
+
+/* Estilos para los submenús */
+.collapse.multi-collapse {
+    background-color: #333;
+    /* Fondo igual que el menú principal */
+    padding: 10px;
+}
+
+.collapse.multi-collapse li {
+    margin-bottom: 15px;
+}
+
+.collapse.multi-collapse a {
+    color: #fff;
+    /* Texto igual que el menú principal */
+    font-size: 18px;
+    /* Tamaño de fuente igual que el menú principal */
+}
+
+.collapse.multi-collapse a:hover {
+    background-color: #888;
+    /* Fondo al pasar el cursor por encima igual que el menú principal */
+}
+
+/* Estilos generales para los botones desplegables */
+.submenu-toggle {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    text-align: left;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transition: background-color 0.3s, color 0.3s;
+    /* margin-top: 2.5%; */
+    /* Agrega transiciones suaves */
+}
+
+.submenu-toggle i {
+    font-size: 20px;
+}
+
+/* Estilos para los botones desplegables cuando el submenú está visible (clase show) */
+.submenu-toggle.show {
+    background-color: #444;
+    /* Cambia el fondo cuando el submenú está visible */
+    color: #FFA500;
+    /* Cambia el color cuando el submenú está visible */
+}
+
+/* Efecto de hover para los botones desplegables */
+.submenu-toggle:hover {
+    background-color: #444;
+    /* Cambia el fondo al pasar el cursor por encima */
+    color: #FFA500;
+    /* Cambia el color al pasar el cursor por encima */
+}
+
+.submenu-toggle[data-submenu="alquiler"] {
+    background-color: #009688;
+    /* Color de fondo para el botón de Alquiler (ajusta el valor según sea necesario) */
+}
+
+.submenu-toggle[data-submenu="pago"] {
+    background-color: #8B4513;
+    /* Color de fondo para el botón de Pago (Saddle Brown) */
+}
+
+/* Muestra los submenús con la clase 'show' */
+.submenu.show {
+    display: block;
+}
+
+/* Oculta los submenús sin la clase 'show' */
+.submenu:not(.show) {
+    display: none;
+}
+
+.menu li {
+    list-style-type: none;
+    /* Elimina el marcador */
+    margin-left: 0;
+    /* Elimina el espacio izquierdo del marcador */
+}
+
+.menu li a {
+    text-decoration: none;
+    color: #fff;
+    padding-left: 4%;
+    font-size: 120%;
+    transition: color 0.3s, background-color 0.3s;
+    display: block;
+}
+
+.menu li a {
+    color: #ffffff;
+    background-color: #5c5c5c;
+}
+
+.menu li:hover a {
+    color: #FFA500;
+    background-color: #000000;
+}
+
+.submenu {
+
+    background-color: #5c5c5c;
+    /* Color de fondo para la lista de submenús */
+    padding: 10px;
+    /* Espacio alrededor del contenido de la lista */
+}
+
+.submenu li {
+    list-style-type: none;
+    /* Elimina el marcador de lista de los elementos <li> */
+}
+
+.item-subMenu {
+    padding-left: 5%;
+}
+
+.submenu a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 120%;
+    transition: color 0.3s, background-color 0.3s;
+    display: block;
+
+}
+
+.submenu a {
+    color: #ffffff;
+}
+
+.submenu li:hover a {
+    color: #FFA500;
+}
+
+hr {
+    margin-top: 0px;
+    border-top-width: 0px;
+    margin-bottom: 3%;
+}

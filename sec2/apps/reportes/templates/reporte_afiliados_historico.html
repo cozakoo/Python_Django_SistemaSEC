@@ -1,0 +1,144 @@
+{% extends 'reporte_appAfiliados.html' %}
+
+{% block grafico %}
+
+<div class="form-group">
+   
+     <form class="d-flex" role="search" method="get" style="width:  80%; hight:20%;">
+    <label class="text-white" style="padding:10px"> ingrese un año : </label>
+      {{form_year.year}}
+    <button id="submit-button" class="btn btn-outline-success" type="submit" >
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+
+     </form>
+</div>
+
+
+
+<div>
+    <div class="container-fluid" style="background-color: grey;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %} <script type="application/javascript">
+    var graphData = {{ graph_afiliados|safe }};
+    var categories = graphData.categories;
+    var y_axis_title = "{{ graph_afiliados.y_axis_title }}";
+
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Reporte de afiliacion y desfiliaciones del año', 
+            align: 'left'
+        },
+        subtitle: {
+            text: 'Reporte',
+            align: 'left'
+        },
+        xAxis: {
+            categories: categories,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: y_axis_title
+            }
+        },
+        tooltip: {
+            formatter: function() {
+                var tooltipText = '<b>' + this.series.name + ' en ' + this.key + '</b><br/>';
+                var monthDetails = (this.series.name === 'afiliaciones' ? graphData.data_dados_alta_details : graphData.data_dados_baja_details)[this.point.index + 1];
+                for (var cuit in monthDetails) {
+                    tooltipText += 'CUIT ' + cuit + ': ' + monthDetails[cuit] + '<br/>';
+                }
+                return tooltipText;
+            }
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [
+            {
+                name: 'afiliaciones',
+                data: graphData.data_dados_alta_list,
+                color: 'blue'
+            },
+            {
+                name: 'desfiliaciones',
+                data: graphData.data_dados_baja_list,
+                color: 'red'
+            }
+        ]
+    });
+</script> {% endcomment %}
+
+<script type="application/javascript">
+    var categories = {{ graph_afiliados.categories|safe }};
+    var y_axis_title = "{{ graph_afiliados.y_axis_title }}";
+
+    Highcharts.chart('container', 
+    {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Reporte de afiliacion y desfiliaciones del año ' + {{year}} ,
+            align: 'left'
+        },
+        subtitle: {
+            text:'Reporte',
+            align: 'left'
+        },
+        xAxis: {
+            categories: categories,  // Usa las categorías del contexto
+            crosshair: true,
+            accessibility: {
+                description: 'Countries'
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: y_axis_title  // Usa el título del eje Y del contexto
+            }
+        },
+        tooltip: {
+            //valueSuffix: ' (1000 MT)'
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [
+        {
+            name: 'afiliaciones',
+            data: {{ graph_afiliados.data_dados_alta_list|safe }},
+            color: 'blue'
+
+        },
+        {
+            name: 'desfiliaciones',
+            data: {{ graph_afiliados.data_dados_baja_list|safe }},
+            color: 'red'
+
+        },
+    ]
+    });
+</script>
+
+
+{% endblock %}

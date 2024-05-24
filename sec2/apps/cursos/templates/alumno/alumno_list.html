@@ -1,0 +1,38 @@
+{% extends "home_curso.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block dinamica %}
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">DNI</th>
+              
+                <th scope="col">Inscripcion</th>
+                <th scope="col">Marcar Presente</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for alumno in object_list %}
+                    <tr class="bg-transition">
+                        <td>{{ alumno.persona.nombre }}</td>
+                        <td>{{ alumno.persona.apellido }}</td>
+                        <td>{{ alumno.persona.dni }}</td>
+                        
+                        {% if alumno.esta_inscripto %}
+                        <td></td>
+                        <td><a href="{% url 'cursos:asistencia_alumno' alumno.dictado.pk alumno.pk %}"class="btn btn-primary">Presente</a></td>
+                        {% else %}      
+                        <td><a href="{% url 'cursos:carga_alumno_dictado' dictado.pk alumno.pk %}"class="btn btn-primary">inscripcion al dictado</a></td>
+                        <td></td>                         
+                        {% endif %}  
+                                                             
+                    </tr>
+                {% endfor %}  
+        </tbody>
+          
+    </table>
+    
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'detalle_listado.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block detalle %}
+
+<h3> Datos del Salon </h3>
+
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+  <div class="col">
+    <p class="negrita">Salón: </p>
+  </div>
+  <div class="col">
+    <p>{{ salon.nombre }}</p>
+  </div>
+
+  <div class="col">
+    <p class="negrita">Localidad: </p>
+  </div>
+  <div class="col">
+    <p>{{ salon.localidad }}</p>
+  </div>
+
+  <div class="col">
+    <p class="negrita">Direccion: </p>
+  </div>
+  <div class="col">
+    <p>{{ salon.direccion }}</p>
+  </div>
+</div>
+
+
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+  <div class="col">
+    <p class="negrita">Capacidad: </p>
+  </div>
+  <div class="col">
+    <p>{{ salon.capacidad }}</p>
+  </div>
+
+  <div class="col">
+    <p class="negrita">Encargado: </p>
+  </div>
+  <div class="col">
+    <p>{{ salon.encargado }}</p>
+  </div>
+</div>
+
+
+<div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+    <div class="col">
+      <p class="negrita"> Precio: </p>
+    </div>
+    <div class="col">
+      <p>{{ salon.precio }}</p>
+    </div>
+  
+    <div class="col">
+      <p class="negrita">Tipo salon: </p>
+    </div>
+    <div class="col">
+      <p>{{ salon.get_tipo_salon_display }}</p>
+    </div>
+    {% if salon.fechaBaja %}
+    <div class="col">
+      <p class="negrita">Fecha baja: </p>
+    </div>
+    <div class="col">
+      <p>{{ salon.fechaBaja }}</p>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block botones %}
+
+<div class="col">
+  <a href="{% url 'alquiler:salon_listar' %}" class="btn btn-sm btn-secondary btn-detalle">
+  <i class="fa-solid fa-arrow-left"></i> Ir al listado
+  </a>
+</div>
+
+<div class="col">
+  <a href="{% url 'alquiler:encargado_detalle' pk=salon.encargado.pk %}" class="btn btn-sm btn-info btn-detalle">
+    <i class="fa-solid fa-person-shelter"></i> Ir al encargado
+  </a>
+</div>
+
+
+{% if not salon.fechaBaja %}
+<div class="col d-flex justify-content-end">
+  <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal_eliminar_salon"><i class="fa-regular fa-circle-down"></i> Dar de Baja</button>
+  {% include 'modal_confirm_baja_salon.html' %}
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block listado_asociado %}
+{% if salon.alquileres.all %}
+<div class="container-sm">
+    <h3 class="subtitulo">{{ tituloListado1 }}</h3>
+    {% include "lista_alquileres.html" with alquileres=salon.alquileres.all %}
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extrajs_intermedia %}
+<script>
+  var listaEsperaWindow = null;
+
+  function openOrFocusWindow(url, name, width, height) {
+    // Verifica si la ventana ya está abierta
+    if (listaEsperaWindow && !listaEsperaWindow.closed) {
+      // Si está abierta, enfócala
+      listaEsperaWindow.focus();
+    } else {
+      // Si no está abierta, abre una nueva ventana
+      listaEsperaWindow = window.open(url, name, 'width=' + width + ',height=' + height);
+    }
+  }
+</script>
+{% endblock %}

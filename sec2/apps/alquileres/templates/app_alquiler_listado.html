@@ -1,0 +1,41 @@
+{% extends 'home_alquiler.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+  <link href="{% static 'css/listado.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block dinamica %}
+<div class="cuadrado-background">
+
+<br>
+  <h3 class="titulo">{{ titulo }}</h3>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-2" id="btn-new-afiliado"> <!-- Utiliza col-md-6 para que el botón esté a la izquierda en dispositivos medianos y grandes -->
+            {% block botones %}
+            {% endblock %}
+        </div>
+        <div class="col-md-6 text-center"> 
+          {% comment %} ACA IRIA EL PAGINATOR {% endcomment %}
+        </div>
+    </div>
+</div>
+
+  <div class="container-sm">
+    <div class="table-responsive">
+
+    {% block tabla_listado %}
+      {% endblock %}
+    </div>
+  </div>
+  {% include 'pagination.html' %} 
+  <br>
+</div>
+</div>
+{% block nav_lateral_filtro %}
+    {% include 'nav_filtro.html' %}
+  {% endblock %}
+{% endblock %}

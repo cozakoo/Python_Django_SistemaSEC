@@ -1,0 +1,56 @@
+{% extends 'app_cursos_alta.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block formulario %}
+  <form id="generar-clases-form" method="post">
+
+    {% csrf_token %}
+    <label for="aula_seleccionada">Seleccione un aula:</label>
+    <br>
+    <select name="aula_seleccionada" id="aula_seleccionada">
+      {% for aula in aulas_disponibles %}
+        <option value="{{ aula.id }}">{{ aula }} | Capacidad: {{aula.capacidad}}</option>
+      {% endfor %}
+    </select>
+
+    <br>
+    <br>
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
+      <div class="col">
+        <a href="{% url 'cursos:dictado_detalle' curso_pk=curso_pk dictado_pk=dictado_pk %}" class="btn btn-sm btn-secondary">Cancelar</a>
+      </div>
+      <div class="col">
+        
+        <button id="reservar-aula-btn" type="submit" class="btn btn-sm btn-success" onclick="submitForm(event)">
+          Reservar Aula
+        </button>
+
+      </div>
+    </div>
+
+  </form>
+
+  <script>
+    function submitForm(event) {
+      // Evitar el envío del formulario por defecto
+      event.preventDefault();
+    
+      // Obtener el botón
+      var btn = document.getElementById('reservar-aula-btn');
+    
+      // Cambiar el contenido del botón al hacer clic en él
+      btn.innerText = 'Reservando...';
+    
+      // Deshabilitar el botón después de hacer clic para evitar múltiples clics
+      btn.setAttribute('disabled', 'disabled');
+    
+      // Aquí puedes agregar más lógica, como enviar una solicitud AJAX al servidor para reservar el aula
+      
+      // Finalmente, envía el formulario después de realizar las acciones necesarias
+      document.getElementById('generar-clases-form').submit();
+    }
+    </script>
+
+ 
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'home_curso.html' %}
+
+{% load static %}
+
+{% block extracss_intermedia %}
+<script src="{% static 'Libs/highcharts/code/highcharts.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/dashboards/datagrid.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/dashboards/dashboards.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/dashboards/layout.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/modules/exporting.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/modules/export-data.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/modules/accessibility.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/modules/variwide.js' %}"></script>
+<script src="{% static 'Libs/highcharts/code/themes/dark-unica.js' %}"></script>
+{% block head %}
+{% endblock %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.3.1/decimal.min.js"></script>
+{% endblock %}
+
+
+{% block dinamica %}
+<div class="container-sm">
+    <h2 class="titulo">{{ titulo }}</h2>
+    {% block grafico %}
+    {% endblock %}
+
+</div>
+{% endblock %}

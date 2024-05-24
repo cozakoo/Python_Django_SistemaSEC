@@ -1,0 +1,15 @@
+#titulo-filtro{
+    color:white;
+    text-align: center;
+}
+
+#filtro {
+    /* width: 14%; */
+    background-color: #333;
+    color: #fff;
+    /* Ocupa el 100% de la altura del contenedor principal */
+    /* height: 100%; */
+    /* Estilos adicionales */
+    /* display: flex; */
+    flex-direction: column;
+}

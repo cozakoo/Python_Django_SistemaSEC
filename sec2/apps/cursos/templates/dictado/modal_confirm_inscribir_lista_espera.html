@@ -1,0 +1,63 @@
+{% load static %}
+
+<div class="modal fade" id="modal_inscribir_sacar_lista_espera_{{ inscrito_listaEspera.persona.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Afiliado</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          
+          <div class="modal-body text-center">
+              ¿Estás seguro de que inscribir a {{ inscrito_listaEspera.persona.nombre }} {{ inscrito_listaEspera.persona.apellido }}?
+              La persona es
+              <strong>
+                {% if inscrito_listaEspera.persona.es_afiliado %}
+                  Afiliado
+                {% elif inscrito_listaEspera.persona.es_grupo_familiar %}
+                  Familiar
+                {% elif inscrito_listaEspera.persona.es_profesor %}
+                  Profesor
+                {% elif inscrito_listaEspera.persona.es_alumno %}
+                  Alumno
+                {% endif %}
+              </strong>.
+          </div>
+          
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-success" onclick="gestionListaEspera{% if inscrito_listaEspera.persona.es_afiliado %}Afiliado{% elif inscrito_listaEspera.persona.es_grupo_familiar %}Familiar{% elif inscrito_listaEspera.persona.es_profesor %}Profesor{% elif inscrito_listaEspera.persona.es_alumno %}Alumno{% endif %}('inscribir', {{ curso_pk }}, {{ dictado.pk }}, {{ inscrito_listaEspera.persona.pk }})">Inscribir</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script>
+function gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, tipo) {
+  var url = `{% url 'cursos:gestion_lista_espera' curso_pk=9999 dictado_pk=9999 persona_pk=8888 tipo='placeholder' accion='placeholder' %}`
+    .replace('9999', curso_pk)
+    .replace('9999', dictado_pk)
+    .replace('8888', persona_pk)
+    .replace('placeholder', tipo)  // Reemplazar el tipo dinámicamente
+    .replace('placeholder', accion);  // Reemplazar la acción dinámicamente
+      
+  window.location.href = url;
+}
+
+// Llamadas específicas
+function gestionListaEsperaAfiliado(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, 'Afiliado');
+}
+
+function gestionListaEsperaFamiliar(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, 'Familiar');
+}
+
+function gestionListaEsperaProfesor(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, 'Profesor');
+}
+
+function gestionListaEsperaAlumno(accion, curso_pk, dictado_pk, persona_pk) {
+  gestionListaEspera(accion, curso_pk, dictado_pk, persona_pk, 'Alumno');
+}
+</script>

@@ -1,0 +1,109 @@
+{% extends 'app_cursos_alta.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block formulario %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <br />
+
+    <input type="hidden" name="{{ form.area.name }}" value="{{ form.area.initial }}" />
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.actividad.id_for_label }}">Actividad:</label>
+          {{ form.actividad }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          {{ form.nombre.label_tag }}
+          {{ form.nombre }}
+          {% include "error_campo.html" with field=form.nombre %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.precio_total.id_for_label }}">Precio:</label>
+          <br />
+          <input type="number" name="precio_total" step="1" min="1" required class="form-control" value="{{ form.precio_total.value|default:'' }}" />
+          {% include "error_campo.html" with field=form.precio_total %}
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-group">
+          {{ form.modulos_totales.label_tag }}
+          <input type="number" name="modulos_totales" step="1" min="1" required class="form-control" value="{{ form.modulos_totales.value|default:'' }}" />
+          <small class="error-text" style="color: red;">{{ form.modulos_totales.error }}</small>
+          <small class="form-text text-muted">{{ form.modulos_totales.help_text }}</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.cupo_estimativo.id_for_label }}">Cupo (estimativo):</label>
+          <br />
+          <input type="number" name="cupo_estimativo" step="1" min="1" required class="form-control" value="{{ form.cupo_estimativo.value|default:'' }}" />
+          {% include "error_campo.html" with field=form.cupo_estimativo %}
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.precio_estimativo_profesor.id_for_label }}">Precio a pagar al profesor (estimativo):</label>
+          <br />
+          <input type="number" name="precio_estimativo_profesor" step="1" min="1" required class="form-control" value="{{ form.precio_estimativo_profesor.value|default:'' }}" />
+          {% include "error_campo.html" with field=form.precio_estimativo_profesor %}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="{{ form.descripcion.id_for_label }}">Descripción:</label>
+          <br />
+          {{ form.descripcion }}
+          <small class="error-text" style="color: red;">{{ form.descripcion.error }}</small>
+          <small class="form-text text-muted">{{ form.descripcion.help_text }}</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          {{ form.requiere_certificado_medico }}
+          <label for="{{ form.requiere_certificado_medico.id_for_label }}">{{ form.requiere_certificado_medico.label }}</label>
+        </div>
+      </div>
+    </div>
+  <div class="row text-center">
+    <div class="col">
+      <button type="submit" class="btn btn-success" name="guardar_agregar_otro">Guardar y agregar otro curso</button>
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-success" name="guardar_listar">Guardar y listar</button>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col">
+      <a href="{% url 'cursos:curso_crear' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </div>
+  </form>
+
+  <link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+  <script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}

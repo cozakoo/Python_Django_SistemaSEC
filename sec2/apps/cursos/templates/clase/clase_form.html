@@ -1,0 +1,20 @@
+{% extends 'alta.html' %}
+{% load crispy_forms_tags %}
+
+{% block formulario %}
+  <form method="post" action="">
+
+    <!-- Mostrar los horarios del dictado -->
+    <h5>Horarios habilitados</h5>
+    <ul>
+      {% for horario in form.horarios_dictado %}
+        <li>{{ horario.get_dia_semana_display }} - {{ horario.hora_inicio }}</li>
+      {% endfor %}
+    </ul>
+
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+  </form>
+  
+{% endblock %}

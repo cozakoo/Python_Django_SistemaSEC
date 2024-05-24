@@ -1,0 +1,50 @@
+{% extends 'app_alquileres_alta_y_listado.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block alta %}
+  <form method="post" action="{% url 'alquiler:gestion_servicio' %}">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <strong>{{ form.nombre.label_tag }}</strong>
+          {{ form.nombre }}
+        </div>
+      </div>
+    <div class="col align-self-center">
+      <button type="submit" class="btn btn-success btn-sm">Crear</button>
+    </div>
+  </div>
+  </form>
+{% endblock %}
+
+{% block listado %}
+
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for obj in object_list %}
+    <tr class="bg-transition fila-personalizada">
+        <td class="negrita"> {{ page_obj.start_index|add:forloop.counter0 }}</td>
+        <td>{{ obj }}</td>
+
+       <td class="text-end">
+         <button type="button" class="btn btn-danger btn-sm btn-detalle" data-bs-toggle="modal" data-bs-target="#exampleModal_dar_de_baja_{{ obj.pk }}"><i class="fa-regular fa-circle-down"></i> Eliminar</button>
+         {% include 'modal_confirm_baja_servicio.html' with object=obj %}            
+
+          {% comment %} <a href="{% url 'alquiler:servicio_detalle' pk=obj.pk %}" class="btn btn-info btn-sm btn-detalle"><i class="fa-regular fa-eye"></i> Detalle</a> {% endcomment %}
+          {% comment %} <a href="{% url 'alquiler:servicio_editar' obj.pk %}" class="btn btn-primary btn-sm btn-detalle"><i class="fa-regular fa-pen-to-square"></i> Modificar</a> {% endcomment %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% load static %}
+
+{% block extracss %}
+  <link href="{% static 'Libs/css/nav_principal.css' %}" rel="stylesheet" />
+  <link href="{% static 'Libs/css/nav_curso.css' %}" rel="stylesheet" />
+{% endblock %}
+
+<div class="menu" id="menu_afiliado_principal">
+  <br />
+  <h3 class="titulo-menu">CURSOS</h3>
+  <ul class="menu">
+    <li>
+      <a href="/home" id="mostrarMenuPrincipal"><i class="fa-solid fa-arrow-left-long"></i> Menu principal</a>
+    </li>
+  </ul>
+</div>
+<hr />
+
+<div class="menu">
+  {% comment %} BOTON DE ACTIVIAD {% endcomment %}
+  <a class="enlace" id="enlaceActividad" href="{% url 'cursos:gestion_actividad' %}">
+    <i class="fa-regular fa-rectangle-list"></i> Actividad
+  </a>
+  
+  <hr />
+  {% comment %} BOTON DE ALUMNO {% endcomment %}
+  <a class="enlace" id="enlaceAlumno" href="{% url 'cursos:alumnos_listado' %}">
+    <i class="fa-solid fa-chalkboard-user"></i> Alumno
+  </a>
+  {% comment %} BOTON DE AULA {% endcomment %}
+  <hr>  
+<a class="enlace" id="enlaceAula" href="{% url 'cursos:gestion_aula' %}">
+  <i class="fa-solid fa-chair"></i>
+  Aula
+</a>
+  <hr />
+  <!-- Botón desplegable para Curso -->
+  <button class="submenu-toggle" data-submenu="curso">
+    <div class="button-content">
+      <span><i class="fa-solid fa-graduation-cap"></i> Curso </span>
+    </div>
+    <i class="fa-solid fa-caret-down"></i></button>
+  <ul class="submenu" id="curso-submenu">
+    <li>
+      <a href="{% url 'cursos:curso_crear' %}"><i class="fa-solid fa-plus item-subMenu"></i> Crear curso</a>
+    </li>
+    <li>
+      <a href="{% url 'cursos:curso_listado' %}"><i class="fa-solid fa-list item-subMenu"></i> Lista de cursos</a>
+    </li>
+  </ul>
+</div>
+
+<hr />
+
+<div class="menu">
+  <!-- Botón desplegable para Pago -->
+  <button class="submenu-toggle" data-submenu="pago">
+    <div class="button-content">
+      <span><i class="fa-solid fa-dollar-sign"></i> Pagos</span>
+    </div>
+    <i class="fa-solid fa-caret-down"></i></button>
+  <ul class="submenu" id="pago-submenu">
+    <li>
+      <a href="{% url 'cursos:pago_alumno_crear' %}"><i class="fa-solid fa-dollar-sign"></i><i class="fa-solid fa-chalkboard-user"></i> Pago de alumno</a>
+    </li>
+    <li>
+      <a href="{% url 'cursos:pago_profesor' %}"><i class="fa-solid fa-dollar-sign"></i><i class="fa-solid fa-person-chalkboard"></i> Pago de profesor</a>
+    </li>
+    <li>
+      <a href="{% url 'cursos:pago_cuota_alumno_listado' %}"><i class="fa-solid fa-list item-subMenu"></i> Pagos de alumnos</a>
+    </li>
+    <li>
+      <a href="{% url 'cursos:pago_cuota_profesor_listado' %}"><i class="fa-solid fa-list item-subMenu"></i> Pagos de profesor</a>
+    </li>
+  </ul>
+</div>
+
+<hr />
+
+<div class="menu">
+  <!-- Botón desplegable para Profesor -->
+  <button class="submenu-toggle" data-submenu="profesor"> 
+    <div class="button-content">
+      <span>
+        <i class="fa-solid fa-person-chalkboard"></i>
+         Profesor</span>
+    </div>
+  <i class="fa-solid fa-caret-down"></i>
+</button>
+
+  <ul class="submenu" id="profesor-submenu">
+    <li>
+      <a href="{% url 'cursos:profesor_crear' %}"><i class="fa-solid fa-plus item-subMenu"></i> Crear profesor</a>
+    </li>
+    <li>
+      <a href="{% url 'cursos:profesor_listado' %}"><i class="fa-solid fa-list item-subMenu"></i> Lista de profesores</a>
+    </li>
+  </ul>
+</div>
+
+
+<hr />
+
+<div class="menu">
+  <!-- Botón desplegable para Profesor -->
+  <button class="submenu-toggle" data-submenu="reportes" id="enlaceReporte"> 
+    <div class="button-content">
+      <span>
+        <i class="fa-solid fa-chart-column"></i> 
+        Reportes
+      </span>
+    </div>
+    <i class="fa-solid fa-caret-down"></i>
+  </button>
+  
+  <ul class="submenu" id="pago-submenu">
+    <li>
+      <a href="{% url 'reportes:cursos_finanzas' %}"><i class="fa-solid fa-chart-column"></i> Reporte Finanzas</a>
+    </li>
+    <li>
+      <a href="{% url 'reportes:curso_torta' %}"><i class="fa-solid fa-chart-pie"></i>Reporte Dictados</a>
+    </li>
+  </ul>
+
+</div>
+
+{% include 'documentacion_info.html' %}
+
+
+
+
+
+
+
+
+
+
+
+{% block extrajs %}
+  <script src="{% static 'Libs/js/nav_curso.js' %}"></script>
+{% endblock %}
